@@ -66,6 +66,7 @@ import {
                    ) : (null);
                  })}
                  <Redirect from="/" to="/dashboard" />
+                 {/* <Redirect to="/dashboard" /> */}
                </Switch>
              </Suspense>
            </Container>

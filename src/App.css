@@ -32,3 +32,17 @@
     transform: rotate(360deg);
   }
 }
+
+  .question {
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  .answer {
+     display: none;
+  }
+  
+  .open .answer {
+    display: block;
+  }
+

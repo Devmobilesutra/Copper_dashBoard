@@ -5,55 +5,60 @@ export default {
           url: '/dashboard',
           icon: 'icon-speedometer',
           badge: {
-          variant: 'info',
-          text: 'NEW',
+          // variant: 'info',
+          // text: 'NEW',
           },
         },
         {
-          name: 'Category',
-          url: '/addCategory',
-          icon: 'icon-pencil',
-        },
-        {
-          name: 'Activity',
-          url: '/addActivity',
-          // icon: 'icon-drop',
-          icon: 'icon-pencil',
-        },
-        {
-          name: 'Tip',
-          url: '/addTip',
-          icon: 'icon-pencil',
-        },
-        {
-          name: 'News',
-          url: '/addNews',
-          icon: 'icon-pencil',
-        },
-        {
           name: 'User List',
-          url: '/userList',
-          icon: 'icon-list',
-        },
-        {
-          name: 'Feedback List',
-          url: '/feedbackList',
-          icon: 'icon-list',
-        },
-        {
-          name: 'Daily Weekly Tip',
-          url: '/dailyWeeklyTip',
+          url: '/UsersList',
           icon: 'icon-pencil',
         },
         {
-          name: 'Graphs',
-          url: '/Graphs',
-          icon: 'icon-graph',
+          name: 'Product List',
+          url: '/ProductsList',
+          icon: 'icon-pencil',
         },
         {
-          name: 'Graphs2',
-          url: '/Graphs2',
-          icon: 'icon-graph',
+          name: 'Orders List',
+          url: '/OrdersList',
+          icon: 'icon-pencil',
         },
+        {
+          name: 'Category List',
+          url: '/CategoryList',
+          icon: 'icon-pencil',
+        },
+        // {
+        //   name: 'Excel Convertor',
+        //   url: '/Convert2Excel',
+        //   icon: 'icon-list',
+        // },
+        {
+          name: 'Add Notification',
+          url: '/AddNotification',
+          icon: 'icon-list',
+        },
+        // {
+        //   name: 'Add Daily Weekly Tip',
+        //   url: '/dailyWeeklyTip',
+        //   icon: 'icon-pencil',
+        // },
+        // {
+        //   name: 'Graphs',
+        //   url: '/Graphs2',
+        //   icon: 'icon-graph',
+        // },
+        // {
+        //   name: 'Initial Comments',
+        //   url: '/InitialComments',
+        //   icon: 'icon-bubble',
+        // },
+        //  {
+        //   name: 'Reasons',
+        //   url: '/Reasons',
+        //   icon: 'icon-bubble',
+        // },
+         
     ],
 };

@@ -40,6 +40,8 @@ class Login extends Component {
     
         if(UsernameErr || PasswordErr ){
             this.setState({UsernameErr , PasswordErr });
+            
+
             return false;
         }
     return true;
@@ -49,7 +51,7 @@ class Login extends Component {
         const isValid = this.validate();
 
         if (isValid){
-            if(this.state.newLoginData.username == 'sanyukta' && this.state.newLoginData.password == '123'){
+            if(this.state.newLoginData.username == 'copper' && this.state.newLoginData.password == 'copper'){
                 this.setState({redirect: true});
             }
             else
@@ -134,7 +136,9 @@ class Login extends Component {
                     />
                   </InputGroup>
                   <div style={{ fontSize:12, color: "red" }}>{this.state.UsernameErr}</div> 
+                  
                   <br />
+
                   <InputGroup className="mb-4">
                     <InputGroupAddon addonType="prepend">
                       <InputGroupText>
@@ -145,14 +149,18 @@ class Login extends Component {
                         value={this.state.newLoginData.password} onChange={(e) => {
                         let { newLoginData } = this.state;
                         newLoginData.password = e.target.value;
-                        this.setState({ newLoginData }); 
+                        this.setState({ newLoginData });
                         }} />
                   </InputGroup>
                   <div style={{ fontSize:12, color: "red" }}>{this.state.PasswordErr}</div> 
+
+
                   <br/>
                   <Row>
                     <Col xs="6">
-                      <Button color="primary" className="px-4" value="Login" onClick={this.login} >Login</Button>
+                      <Button type="submit" color="primary" className="px-4" value="Login" onClick={this.login} >
+                        Login</Button>                                                                                      
+                        {/* type=submit for enter submit */}
                       {/* <input type="submit" value="Login" className="button" onClick={this.login}/> */}
                     </Col>
                   </Row>
