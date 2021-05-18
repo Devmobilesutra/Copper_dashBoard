@@ -29,21 +29,21 @@ export default {
           url: '/CategoryList',
           icon: 'icon-pencil',
         },
-        // {
-        //   name: 'Excel Convertor',
-        //   url: '/Convert2Excel',
-        //   icon: 'icon-list',
-        // },
+        {
+          name: 'Order_Details',
+          url: '/Order_Details',
+          icon: 'icon-list',
+        },
         {
           name: 'Add Notification',
           url: '/AddNotification',
           icon: 'icon-list',
         },
-        // {
-        //   name: 'Add Daily Weekly Tip',
-        //   url: '/dailyWeeklyTip',
-        //   icon: 'icon-pencil',
-        // },
+        {
+          name: 'Reports',
+          url: '/Reports',
+          icon: 'icon-pencil',
+        },
         // {
         //   name: 'Graphs',
         //   url: '/Graphs2',

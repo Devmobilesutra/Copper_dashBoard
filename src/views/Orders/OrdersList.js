@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Button from '@material-ui/core/Button';
 import fire from '../../fire';
+import firebase from 'firebase';
 import { FormGroup, Label, Input, Modal, ModalHeader, ModalBody, ModalFooter, Form, Text } from 'reactstrap';
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
@@ -15,17 +16,11 @@ export default class OrderList extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            userList: [],
-            userListFalse: [],
-            addModal: false,
-
-            confirmUserModal: false,
-
-            confirmUserId: '',
-
+            orderList: [],
+            userId: [],
             columnsUser: [
                 {
-                    dataField: 'id',
+                    dataField: 'Order_id',
                     text: 'Order Id',
                     align: 'center',
                     headerStyle: (colum, colIndex) => {
@@ -33,16 +28,42 @@ export default class OrderList extends Component {
                     },
                 },
                 {
-                    dataField: 'Order_status',
-                    text: 'Order_status',
+                    dataField: 'name',
+                    text: 'Customer',
                     align: 'center',
                     headerStyle: (colum, colIndex) => {
                         return { textAlign: 'center' };
                     },
                 },
                 {
-                    dataField: 'address',
-                    text: 'Address',
+                    dataField: 'Total_amount',
+                    text: 'Amount',
+                    align: 'center',
+                    headerStyle: (colum, colIndex) => {
+                        return { textAlign: 'center' };
+                    },
+                },
+                {
+                    dataField: 'date',
+                    text: 'Date',
+                    align: 'center',
+                    headerStyle: (colum, colIndex) => {
+                        return { textAlign: 'center' };
+                    },
+                },
+                {
+                    dataField: 'delivery_status',
+                    text: 'Delivery Status',
+                    formatter: this.deliveryStatusDropdown,
+                    align: 'center',
+                    headerStyle: (colum, colIndex) => {
+                        return { textAlign: 'center' };
+                    },
+                },
+                {
+                    dataField: "Actions",
+                    text: "Actions",
+                    formatter: this.ActionButtonView,
                     align: 'center',
                     headerStyle: (colum, colIndex) => {
                         return { textAlign: 'center' };
@@ -52,67 +73,76 @@ export default class OrderList extends Component {
         };
     }
 
-    // Funtion for displaying 'Edit' & 'delete' buttons inside Bootstrap Grid
-    ActionButtons = (cell, row, rowIndex, formatExtraData) => {
-        // console.log("Row Data", row);
+    deliveryStatusDropdown = (cell, row, rowIndex, formatExtraData) => {
+        console.log("delivery status", row.delivery_status)
         return (
-            <p style={{ flexDirection: 'row' }}>
-                <button style={{ marginLeft: 10, backgroundColor: '#03fc94', width: 50, borderRadius: 10 }} onClick={() => console.log(row.id, row.user_name, row.role)} >
-                    Edit
-                </button>
-                <button style={{ marginLeft: 10, backgroundColor: '#f5425a', width: 50, borderRadius: 10 }} onClick={() => console.log(row)}>
-                    Delete
-                </button>
-            </p>
-        );
-    };
-    componentDidMount() {
-        fire.firestore().collection('OrderList').onSnapshot(data => {
-            // console.log("cmpnentdid",data.size)
-            data.forEach(el => {
-                console.log("el", el.data(), el.id)
-                    this.state.userList.push({ id: el.id, ...el.data() })
-                    this.setState({});
-                console.log("userList from state", this.state.userList);
-                console.log("userList from state false", this.state.userListFalse);
-            })
+            <div>
+                <select type="select" name="select" id="exampleSelect" style={{ borderRadius: 23 }}
+                    value={row.delivery_status}
+                    onChange={(e) => { this.deliveryStatus(e.target.value, row.id) }}>
+                    <option value="">Select Option</option>
+                    <option value="true">True</option>
+                    <option value="false">False</option>
+                </select>
+            </div>
+        )
+    }
+    ActionButtonView = (cell, row, rowIndex, formatExtraData) => {
+        console.log("Actions", row.Actions);
+        return (
+            <div>
+                <select type="select" name="select" id="exampleSelect" style={{ borderRadius: 23 }}
+                    value={row.Actions}
+                    onChange={(e) => { this.Action(e.target.value, row.id) }}>
+                    <option value="">Select Option</option>
+                    <option value="Manufacturing">Manufacturing</option>
+                    <option value="Packing">Packing</option>
+                    <option value="Delivery">Delivery</option>
+                </select>
+            </div>
+        )
+    }
+    Action = (val, id) => {
+        console.log('action function', val, typeof (val), id);
+        firebase.firestore().collection('OrderList').doc(id).update({
+            Actions: val
+        })
+    }
+    deliveryStatus = (val, id) => {
+        console.log('action function', val, typeof (val), id);
+        firebase.firestore().collection('OrderList').doc(id).update({
+            delivery_status: val == 'true' ? true : false
         })
     }
 
-    // confirm user entry all functions starts here
-    actionConfirmUser = (cell, row, rowIndex, formatExtraData) => {
-        var confirmUserId = row.id;
-        return (
-            <div>
-                <Button color="success" size="sm" className="mr-2"
-                    onClick={this.confirmUser.bind(this, confirmUserId)}>
-                    Confirm
-            </Button>
-            </div>
-        );
-    }
-    confirmUser(confirmUserId) {
-        this.setState({
-            confirmUserId: confirmUserId,
-            confirmUserModal: !this.state.confirmUserModal
-        });
-    }
-    toggleconfirmUserModal() {
-        this.setState({
-            confirmUserModal: !this.state.confirmUserModal
-        });
-    }
-    confirmUserEntryFinal() {
-        fire.firestore().collection('Users').doc(this.state.confirmUserId).update({
-            flag: true
+    componentDidMount() {
+        fire.firestore().collection('OrderList').onSnapshot(data => {
+            this.setState({ orderList: [] });
+            data.forEach(el => {
+                console.log("el", el.data(), el.id)
+                // this.state.orderList.push({ id: el.id, ...el.data() })
+                // this.setState({});
+                //  console.log("order from state", this.state.orderList);
+
+                //Customer name from users table
+                let name = el.data().user_id
+                console.log('name', name);
+
+                fire.firestore().collection('Users').doc(name).get()
+                    .then(documentSnapshot => {
+
+                        //    console.log('User exists: ', documentSnapshot.exists); 
+                        if (documentSnapshot.exists) {
+                            this.state.orderList.push({ id: el.id, ...el.data(), ...documentSnapshot.data() })
+                            this.setState({})
+                        }
+                    }).catch(e => { console.log(e) })
+
+            })
+            console.log("user name", this.state.orderList);
         })
-        this.setState({
-            confirmUserModal: !this.state.confirmUserModal,
-            userListFalse: [],
-            userList: [],
-        });
+
     }
-    // /////confirm user entry all functions end here///////
 
     render() {
 
@@ -122,7 +152,7 @@ export default class OrderList extends Component {
                 onPageChange(page);
             };
             return (
-                <Button key="id" onClick={handleClick} > {page} </Button>
+                <Button key={Math.random()} onClick={handleClick} > {page} </Button>
             );
         };
 
@@ -152,7 +182,7 @@ export default class OrderList extends Component {
             }, {
                 text: '20', value: 20
             }, {
-                text: 'All', value: this.state.userList.length
+                text: 'All', value: this.state.orderList.length
             }]  // A numeric array is also available. the purpose of above example is custom the text
 
         };
@@ -167,7 +197,7 @@ export default class OrderList extends Component {
                     <BootstrapTable
                         noDataIndication="Table is Empty"
                         keyField="id"
-                        data={this.state.userList}
+                        data={this.state.orderList}
                         columns={this.state.columnsUser}
                         striped
                         hover

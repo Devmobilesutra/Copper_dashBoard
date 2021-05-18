@@ -1,5 +1,6 @@
 import firebase from '@firebase/app';
 import 'firebase/firestore';
+import '@firebase/storage';
 // import { FirestoreProvider } from 'react-firestore';
 
 // require('firebase/auth')

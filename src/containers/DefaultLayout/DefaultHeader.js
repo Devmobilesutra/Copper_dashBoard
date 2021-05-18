@@ -52,11 +52,11 @@ class DefaultHeader extends Component {
             <NavLink to="#" className="nav-link"><i className="icon-location-pin"></i></NavLink>
           </NavItem> */}
           <AppHeaderDropdown direction="down">
-            {/* <DropdownToggle nav>
-              <img src={'../../assets/brand/Desert.jpg'} className="img-avatar" alt="admin@mobileSutra.com" />
-            </DropdownToggle> */}
-            <DropdownMenu right style={{ right: 'auto' }}>
-              <DropdownItem header tag="div" className="text-center"><strong>Account</strong></DropdownItem>
+            <DropdownToggle nav>
+              <img src={require('../../assets/PARTHI_LOGO-01.jpg')} className="img-avatar" alt="admin@mobileSutra.com" />
+            </DropdownToggle>
+            <DropdownMenu right>
+              {/* <DropdownItem header tag="div" className="text-center"><strong>Account</strong></DropdownItem>
               <DropdownItem><i className="fa fa-bell-o"></i> Updates<Badge color="info">42</Badge></DropdownItem>
               <DropdownItem><i className="fa fa-envelope-o"></i> Messages<Badge color="success">42</Badge></DropdownItem>
               <DropdownItem><i className="fa fa-tasks"></i> Tasks<Badge color="danger">42</Badge></DropdownItem>
@@ -67,7 +67,7 @@ class DefaultHeader extends Component {
               <DropdownItem><i className="fa fa-usd"></i> Payments<Badge color="secondary">42</Badge></DropdownItem>
               <DropdownItem><i className="fa fa-file"></i> Projects<Badge color="primary">42</Badge></DropdownItem>
               <DropdownItem divider />
-              <DropdownItem><i className="fa fa-shield"></i> Lock Account</DropdownItem>
+              <DropdownItem><i className="fa fa-shield"></i> Lock Account</DropdownItem> */}
               <DropdownItem onClick={e => this.props.onLogout(e)}><i className="fa fa-lock"></i> Logout</DropdownItem>
             </DropdownMenu>
           </AppHeaderDropdown>

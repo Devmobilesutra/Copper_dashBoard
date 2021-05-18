@@ -3,18 +3,22 @@ import { Card, CardBody, CardHeader, Col, Row } from 'reactstrap';
 
 
 class Dashboard extends Component {
-    state = {  }
-    render() { 
-        return ( 
-            <div className='App'>
-                <h1>Copper</h1>
-                <div className="animated fadeIn">
-                  <Row>
+  state = {}
+  render() {
+    return (
+      <div className='App'>
+        <h1>Copper</h1>
+        <div className="animated fadeIn">
+          {/* <div style={{ display: }}>
+
+          </div> */}
+          <img src={require('../../assets/PARTHI_LOGO-01.jpg')} width={200} height={150} />
+          {/* <Row>
                     <Card className="text-white bg-info">
                       <CardHeader>
                         <h3>Welcome!!</h3> 
                       </CardHeader>
-                      <CardBody>
+                      <CardBody>                        
                         <h4>
                         Please Select Options from the drawer: <br/>
                         1. User List: To Check and Update Users List. <br/> 
@@ -27,12 +31,12 @@ class Dashboard extends Component {
                         </h4>
                       </CardBody>
                     </Card>
-                  </Row>
-                </div>
-              <h4>About us</h4>
-            </div>
-         );
-    }
+                  </Row> */}
+        </div>
+        {/* <h4>About us</h4> */}
+      </div>
+    );
+  }
 }
- 
+
 export default Dashboard;
