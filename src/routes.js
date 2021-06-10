@@ -11,7 +11,7 @@ import CategoryList from './views/Category/CategoryList';
 import Convert2Excel from "./views/Convert2Excel";
 import AddNotification from './views/AddNotification/AddNotification';
 import Reports from './views/Reports/Reports';
-import Order_Details from './views/Reports/Order_Details';
+// import Order_Details from './views/Reports/Order_Details';
 
 
 const Routes = () => (
@@ -26,7 +26,7 @@ const Routes = () => (
             <Route path='/Convert2Excel' component={Convert2Excel} />
             <Route path='/AddNotification' component={AddNotification} />
             <Route path='/Reports' component={Reports} />
-            <Route path='/Order_Details' component={Order_Details} />
+            {/* <Route path='/Order_Details' component={Order_Details} /> */}
         </Switch>
     </BrowserRouter>
 );

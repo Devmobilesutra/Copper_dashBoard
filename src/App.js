@@ -1,15 +1,18 @@
-import React from 'react';
+import React, { Component } from 'react';
 import './styles/foundation.css';
 import './styles/custom.css';
 import './App.scss';
 import Routes from './routes';
 
-function App() {
-  return (
-    <div>
-      <Routes />
-    </div>
-  );
+class App extends Component {
+
+  render() {
+    return (
+      <div>
+        <Routes />
+      </div>
+    )
+  }
 }
 
 export default App;

@@ -8,7 +8,7 @@ const CategoryList = React.lazy(() => import('./views/Category/CategoryList'));
 const Convert2Excel = React.lazy(() => import('./views/Convert2Excel'));
 const AddNotification = React.lazy(() => import('./views/AddNotification/AddNotification'));
 const Reports = React.lazy(() => import('./views/Reports/Reports'));
-const Order_Details = React.lazy(() => import('./views/Reports/Order_Details'));
+// const Order_Details = React.lazy(() => import('./views/Reports/Order_Details'));
 
 
 const routesDrawer = [
@@ -21,7 +21,7 @@ const routesDrawer = [
     { path: '/Convert2Excel', name: 'Convert2Excel', component: Convert2Excel },
     { path: '/AddNotification', name: 'AddNotification', component: AddNotification },
     { path: '/Reports', name: 'Reports', component: Reports },
-    { path: '/Order_Details', name: 'Order_Details', component: Order_Details },
+    // { path: '/Order_Details', name: 'Order_Details', component: Order_Details },
 ];
 
 export default routesDrawer;

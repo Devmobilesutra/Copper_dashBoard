@@ -1,0 +1,300 @@
+<html>
+
+<head>
+    <style>
+        .Main {
+            /* align-items: center; */
+            /* align-content: center; */
+            align-self: center;
+        }
+
+        .Header-of-pdf {
+            display: flex;
+            flex-direction: row;
+        }
+
+        .Title-Div {
+            font-weight: bold;
+            font-size: large;
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            width: 50%;
+            text-align: end;
+        }
+
+        .side-Text {
+            width: 50%;
+            text-align: end;
+            margin-right: 50;
+        }
+
+        .Main-rect {
+            border: solid #000;
+            border-width: 1px 1px 1px 1px;
+            /* width: 1000px; */
+        }
+
+        .First-rect {
+            display: flex;
+            flex-direction: row;
+            border: solid #000;
+            border-width: 0 0px 1px 0px;
+        }
+
+        .raw-details {
+            display: flex;
+            flex-direction: column;
+            width: 50%;
+            /* padding: 5px; */
+        }
+
+        .first-half {
+            border: solid #000;
+            border-width: 0 1px 1px 0px;
+        }
+
+        .second-half {
+            border: solid #000;
+            height: 200px;
+            border-width: 0px 1px 0px 0px;
+        }
+
+        .invoice-details {
+            display: flex;
+            flex-direction: column;
+            width: 50%;
+        }
+
+        .row {
+            display: flex;
+            flex-direction: row;
+            border: solid #000;
+            border-width: 0px 0px 1px 0px;
+        }
+
+        .content-1 {
+            width: 50%;
+            border: solid #000;
+            border-width: 0px 1px 0px 0px;
+        }
+
+        .content-2 {
+            width: 50%;
+        }
+
+        .Table {
+            width: 100%;
+            height: 300px;
+        }
+
+        .thead {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            width: 100%;
+            border: solid #000;
+            border-width: 0px 0px 1px 0px;
+        }
+
+        .tbody {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            width: 100%;
+            height: 200px;
+            border: solid #000;
+            border-width: 0px 0px 1px 0px;
+        }
+
+        .last-row {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            width: 100%;
+            border: solid #000;
+            border-width: 0px 0px 1px 0px;
+        }
+
+        .cell1 {
+            border: solid #000;
+            border-width: 0px 1px 0px 0px;
+            width: 25px;
+        }
+
+        .cell2 {
+            border: solid #000;
+            border-width: 0px 1px 0px 0px;
+            width: 300px;
+        }
+
+        .cell3 {
+            border: solid #000;
+            border-width: 0px 1px 0px 0px;
+            width: 110px;
+        }
+
+        .cell4 {
+            border: solid #000;
+            border-width: 0px 1px 0px 0px;
+            width: 110px;
+        }
+
+        .cell5 {
+            border: solid #000;
+            border-width: 0px 1px 0px 0px;
+            width: 110px;
+        }
+
+        .cell6 {
+            border: solid #000;
+            border-width: 0px 1px 0px 0px;
+            width: 70px;
+        }
+
+        .cell7 {
+            border: solid #000;
+            border-width: 0px 1px 0px 0px;
+            width: 70px;
+        }
+
+        .cell8 {
+            border: solid #000;
+            border-width: 0px 1px 0px 0px;
+            width: 130px;
+        }
+    </style>
+</head>
+
+<body>
+    <div style="align-self: center;">
+        <div style="display: flex;flex-direction: row;">
+            <div
+                style="font-weight: bold;font-size: large;font-family: Georgia, 'Times New Roman', Times, serif;width: 50%;text-align: end;">
+                Tax Invoice</div>
+            <div style="width: 50%;text-align: end;margin-right: 50;">(ORIGINAL FOR RECIPIENT)</div>
+        </div>
+        <div style="border: solid #000;border-width: 1px 1px 1px 1px;">
+            <div style="display: flex;flex-direction: row;border: solid #000;border-width: 0 0px 1px 0px;">
+                <div style="display: flex;flex-direction: column;width: 50%;">
+                    <div style="border: solid #000;border-width: 0 1px 1px 0px;">
+                        RKB METAL INDUSTRIES PRIVATE LIMITED<br />
+                        S NO 17/3, SUKHSAGAR NAGAR, NEAR HEMA MANGAL,<br />
+                        KATRAJ, Pune, Maharashtra, 411046<br />
+                        GSTIN/UIN: 27AAJCR1260P1ZX<br />
+                        State Name : Maharashtra, Code : 27<br />
+                        CIN: U28999PN2018PTC178676<br />
+                        E-Mail : ravi@pratikcopper.com
+                    </div>
+                    <div style="border: solid #000;height: 200px;border-width: 0px 1px 0px 0px;">
+                        Consignee<br />
+                        Mr. Aditya Mane.<br />
+                        Pune<br />
+                        State Name : Maharashtra, Code : 27
+                    </div>
+                </div>
+                <div style="display: flex;flex-direction: column;width: 50%;">
+                    <div style="display: flex;flex-direction: row;border: solid #000;border-width: 0px 0px 1px 0px;">
+                        <div style="width: 50%;border: solid #000;border-width: 0px 1px 0px 0px;">
+                            Invoice No.<br />
+                            230
+                        </div>
+                        <div style="width: 50%;">
+                            Dated<br />
+                            22-Mar-2021
+                        </div>
+                    </div>
+                    <div style="display: flex;flex-direction: row;border: solid #000;border-width: 0px 0px 1px 0px;">
+                        <div style="width: 50%;border: solid #000;border-width: 0px 1px 0px 0px;">
+                            Invoice No.<br />
+                            230
+                        </div>
+                        <div style="width: 50%;">
+                            Dated<br />
+                            22-Mar-2021
+                        </div>
+                    </div>
+                    <div style="display: flex;flex-direction: row;border: solid #000;border-width: 0px 0px 1px 0px;">
+                        <div style="width: 50%;border: solid #000;border-width: 0px 1px 0px 0px;">
+                            Invoice No.<br />
+                            230
+                        </div>
+                        <div style="width: 50%;">
+                            Dated<br />
+                            22-Mar-2021
+                        </div>
+                    </div>
+                    <div style="display: flex;flex-direction: row;border: solid #000;border-width: 0px 0px 1px 0px;">
+                        <div style="width: 50%;border: solid #000;border-width: 0px 1px 0px 0px;">
+                            rder No<br />
+                            230
+                        </div>
+                        <div style="width: 50%;">
+                            Dated<br />
+                            22-Mar-2021
+                        </div>
+                    </div>
+                    <div style="display: flex;flex-direction: row;border: solid #000;border-width: 0px 0px 1px 0px;">
+                        <div style="width: 50%;border: solid #000;border-width: 0px 1px 0px 0px;">
+                            Despatch Doc No<br />
+                            230
+                        </div>
+                        <div style="width: 50%;">
+                            Dated<br />
+                            13-Mar-2021
+                        </div>
+                    </div>
+                    <div style="display: flex;flex-direction: row;border: solid #000;border-width: 0px 0px 1px 0px;">
+                        <div style="width: 50%;border: solid #000;border-width: 0px 1px 0px 0px;">
+                            Despatch Through<br />
+                            Self Arrange
+                        </div>
+                        <div style="width: 50%;">
+                            Destination<br />
+                            Pune
+                        </div>
+                    </div>
+                    <div class="7th">
+                        Terms of Delivery
+                    </div>
+                </div>
+            </div>
+            <div class="Table">
+                <div class="thead">
+                    <div class="cell1">SI NO</div>
+                    <div class="cell2">Description of Goods</div>
+                    <div class="cell3">HSN/SAC</div>
+                    <div class="cell4">Quantity</div>
+                    <div class="cell5">Rate</div>
+                    <div class="cell6">Per</div>
+                    <div class="cell7">Disc. %</div>
+                    <div class="cell8">Amount</div>
+                </div>
+                <div class="tbody">
+                    <div class="cell1"></div>
+                    <div class="cell2"></div>
+                    <div class="cell3"></div>
+                    <div class="cell4"></div>
+                    <div class="cell5"></div>
+                    <div class="cell6"></div>
+                    <div class="cell7"></div>
+                    <div class="cell8"></div>
+                </div>
+                <div class="last-row">
+                    <div class="cell1"></div>
+                    <div class="cell2">Total</div>
+                    <div class="cell3"></div>
+                    <div class="cell4">1 Nos.</div>
+                    <div class="cell5"></div>
+                    <div class="cell6"></div>
+                    <div class="cell7"></div>
+                    <div class="cell8">563</div>
+                </div>
+            </div>
+            <div>
+
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+

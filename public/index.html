@@ -1,21 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
-    <meta
-      name="description"
-      content="Web site created using create-react-app"
-    />
-    <link rel="apple-touch-icon" href="logo192.png" />
-    <!--
+
+<head>
+  <meta charset="utf-8" />
+  <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#000000" />
+  <meta name="description" content="Web site created using create-react-app" />
+  <link rel="apple-touch-icon" href="logo192.png" />
+  <!--
       manifest.json provides metadata used when your web app is installed on a
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
     -->
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <!--
+  <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+  <!--
       Notice the use of %PUBLIC_URL% in the tags above.
       It will be replaced with the URL of the `public` folder during the build.
       Only files inside the `public` folder can be referenced from the HTML.
@@ -24,12 +22,97 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-    <title>Copper Dashboard</title>
-  </head>
-  <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
-    <!--
+  <title>Copper Dashboard</title>
+  <script src="https://www.gstatic.com/firebasejs/4.3.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/4.3.0/firebase-messaging.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/4.3.0/firebase.js"></script>
+
+  <script>
+    try {
+      if (!firebase.apps.length) {
+        const firebaseConfig = { //from firebase project setting
+          apiKey: "AIzaSyCJhp_0EQxTZcPy8cneVwGienQSjiHGP3M",
+          authDomain: "copper-fe617.firebaseapp.com",
+          databaseURL: 'https://copper-fe617.firebaseio.com',
+          projectId: "copper-fe617",
+          storageBucket: "copper-fe617.appspot.com",
+          messagingSenderId: "256794258770",
+          appId: "1:256794258770:web:2623c5a37d6962acf25e8b",
+          measurementId: "G-3CS9B7YCDP"
+        };
+        firebase.initializeApp(firebaseConfig);
+      }
+
+      const messaging = firebase.messaging();
+
+      messaging.onMessage((payload) => {
+        console.log('Message received. ', payload);
+
+        const notificationTitle = 'OnMessage Title';
+        const notificationOptions = {
+          body: 'OnMessage body.'
+        };
+
+        return self.registration.showNotification(notificationTitle,
+          notificationOptions);
+      });
+
+      function resetUI() {
+        const vapidKey = '<BIUEhFK-jNVCO4tSxGtEeJxi7Eiu8BK-8bSKYyZM2T4KFxt4zFS36cWYFNzqhXU6j-yBdDLNsr0V04kP8Tt6IYQ>'; //from firebase project settings
+        messaging.getToken({ vapidKey: vapidKey }).then((currentToken) => {
+          console.log("currentToken", currentToken);
+          if (currentToken) {
+            //..
+          } else {
+            console.log('No registration token available. Request permission to generate one.');
+            requestPermission();
+          }
+        }).catch((err) => {
+          console.log('An error occurred while retrieving token. ', err);
+        });
+      }
+
+      function requestPermission() {
+        console.log('Requesting permission...');
+        Notification.requestPermission().then((permission) => {
+          if (permission === 'granted') {
+            console.log('Notification permission granted.');
+            resetUI();
+          } else {
+            console.log('Unable to get permission to notify.');
+          }
+        });
+      }
+
+      resetUI();
+    } catch (e) {
+      console.log("firebase startup error ", e);
+    }
+
+    // var config = {
+    //   apiKey: "AIzaSyCJhp_0EQxTZcPy8cneVwGienQSjiHGP3M",
+    //   authDomain: "copper-fe617.firebaseapp.com",
+    //   databaseURL: 'https://copper-fe617.firebaseio.com',
+    //   projectId: "copper-fe617",
+    //   storageBucket: "copper-fe617.appspot.com",
+    //   messagingSenderId: "256794258770",
+    //   appId: "1:256794258770:web:2623c5a37d6962acf25e8b",
+    //   measurementId: "G-3CS9B7YCDP"
+    // }
+
+    // firebase.initializeApp(config);
+    // const messaging = firebase.messaging();
+    // messaging.onMessage(function (payload) {
+    //   console.log("Message received. ", payload);
+    //   // ...
+    // });
+  </script>
+</head>
+
+<body>
+  <noscript>You need to enable JavaScript to run this app.</noscript>
+  <div id="root"></div>
+  <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
 
@@ -39,5 +122,6 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
-  </body>
+</body>
+
 </html>

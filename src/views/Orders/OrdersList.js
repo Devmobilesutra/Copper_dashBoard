@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import Button from '@material-ui/core/Button';
+// import Button from '@material-ui/core/Button';
 import fire from '../../fire';
 import firebase from 'firebase';
-import { FormGroup, Label, Input, Modal, ModalHeader, ModalBody, ModalFooter, Form, Text } from 'reactstrap';
+import { FormGroup, Label, Input, Modal, ModalHeader, ModalBody, ModalFooter, Form, Text, Button } from 'reactstrap';
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
+import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
 
 const customTotal = (from, to, size) => (
     <span className="react-bootstrap-table-pagination-total ml-2">
@@ -23,6 +24,9 @@ export default class OrderList extends Component {
                     dataField: 'Order_id',
                     text: 'Order Id',
                     align: 'center',
+                    filter: textFilter({
+                        placeholder: 'Search by ID'
+                    }),
                     headerStyle: (colum, colIndex) => {
                         return { textAlign: 'center' };
                     },
@@ -31,6 +35,9 @@ export default class OrderList extends Component {
                     dataField: 'name',
                     text: 'Customer',
                     align: 'center',
+                    filter: textFilter({
+                        placeholder: 'Search by Name'
+                    }),
                     headerStyle: (colum, colIndex) => {
                         return { textAlign: 'center' };
                     },
@@ -39,6 +46,9 @@ export default class OrderList extends Component {
                     dataField: 'Total_amount',
                     text: 'Amount',
                     align: 'center',
+                    filter: textFilter({
+                        placeholder: 'Search Amount'
+                    }),
                     headerStyle: (colum, colIndex) => {
                         return { textAlign: 'center' };
                     },
@@ -47,13 +57,19 @@ export default class OrderList extends Component {
                     dataField: 'date',
                     text: 'Date',
                     align: 'center',
+                    filter: textFilter({
+                        placeholder: 'Search Date'
+                    }),
                     headerStyle: (colum, colIndex) => {
                         return { textAlign: 'center' };
                     },
                 },
                 {
                     dataField: 'delivery_status',
-                    text: 'Delivery Status',
+                    text: 'Delivered ?',
+                    filter: textFilter({
+                        placeholder: 'Search delivery status'
+                    }),
                     formatter: this.deliveryStatusDropdown,
                     align: 'center',
                     headerStyle: (colum, colIndex) => {
@@ -64,6 +80,15 @@ export default class OrderList extends Component {
                     dataField: "Actions",
                     text: "Actions",
                     formatter: this.ActionButtonView,
+                    align: 'center',
+                    headerStyle: (colum, colIndex) => {
+                        return { textAlign: 'center' };
+                    },
+                },
+                {
+                    dataField: "Download_Actions",
+                    text: "Download Actions",
+                    formatter: this.Download_ActionButtonView,
                     align: 'center',
                     headerStyle: (colum, colIndex) => {
                         return { textAlign: 'center' };
@@ -84,6 +109,20 @@ export default class OrderList extends Component {
                     <option value="true">True</option>
                     <option value="false">False</option>
                 </select>
+            </div>
+        )
+    }
+
+    Download_ActionButtonView = (cell, row, rowIndex, formatExtraData) => {
+        console.log("Actions", row.Actions);
+        return (
+            <div>
+                {/* <button style={{ backgroundColor: 'red', width: 60, height: '15', borderRadius: 15 }} >
+                    Edit
+            </button> */}
+                <Button color="primary" onClick={() => { console.log("this is print id", row.id); this.printDocument(row.id, 'view') }}>View</Button>
+                {/* &nbsp;&nbsp; */}
+                <Button color="danger" onClick={() => { this.printDocument(row.id, 'save') }}>Download</Button>
             </div>
         )
     }
@@ -128,22 +167,66 @@ export default class OrderList extends Component {
                 let name = el.data().user_id
                 console.log('name', name);
 
-                fire.firestore().collection('Users').doc(name).get()
-                    .then(documentSnapshot => {
+                if (name != undefined) {
+                    fire.firestore().collection('Users').doc(name).get()
+                        .then(documentSnapshot => {
 
-                        //    console.log('User exists: ', documentSnapshot.exists); 
-                        if (documentSnapshot.exists) {
-                            this.state.orderList.push({ id: el.id, ...el.data(), ...documentSnapshot.data() })
-                            this.setState({})
-                        }
-                    }).catch(e => { console.log(e) })
+                            //    console.log('User exists: ', documentSnapshot.exists); 
+                            if (documentSnapshot.exists) {
+                                this.state.orderList.push({ id: el.id, ...el.data(), ...documentSnapshot.data() })
+                                this.setState({})
+                            }
+                        }).catch(e => { console.log(e) })
+                } else {
+                    this.state.orderList.push({ id: el.id, ...el.data() })
+                }
+
 
             })
             console.log("user name", this.state.orderList);
         })
 
     }
+    printDocument(selectedId, action) {
+        // const { selectedId } = this.state;
+        console.log("TA", this.state.TA, "selectedId", selectedId)
+        if (selectedId == '' || selectedId == undefined) return;
 
+        firebase.firestore().collection('OrderList').doc(selectedId).get().then(
+            (data) => {
+                console.log("Fetched data ", data.data().pdfUrl);
+                if (data.data().pdfUrl !== undefined) {
+
+                    if (action == 'save') {
+
+                        let pdfWindow = window.open(data.data().pdfUrl);
+                        // pdfWindow.document.write(
+                        //     `<iframe width='100%' height='100%' src=${data.data().pdfUrl}></iframe>`
+                        // )
+                    }
+                    if (action == 'view') {
+
+                        // other code https://stackoverflow.com/q/62055089/11510305
+                        var xhr = new XMLHttpRequest();
+                        xhr.responseType = 'blob';
+                        xhr.onload = function (event) {
+                            var blob = xhr.response;
+                            console.log(blob);
+
+                            // https://stackoverflow.com/a/53173732/11510305
+                            var blobURL = URL.createObjectURL(blob);
+                            window.open(blobURL);
+                        };
+                        xhr.open('GET', data.data().pdfUrl);
+                        xhr.send();
+                    }
+                } else {
+                    alert('Sorry for inconvnience. But PDF url is not available at this moment');
+                }
+            }
+        )
+
+    }
     render() {
 
         const pageButtonRenderer = ({ page, active, disable, title, onPageChange }) => {
@@ -199,6 +282,7 @@ export default class OrderList extends Component {
                         keyField="id"
                         data={this.state.orderList}
                         columns={this.state.columnsUser}
+                        filter={ filterFactory()}
                         striped
                         hover
                         condensed

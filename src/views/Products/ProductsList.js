@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Alert, FormGroup, Label, Modal, ModalHeader, ModalBody, ModalFooter, Button, Input, Form, Progress } from 'reactstrap';
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
+import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
 import Loader from "react-loader-spinner";
 import Swal from 'sweetalert2';
 import XLSX from 'xlsx';
@@ -132,7 +133,7 @@ export default class ProductsList extends Component {
                     dataField: 'Product_ID',
                     text: 'Product ID',
                     align: 'center',
-                    hidden: true,
+                    hidden: true,                    
                     headerStyle: (colum, colIndex) => {
                         return { textAlign: 'center' };
                     },
@@ -141,6 +142,9 @@ export default class ProductsList extends Component {
                     dataField: 'Product_Name',
                     text: 'Product Name',
                     align: 'center',
+                    filter: textFilter({
+                        placeholder: 'Search Product Name'
+                    }),
                     headerStyle: (colum, colIndex) => {
                         return { textAlign: 'center' };
                     },
@@ -149,6 +153,9 @@ export default class ProductsList extends Component {
                     dataField: 'Category_Name',
                     text: 'Category Name',
                     align: 'center',
+                    filter: textFilter({
+                        placeholder: 'Search Category Name'
+                    }),
                     headerStyle: (colum, colIndex) => {
                         return { textAlign: 'center' };
                     },
@@ -202,6 +209,9 @@ export default class ProductsList extends Component {
                     dataField: 'MRP',
                     text: 'MRP',
                     align: 'center',
+                    filter: textFilter({
+                        placeholder: 'Search by MRP'
+                    }),
                     headerStyle: (colum, colIndex) => {
                         return { textAlign: 'center' };
                     },
@@ -219,6 +229,9 @@ export default class ProductsList extends Component {
                     dataField: 'Weight',
                     text: 'Weight',
                     align: 'center',
+                    filter: textFilter({
+                        placeholder: 'Search by Weight'
+                    }),
                     headerStyle: (colum, colIndex) => {
                         return { textAlign: 'center' };
                     },
@@ -1165,6 +1178,7 @@ export default class ProductsList extends Component {
                         // {...props.baseProps}
                         noDataIndication="Table is Empty"
                         keyField="id"
+                        filter={ filterFactory()}
                         data={this.state.productsList}
                         columns={this.state.columns}
                         striped
@@ -1217,22 +1231,14 @@ export default class ProductsList extends Component {
                     <ModalBody>
                         <FormGroup>
                             <Label for="Category_Name">Category Name</Label>
-                            {/* <Input type="text" name="Category_Name" id="Category_Name" placeholder="Enter Category Name"
-                                value={this.state.Edit_ProductData.Category_Name}
-                                onChange={(e) => {
-                                    const { Edit_ProductData } = this.state;
-                                    Edit_ProductData.Category_Name = e.target.value;
-                                    this.setState({ Edit_ProductData });
-                                }} /> */}
-                            <select type="select" name="select" id="exampleSelect"
-                                value={this.state.Edit_ProductData.Category_Name}
+                            <select type="select" value={this.state.Edit_ProductData.Category_Name}
                                 onChange={(e) => {
                                     const { Edit_ProductData } = this.state;
                                     Edit_ProductData.Category_Name = e.target.value;
                                     console.log("e.target.value :", e.target.value)
                                     this.setState({ Edit_ProductData });
                                 }}>
-                                <option value="">Select Option</option>
+                                <option value="">Selected Option: {this.state.Edit_ProductData.Category_Name}</option>
                                 <option value="Decore">Decore</option>
                                 <option value="Spiritual">Spiritual</option>
                                 <option value="Traditional">Traditional</option>
@@ -1317,7 +1323,7 @@ export default class ProductsList extends Component {
                                     this.E_Upload_Image(e.target.files[0])
                                 }} />
                         </FormGroup>
-                        {this.state.EProgressBar ? <Progress value={this.state.EpercentUploaded} /> : <img src={this.state.Edit_ProductData.Image_Name1} alt="Image 1" style={{ width: 200, height: 50 }} />}
+                        {this.state.EProgressBar ? <Progress value={this.state.EpercentUploaded} /> : <img src={this.state.Edit_ProductData.Image_Name1} alt="Image 1" style={{ width: 150, height: 100 }} />}
                         <FormGroup>
                             <Label for="Image_Name 2">Image Name 2</Label>
                             <input type="file" name="Image_Name2" id="Image_Name2" placeholder="Enter Image Name 2" ref="upload" accept="image/*"
@@ -1327,7 +1333,7 @@ export default class ProductsList extends Component {
                                     this.E_Upload_Image2(e.target.files[0])
                                 }} />
                         </FormGroup>
-                        {this.state.EProgressBar2 ? <Progress value={this.state.EpercentUploaded2} /> : <img src={this.state.Edit_ProductData.Image_Name2} alt="Image 1" style={{ width: 200, height: 50 }} />}
+                        {this.state.EProgressBar2 ? <Progress value={this.state.EpercentUploaded2} /> : <img src={this.state.Edit_ProductData.Image_Name2} alt="Image 2" style={{ width: 150, height: 100 }} />}
                         <FormGroup>
                             <Label for="Image_Name3">Image Name 3</Label>
                             <input type="file" name="Image_Name3" id="Image_Name3" placeholder="Enter Image Name 3" ref="upload" accept="image/*"
@@ -1337,7 +1343,7 @@ export default class ProductsList extends Component {
                                     this.E_Upload_Image3(e.target.files[0])
                                 }} />
                         </FormGroup>
-                        {this.state.EProgressBar3 ? <Progress value={this.state.EpercentUploaded3} /> : <img src={this.state.Edit_ProductData.Image_Name3} alt="Image 1" style={{ width: 200, height: 50 }} />}
+                        {this.state.EProgressBar3 ? <Progress value={this.state.EpercentUploaded3} /> : <img src={this.state.Edit_ProductData.Image_Name3} alt="Image 3" style={{ width: 150, height: 100 }} />}
                         <FormGroup>
                             <Label for="Image_Name4">Image Name 4</Label>
                             <input type="file" name="Image_Name4" id="Image_Name4" placeholder="Enter Image Name 4" ref="upload" accept="image/*"
@@ -1348,11 +1354,10 @@ export default class ProductsList extends Component {
                                 }}
                             />
                         </FormGroup>
-                        {this.state.EProgressBar4 ? <Progress value={this.state.EpercentUploaded4} /> : <img src={this.state.Edit_ProductData.Image_Name4} alt="Image 1" style={{ width: 200, height: 50 }} />}
+                        {this.state.EProgressBar4 ? <Progress value={this.state.EpercentUploaded4} /> : <img src={this.state.Edit_ProductData.Image_Name4} alt="Image 4" style={{ width: 150, height: 100 }} />}
                         <FormGroup>
                             <Label for="IsActive">IsActive</Label>
-                            <select type="select" name="select" id="IsActive"
-                                value={this.state.Edit_ProductData.IsActive}
+                            <select type="select" value={this.state.Edit_ProductData.IsActive}
                                 onChange={(e) => {
                                     const { Edit_ProductData } = this.state;
                                     Edit_ProductData.IsActive = e.target.value;
@@ -1360,7 +1365,7 @@ export default class ProductsList extends Component {
                                     this.setState({ Edit_ProductData });
                                 }}
                             >
-                                <option value="">Select Option</option>
+                                <option value="">Selected Option: {this.state.Edit_ProductData.IsActive}</option>
                                 <option value="Yes">Yes</option>
                                 <option value="No">No</option>
                             </select>

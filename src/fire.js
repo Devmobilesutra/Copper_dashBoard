@@ -1,13 +1,7 @@
 import firebase from '@firebase/app';
 import 'firebase/firestore';
 import '@firebase/storage';
-// import { FirestoreProvider } from 'react-firestore';
 
-// require('firebase/auth')
- 
-// import firebase from 'firebase/app' 
-// import 'firebase/firebase'
- 
 var firebaseConfig = {
     apiKey: "AIzaSyCJhp_0EQxTZcPy8cneVwGienQSjiHGP3M",
     authDomain: "copper-fe617.firebaseapp.com",
@@ -18,7 +12,5 @@ var firebaseConfig = {
 };
 
 const fire = firebase.initializeApp(firebaseConfig);
-
-// console.log("auth: ", firebase.auth(fire));
 
 export default fire;
