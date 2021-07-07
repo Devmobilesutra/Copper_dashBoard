@@ -18,7 +18,7 @@ const { SearchBar } = Search;
 
 const customTotal = (from, to, size) => (
     <span className="react-bootstrap-table-pagination-total ml-2">
-        Showing { from} to { to} of { size} Results
+        Showing {from} to {to} of {size} Results
     </span>
 );
 
@@ -237,8 +237,14 @@ export default class UsersList extends Component {
         var confirmUserId = row.id;
         return (
             <div key={Math.random()}>
-                <button style={{ marginLeft: 10, backgroundColor: '#ADD8E6', width: 70, borderRadius: 10, color: 'blue' }}
+                {/* <button style={{ marginLeft: 10, backgroundColor: '#ADD8E6', width: 70, borderRadius: 10, color: 'blue' }}
                     onClick={this.confirmUser.bind(this, confirmUserId)}>
+                    Confirm
+                </button> */}
+                <button
+                    style={{ borderRadius: 4, backgroundColor: '#20A8D8', color: 'white', padding: 7, textAlign: 'center', display: 'inline-block' }} color="primary" size="medium"
+                    onClick={this.confirmUser.bind(this, confirmUserId)}
+                >
                     Confirm
                 </button>
             </div>
@@ -276,7 +282,13 @@ export default class UsersList extends Component {
         var confirmUserId1 = row.id;
         return (
             <p style={{ flexDirection: 'row' }} key={row.id}>
-                <button style={{ marginLeft: 10, backgroundColor: '#f5425a', width: 70, borderRadius: 10 }} onClick={this.deactivateUser.bind(this, confirmUserId1)}>
+                {/* <button style={{ marginLeft: 10, backgroundColor: '#f5425a', width: 70, borderRadius: 10 }} onClick={this.deactivateUser.bind(this, confirmUserId1)}>
+                    Deactivate
+                </button> */}
+                <button
+                    style={{ borderRadius: 4, backgroundColor: '#F64846', color: 'white', padding: 7, textAlign: 'center', display: 'inline-block' }} color="primary" size="medium"
+                    onClick={this.deactivateUser.bind(this, confirmUserId1)}
+                >
                     Deactivate
                 </button>
             </p>
@@ -309,10 +321,15 @@ export default class UsersList extends Component {
         var Id1 = row.id;
         return (
             <p style={{ flexDirection: 'row' }} key={row.id}>
-                <button style={{ marginLeft: 10, backgroundColor: '#ADD8E6', width: 70, borderRadius: 10 }} onClick={this.Favourites.bind(this, Id1)}>
+                {/* <button style={{ marginLeft: 10, backgroundColor: '#ADD8E6', width: 70, borderRadius: 10 }} onClick={this.Favourites.bind(this, Id1)}>
+                    View Favourites
+                </button> */}
+                <button
+                    style={{ borderRadius: 4, backgroundColor: '#20A8D8', color: 'white', padding: 7, textAlign: 'center', display: 'inline-block' }} color="primary" size="medium"
+                    onClick={this.Favourites.bind(this, Id1)}
+                >
                     View Favourites
                 </button>
-
             </p>
         );
     };
@@ -488,7 +505,7 @@ export default class UsersList extends Component {
         e.stopPropagation();
         e.preventDefault();
         var file = e.target.files[0];
-        // console.log(file);
+        console.log(file);
         this.setState({ file });
 
     }
@@ -659,7 +676,7 @@ export default class UsersList extends Component {
                             {/* <Label for="activity">Do you want to confirm this user's entry</Label> */}
                             <text style={{ marginLeft: '15%', fontSize: '110%', fontWeight: '500' }}>
                                 Do you want to confirm this user's entry ?
-                </text>
+                            </text>
                         </FormGroup>
 
                     </ModalBody>
@@ -882,7 +899,8 @@ export default class UsersList extends Component {
                                 id="file"
                                 ref="fileUploader"
                                 onChange={(e) => this.filePathset(e)}
-                                name="Excel_File">Choose file</Input>
+                                name="Excel_File"
+                                accept=".xlsx, .xls, .csv">Choose file</Input>
                             <Button color="secondary" variant="contained" onClick={() => { this.UploadExcel() }}>Upload File</Button>
                         </Form>
                     </ModalBody>
@@ -899,10 +917,11 @@ export default class UsersList extends Component {
 
                 {/* table of existed users */}
                 <div style={{ marginRight: 10, marginBottom: 10, marginTop: 10 }}>
-                    <Button color="primary" size="medium" onClick={() => { this.AddModal(); }}>
+                    <button style={{ borderRadius: 4, backgroundColor: '#20A8D8', color: 'white', padding: 7, textAlign: 'center', display: 'inline-block' }} color="primary" size="medium" onClick={() => { this.AddModal(); }}>
                         Add new user
-                    </Button>
+                    </button>
                 </div>
+                {'\n\n'}
                 {/* <div>
                     <input type='text' value={this.state.search_val} placeholder="Find Users" onChange={(e) => { this.setState({ search_val: e.target.value }) }} />
                     <button style={{ backgroundColor: '#FFC300', height: 40, width: 100, borderRadius: 17 }} onClick={() => { this.search() }}>Search</button>

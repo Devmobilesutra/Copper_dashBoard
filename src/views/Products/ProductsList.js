@@ -11,7 +11,7 @@ import firebase from 'firebase';
 const storageRef = firebase.storage().ref();
 const customTotal = (from, to, size) => (
     <span className="react-bootstrap-table-pagination-total ml-2">
-        Showing { from} to { to} of { size} Results
+        Showing {from} to {to} of {size} Results
     </span>
 );
 
@@ -133,7 +133,7 @@ export default class ProductsList extends Component {
                     dataField: 'Product_ID',
                     text: 'Product ID',
                     align: 'center',
-                    hidden: true,                    
+                    hidden: true,
                     headerStyle: (colum, colIndex) => {
                         return { textAlign: 'center' };
                     },
@@ -287,7 +287,6 @@ export default class ProductsList extends Component {
 
     componentDidMount() {
         console.log("ComponentDidMount");
-
         firebase.firestore().collection('Products').onSnapshot(data => {
             // console.log("cmpnentdid",data.size)
 
@@ -298,7 +297,9 @@ export default class ProductsList extends Component {
                     // const product = this.state.productsList
                     // product.concat({ id: change.doc.id, ...change.doc.data() })
                     this.state.productsList.push({ id: change.doc.id, ...change.doc.data() })
-                    console.log("added product", this.state.productsList)
+                    console.log("added product", this.state.productsList);
+                    // var str = "firebasestorage.googleapis.com/v0/b/copper…=media&token=632d2861-ed21-4fa5-9c69-bdda54b0aac8";
+                    // console.log("String in htttps: form ", );
                 }
                 if (change.type === 'modified') {
                     console.log("doc changes modified", change.type, change.doc.data(), "ID", change.doc.id);
@@ -328,12 +329,12 @@ export default class ProductsList extends Component {
                 <Button color="primary" size="md" className="mr-2"
                     onClick={() => { this.EditProduct(row.Sr_No, row.Category_Name, row.Product_Name, row.id, row.Cost_Price, row.Selling_Price, row.MRP, row.Weight, row.Usage, row.How_to_clean, row.Image_Name1, row.Image_Name2, row.Image_Name3, row.Image_Name4, row.IsActive) }}>
                     Edit
-            </Button>
-            &nbsp;&nbsp;
+                </Button>
+                &nbsp;&nbsp;
                 <Button color="danger" size="md" className="mr-2"
                     onClick={() => { this.DeleteProduct(row.id) }}>
                     Delete
-            </Button>
+                </Button>
             </div>
         );
     }
@@ -753,7 +754,8 @@ export default class ProductsList extends Component {
                     "\n Image_Name2 ", rowObject.Image_Name2,
                     "\n Image_Name3 ", rowObject.Image_Name3,
                     "\n Image_Name4 ", rowObject.Image_Name4,
-                    "\n IsActive ", rowObject.IsActive
+                    "\n IsActive ", rowObject.IsActive,
+                    // "\n subcategories", rowObject.subcategories
                 );
                 if (rowObject.Image_Name1 !== undefined) {
                     await storageRef.child(`Images/${rowObject.Image_Name1}`).getDownloadURL().then(onfulfilled => {
@@ -768,7 +770,7 @@ export default class ProductsList extends Component {
                         Array_of_Object[0][index].Image_Name2 = onfulfilled
                     }, onrejected => {
                         console.log("onrejected", onrejected);
-                        unAvailableImages.push(Array_of_Object[0][index].Image_Name1);
+                        unAvailableImages.push(Array_of_Object[0][index].Image_Name2);
                     });
                 }
                 if (rowObject.Image_Name3 !== undefined) {
@@ -776,7 +778,7 @@ export default class ProductsList extends Component {
                         Array_of_Object[0][index].Image_Name3 = onfulfilled
                     }, onrejected => {
                         console.log("onrejected", onrejected);
-                        unAvailableImages.push(Array_of_Object[0][index].Image_Name1);
+                        unAvailableImages.push(Array_of_Object[0][index].Image_Name3);
                     });
                 }
                 if (rowObject.Image_Name4 !== undefined) {
@@ -784,7 +786,7 @@ export default class ProductsList extends Component {
                         Array_of_Object[0][index].Image_Name4 = onfulfilled
                     }, onrejected => {
                         console.log("onrejected", onrejected);
-                        unAvailableImages.push(Array_of_Object[0][index].Image_Name1);
+                        unAvailableImages.push(Array_of_Object[0][index].Image_Name4);
                     });
                 }
                 if (index === Array_of_Object[0].length - 1) resolve();
@@ -795,32 +797,40 @@ export default class ProductsList extends Component {
             console.log("New Array", Array_of_Object, "Undefined Image Array", unAvailableImages);
             setTimeout(() => {
                 Array_of_Object[0].forEach(async (rowObject, index) => {
-                    firebase.firestore().collection('Products').doc(rowObject.Product_ID).set({
-                        Sr_No: rowObject.Sr_No === undefined ? "" : rowObject.Sr_No,
-                        Product_ID: rowObject.Product_ID === undefined ? "" : rowObject.Product_ID,
-                        Category_Name: rowObject.Category_Name === undefined ? "" : rowObject.Category_Name,
-                        Product_Name: rowObject.Product_Name === undefined ? "" : rowObject.Product_Name,
-                        Cost_Price: rowObject.Cost_Price === undefined ? "" : rowObject.Cost_Price,
-                        Selling_Price: rowObject.Selling_Price === undefined ? "" : rowObject.Selling_Price,
-                        MRP: rowObject.MRP === undefined ? "" : rowObject.MRP,
-                        ML: rowObject.ML === undefined ? "" : rowObject.ML,
-                        Weight: rowObject.Weight === undefined ? "" : rowObject.Weight,
-                        Usage: rowObject.Usage === undefined ? "" : rowObject.Usage,
-                        How_to_clean: rowObject.How_to_clean === undefined ? "" : rowObject.How_to_clean,
-                        Image_Name1: rowObject.Image_Name1 === undefined ? "" : rowObject.Image_Name1,
-                        Image_Name2: rowObject.Image_Name2 === undefined ? "" : rowObject.Image_Name2,
-                        Image_Name3: rowObject.Image_Name3 === undefined ? "" : rowObject.Image_Name3,
-                        Image_Name4: rowObject.Image_Name4 === undefined ? "" : rowObject.Image_Name4,
-                        IsActive: rowObject.IsActive === undefined ? "" : rowObject.IsActive
-                    }).then(() => {
-                        i++;
-                        console.log("Data Uploaded Succefully");
+                    if (rowObject.Image_Name1 !== undefined && rowObject.Image_Name1.startsWith("https:", 0)) {
+                        firebase.firestore().collection('Products').doc(rowObject.Product_ID).set({
+                            Sr_No: rowObject.Sr_No === undefined ? "" : rowObject.Sr_No,
+                            Product_ID: rowObject.Product_ID === undefined ? "" : rowObject.Product_ID,
+                            Category_Name: rowObject.Category_Name === undefined ? "" : rowObject.Category_Name,
+                            Product_Name: rowObject.Product_Name === undefined ? "" : rowObject.Product_Name,
+                            Cost_Price: rowObject.Cost_Price === undefined ? "" : rowObject.Cost_Price,
+                            Selling_Price: rowObject.Selling_Price === undefined ? "" : rowObject.Selling_Price,
+                            MRP: rowObject.MRP === undefined ? "" : rowObject.MRP,
+                            ML: rowObject.ML === undefined ? "" : rowObject.ML,
+                            Weight: rowObject.Weight === undefined ? "" : rowObject.Weight,
+                            Usage: rowObject.Usage === undefined ? "" : rowObject.Usage,
+                            How_to_clean: rowObject.How_to_clean === undefined ? "" : rowObject.How_to_clean,
+                            Image_Name1: rowObject.Image_Name1 === undefined ? "" : rowObject.Image_Name1,
+                            Image_Name2: rowObject.Image_Name2 === undefined ? "" : rowObject.Image_Name2,
+                            Image_Name3: rowObject.Image_Name3 === undefined ? "" : rowObject.Image_Name3,
+                            Image_Name4: rowObject.Image_Name4 === undefined ? "" : rowObject.Image_Name4,
+                            IsActive: rowObject.IsActive === undefined ? "" : rowObject.IsActive,
+                            // subactegory: rowObject.subactegory === undefined ? "" : rowObject.subactegory,
+                        }).then(() => {
+                            i++;
+                            console.log("Data Uploaded Succefully");
+                            if (Array_of_Object[0].length === i) {
+                                this.setState({ isLoading: !this.state.isLoading });
+                            }
+                        })
+                    } else {
+                        unAvailableImages.push(rowObject);
                         if (Array_of_Object[0].length === i) {
-                            this.setState({ isLoading: !this.state.isLoading });
+                            this.setState({ isLoading: false });
                         }
-                    })
+                    }
                 });
-            }, 2000);
+            }, 3000);
             this.setState({ Excel_Modal: false, file: '' })
         })
         // return true
@@ -1141,7 +1151,6 @@ export default class ProductsList extends Component {
 
         return (
             <div>
-                <div>Test</div>
                 {this.state.isLoading ? <div style={{
                     left: 25,
                     display: 'flex',
@@ -1178,7 +1187,7 @@ export default class ProductsList extends Component {
                         // {...props.baseProps}
                         noDataIndication="Table is Empty"
                         keyField="id"
-                        filter={ filterFactory()}
+                        filter={filterFactory()}
                         data={this.state.productsList}
                         columns={this.state.columns}
                         striped

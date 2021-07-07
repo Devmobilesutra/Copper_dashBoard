@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Button, CardTitle, CardText, Form, FormGroup, Label, Input, FormText, Container, Row, Col, Progress } from 'reactstrap';
 import firebase from 'firebase';
+import moment from 'moment';
 
 const array = [1, 2, 3, 4, 5];
 export default class AddNotification extends Component {
@@ -22,23 +23,22 @@ export default class AddNotification extends Component {
 
     componentDidMount() {
         console.log('component did mount');
-        const messaging = firebase.messaging();
-        
+        // const messaging = firebase.messaging();
+
         // messaging.onMessage((payload) => {
         //     console.log('Message received. ', payload);
         //     // ...
         // });
 
-        messaging.getToken({ vapidKey: 'BIUEhFK-jNVCO4tSxGtEeJxi7Eiu8BK-8bSKYyZM2T4KFxt4zFS36cWYFNzqhXU6j-yBdDLNsr0V04kP8Tt6IYQ' }).then(token => {
-            console.log(token);
-            if (token) {
-                console.log(token);
-                
-            } else {
-                console.log("Not available");
-            }
-        })
-        firebase.firestore().collection('notifications').onSnapshot((data) => {
+        // messaging.getToken({ vapidKey: 'BIUEhFK-jNVCO4tSxGtEeJxi7Eiu8BK-8bSKYyZM2T4KFxt4zFS36cWYFNzqhXU6j-yBdDLNsr0V04kP8Tt6IYQ' }).then(token => {
+        //     console.log(token);
+        //     if (token) {
+        //         console.log(token);
+        //     } else {
+        //         console.log("Not available");
+        //     }
+        // })
+        firebase.firestore().collection('notifications').orderBy("date", "desc").onSnapshot((data) => {
             var list = [];
             data.forEach(element => {
                 list.push({ id: element.id, ...element.data() })
@@ -65,22 +65,22 @@ export default class AddNotification extends Component {
             title,
             content,
             type: 'Push Notification',
-            date: Date.now()
+            date: new Date()
         })
             .then(() => {
                 console.log('added successfully');
-                var sendPush_notification = firebase.functions().httpsCallable('sendPush_notification');
-                sendPush_notification({
-                    title: title,
-                    content: content
-                })
-                    .then((result) => {
-                        // Read result of the Cloud Function.
-                        console.log("result", result);
-                    })
-                    .catch((err) => {
-                        console.log('Error: ', err);
-                    })
+                // var sendPush_notification = firebase.functions().httpsCallable('sendPush_notification');
+                // sendPush_notification({
+                //     title: title,
+                //     content: content
+                // })
+                //     .then((result) => {
+                //         // Read result of the Cloud Function.
+                //         console.log("result", result);
+                //     })
+                //     .catch((err) => {
+                //         console.log('Error: ', err);
+                //     })
             });
     }
 
@@ -101,7 +101,7 @@ export default class AddNotification extends Component {
             return
         }
 
-        console.log('this is screen message funtion');
+        console.log('this is screen message funtion', Image);
         this.setState({ imageProgress: true }, () => console.log('imageProgress', this.state.imageProgress)); // for showing image uploading progress
         var ImageUrl = ''; // for adding url into firestore
         const upload_status = firebase.storage().ref().child(`Notification/${Image.name}`).put(Image);
@@ -124,7 +124,7 @@ export default class AddNotification extends Component {
                             title: screen_message_title,
                             content: screen_message,
                             type: 'Screen Message',
-                            date: Date.now(),
+                            date: new Date(),
                             image: ImageUrl
                         })
                             .then(sucess => console.log('Uploaded succefully', sucess))
@@ -194,8 +194,8 @@ export default class AddNotification extends Component {
                                 <FormGroup row>
                                     <Label for="exampleFile">Select Pictire to upload</Label>
                                     <Col sm={10}>
-                                        <Input type="file" name="file" id="exampleFile"
-                                            onChange={(e) => this.setState({ Image: e.target.value[0] })}
+                                        <input type="file" name="file" id="exampleFile"
+                                            onChange={(e) => { console.log(e.target.files[0]); this.setState({ Image: e.target.files[0] }) }}
                                         />
                                     </Col>
                                     <FormText color="muted">
@@ -216,9 +216,30 @@ export default class AddNotification extends Component {
                         <div style={{ width: '100%', height: 500, overflowX: 'hidden', overflowY: 'auto', textAlign: 'justify' }}>
                             {notificationList.map((data, index) => (
                                 <div key={index} style={{ margin: 4, backgroundColor: 'lightgrey', borderRadius: 15, padding: 15 }}>
-                                    <CardTitle tag="h5">{data.title}</CardTitle>
+                                    <Container>
+                                        <Col>
+                                            <Row>
+                                                <Col sm={3}><strong>Type of notification:</strong></Col>
+                                                <Col sm={4}>{data.type}</Col>
+                                                <Col>Date: {new Date(data.date.seconds * 1000).toLocaleDateString("en-US")}</Col>
+                                            </Row>
+                                            <Row>
+                                                <Col sm={3}><strong>Notification Title:</strong></Col>
+                                                <Col sm={8}>{data.title}</Col>                                                
+                                            </Row>
+                                            <Row>
+                                                <Col sm={3}><strong>Notification Content:</strong></Col>
+                                                <Col>{data.content}</Col>
+                                            </Row>
+                                        </Col>
+                                    </Container>
+                                    {/* <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly' }}>
+                                        <CardTitle tag="h3">{data.title}</CardTitle>
+                                        <CardTitle>{data.type}</CardTitle>
+                                    </div>
                                     <CardText>{data.content}</CardText>
-                                    <CardText>27-May-2021</CardText>
+                                    <CardText>{new Date(data.date.seconds * 1000).toLocaleDateString("en-US")}</CardText> */}
+                                    {/* <CardText>{data.date.toDate()}</CardText> */}
                                 </div>
                             ))}
                         </div>

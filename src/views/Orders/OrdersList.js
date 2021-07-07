@@ -112,11 +112,11 @@ export default class OrderList extends Component {
             </div>
         )
     }
-
+    
     Download_ActionButtonView = (cell, row, rowIndex, formatExtraData) => {
         console.log("Actions", row.Actions);
         return (
-            <div>
+            <div style={{ marginRight: 10, marginBottom: 10, marginTop: 10 }}>
                 {/* <button style={{ backgroundColor: 'red', width: 60, height: '15', borderRadius: 15 }} >
                     Edit
             </button> */}

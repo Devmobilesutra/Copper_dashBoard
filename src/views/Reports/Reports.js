@@ -20,11 +20,11 @@ import { Doughnut, Bar, Line } from 'react-chartjs-2';
 
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf'
-import autoTable from 'jspdf-autotable'
+import 'jspdf-autotable'
 
 const customTotal = (from, to, size) => (
     <span className="react-bootstrap-table-pagination-total ml-2">
-        Showing { from} to { to} of { size} Results
+        Showing {from} to {to} of {size} Results
     </span>
 );
 
@@ -187,54 +187,6 @@ export default class Reports extends Component {
             console.log("orderDetails", this.state.OrderDetails);
             this.setState({ OrderDetails: OList, TA: TA, filteredArray: falseOrderlist });
         })
-        // for order details
-        // firebase.firestore().collection('OrderList').onSnapshot(data => {
-        //     let Changes = data.docChanges();
-        //     console.log("Change doc", Changes);
-        //     Changes.forEach(Change => {
-        //         if (Change.type === 'added') {
-        //             console.log('added', Change.type)
-        //             this.setState({ OrderDetails: [] });
-        //             var OList = []
-        //             var TA = 0;
-        //             data.forEach(async (el) => {
-        //                 console.log("el", el.data().Total_amount);
-        //                 OList.push({ id: el.id, ...el.data() })
-        //                 TA = TA + parseInt(el.data().Total_amount);
-        //             })
-        //             console.log("TA", TA);
-        //             console.log("orderDetails", this.state.OrderDetails);
-        //             this.setState({ OrderDetails: OList, TA: TA })
-        //         } else if (Change.type === 'modified') {
-        //             console.log('modified', Change.type);
-        //             this.setState({ OrderDetails: [] });
-        //             var OList = []
-        //             var TA = 0;
-        //             data.forEach(async (el) => {
-        //                 console.log("el", el.data().Total_amount);
-        //                 OList.push({ id: el.id, ...el.data() })
-        //                 TA = TA + parseInt(el.data().Total_amount);
-        //             })
-        //             console.log("TA", TA);
-        //             console.log("orderDetails", this.state.OrderDetails);
-        //             this.setState({ OrderDetails: OList, TA: TA })
-        //         } else if (Change.type === 'removed') {
-        //             console.log('Removed', Change.type)
-        //             this.setState({ OrderDetails: [] });
-        //             var OList = []
-        //             var TA = 0;
-        //             data.forEach(async (el) => {
-        //                 console.log("el", el.data().Total_amount);
-        //                 OList.push({ id: el.id, ...el.data() })
-        //                 TA = TA + parseInt(el.data().Total_amount);
-        //             })
-        //             console.log("TA", TA);
-        //             console.log("orderDetails", this.state.OrderDetails);
-        //             this.setState({ OrderDetails: OList, TA: TA })
-        //         }
-        //     })
-        // })
-
     }
 
     //PDF CODE
@@ -676,833 +628,192 @@ export default class Reports extends Component {
     }
     fireFunPDF() {
         console.log('fireFunPDF');
-        console.log(this.state.OrderDetails[4]);
-        // var doc = new jsPDF();
 
-        // doc.setFontSize(15);
-        // doc.text('Tax Invoice', 90, 10);
-        // doc.setFontSize(10);
-        // doc.text('(ORIGINAL FOR RECIPIENT)', 150, 10);
-
-        // doc.setFillColor(255, 255, 200);
-        // doc.rect(5, 15, 200, 270, 'S');
-        // doc.text('RKB METAL INDUSTRIES PRIVATE LIMITED', 7, 20);
-        // doc.setFontSize(9);
-        // doc.text('S NO 17/3, SUKHSAGAR NAGAR, NEAR HEMA MANGAL,', 7, 24);
-        // doc.text('KATRAJ, Pune, Maharashtra, 411046', 7, 28);
-        // doc.text('GSTIN/UIN: 27AAJCR1260P1ZX', 7, 32);
-        // doc.text('State Name : Maharashtra, Code : 27', 7, 36);
-        // doc.text('CIN: U28999PN2018PTC178676', 7, 40);
-        // doc.text('E-Mail : ravi@pratikcopper.com', 7, 44);
-        // doc.line(5, 50, 95, 50);
-
-        // doc.line(95, 15, 95, 100)
-
-        // doc.text('Consignee', 7, 55);
-        // doc.setFontSize(10);
-        // doc.text('Mr. Aditya Mane', 7, 59);
-        // doc.setFontSize(9);
-        // doc.text('Pune', 7, 63);
-        // doc.text('State Name : Maharashtra, Code : 27', 7, 67);
-
-        // doc.text('Invoice No.', 98, 20);
-        // doc.text('230', 98, 24);
-        // doc.line(95, 25, 205, 25);
-
-        // doc.text('Challan No', 98, 30);
-        // doc.text('019', 98, 34);
-        // doc.line(95, 35, 205, 35);
-
-        // doc.text("Supplier's Ref.", 98, 40);
-        // doc.text('', 98, 44);
-        // doc.line(95, 45, 205, 45);
-
-        // doc.text("Order No.", 98, 50);
-        // doc.text('', 98, 54);
-        // doc.line(95, 55, 205, 55);
-
-        // doc.text("Despatch Doc No", 98, 60);
-        // doc.text('230', 98, 64);
-        // doc.line(95, 65, 205, 65);
-
-        // doc.text("Despatch Through", 98, 70);
-        // doc.text('Self Arrange', 98, 74);
-        // doc.line(95, 75, 205, 75);
-
-        // doc.line(150, 15, 150, 75);
-
-        // //
-        // doc.text('Dated', 152, 20);
-        // doc.text(`${this.state.OrderDetails[4].date}`, 152, 24);
-        // // doc.line(95, 25, 205, 25);
-
-        // doc.text('Mode/Terms of Payment', 152, 30);
-        // doc.text('', 152, 34);
-        // // doc.line(95, 35, 205, 35);
-
-        // doc.text("Other Reference", 152, 40);
-        // doc.text('', 152, 44);
-        // // doc.line(95, 45, 205, 45);
-
-        // doc.text("Dated", 152, 50);
-        // doc.text(`${this.state.OrderDetails[4].date}`, 152, 54);
-        // // doc.line(95, 55, 205, 55);
-
-        // doc.text("Dated", 152, 60);
-        // doc.text(`${this.state.OrderDetails[4].date}`, 152, 64);
-        // // doc.line(95, 65, 205, 65);
-
-        // doc.text("Destination", 152, 70);
-        // doc.text('Pune', 152, 74);
-        // // doc.line(95, 75, 205, 75);
-        // //
-
-        // doc.text('Terms of Delivery', 98, 80);
-
-        // doc.line(5, 100, 205, 100);
-
-        // if (this.state.OrderDetails[4].product_details.length <= 10) {
-
-        //     this.state.OrderDetails[4].product_details.map((data, index) => {
-        //         var yIndex = 118 + index * 7;
-        //         doc.text(`${index}`, 7, yIndex); //SI NO
-        //         doc.text(`${data.product_name}`, 11, yIndex);//Description of goods
-        //         doc.text(``, 103, yIndex); // HSN/SAC
-        //         doc.text(`${data.quantity}`, 121, yIndex); //Quantity
-        //         doc.text(`${data.price}`, 140, yIndex); //Rate
-        //         doc.text(``, 140, yIndex); //per
-        //         doc.text(``, 140, yIndex); // Disc %
-        //         doc.text(`${data.price}`, 140, yIndex); // Amount
-        //     })
-
-        //     var Total_yIndex = 118 + this.state.OrderDetails[4].product_details.length * 7
-
-        //     var verticleLine_end = Total_yIndex + 3;
-        //     doc.text('SI', 6, 105);
-        //     doc.text('No.', 6, 109);
-        //     doc.line(11, 100, 11, verticleLine_end);
-
-        //     doc.text('Description of Goods', 38, 105);
-        //     doc.line(100, 100, 100, verticleLine_end);
-
-        //     doc.text('HSN/SAC', 103, 105);
-        //     doc.line(119, 100, 119, verticleLine_end);
-
-        //     doc.text('Quantity', 121, 105);
-        //     doc.line(137, 100, 137, verticleLine_end);
-
-        //     doc.text('Rate', 140, 105);
-        //     doc.line(148, 100, 148, verticleLine_end);
-
-        //     doc.text('Per', 150, 105);
-        //     doc.line(158, 100, 158, verticleLine_end);
-
-        //     doc.text('Disc%', 160, 105);
-        //     doc.line(170, 100, 170, verticleLine_end);
-
-        //     doc.text('Amount', 177, 105);
-
-        //     doc.line(5, 110, 205, 110); // Line below the table titles
-
-        //     doc.text('Total :', 80, Total_yIndex); // below description table
-        //     doc.text('', 93, Total_yIndex); //below HSN/SAC
-        //     doc.text('1 Nos', 109, Total_yIndex); //below Quantity
-        //     doc.text('', 130, Total_yIndex); //below Rate
-        //     doc.text('', 148, Total_yIndex); //below per
-        //     doc.text('', 158, Total_yIndex); //below Disc%
-        //     doc.text(`${this.state.OrderDetails[4].Total_amount}`, 177, Total_yIndex); //below Amount
-
-        //     var First_End_line_of_table = Total_yIndex - 3;
-        //     doc.line(5, First_End_line_of_table, 208, First_End_line_of_table); // First End line of table
-
-        //     var Second_End_line_of_table = Total_yIndex + 3;
-        //     doc.line(5, Second_End_line_of_table, 208, Second_End_line_of_table); // second End line of table
-
-        //     var Amount_Chargeable = Total_yIndex + 7
-        //     var Amount_Chargeable_Inwords = Total_yIndex + 11
-        //     doc.text('Amount Chargeable (in words)', 7, Amount_Chargeable); //below Table
-        //     doc.text('INR Five Hundred Sixty Three Only', 7, Amount_Chargeable_Inwords); //below Table
-
-        //     //GST Table Structure
-        //     var FisrtLine_GST_Table = Total_yIndex + 13
-        //     doc.line(5, FisrtLine_GST_Table, 205, FisrtLine_GST_Table);
-
-        //     var LastLine = FisrtLine_GST_Table + 23
-
-        //     var HSN_GST_Table = Total_yIndex + 16;
-        //     doc.text('HSN/SAC', 25, HSN_GST_Table);
-
-        //     doc.line(65, FisrtLine_GST_Table, 65, LastLine);
-
-        //     var Value_GST_Table = HSN_GST_Table + 3
-        //     doc.text('Taxable', 68, HSN_GST_Table); 
-        //     doc.text('Value', 68, Value_GST_Table);
-
-        //     doc.line(80, FisrtLine_GST_Table, 80, LastLine);
-
-        //     // // central tax table
-        //     doc.text('Central Tax', 93, HSN_GST_Table);
-        //     var FirstLine = HSN_GST_Table + 3
-        //     var SecondLine = HSN_GST_Table + 8
-        //     doc.line(80, FirstLine, 125, FirstLine);
-        //     doc.line(80, SecondLine, 125, SecondLine);
-
-        //     var Rate = HSN_GST_Table + 6
-        //     doc.text('Rate', 85, Rate);
-
-        //     var middleLine_GST_Table = FisrtLine_GST_Table + 6
-        //     doc.line(101, middleLine_GST_Table, 101, LastLine);
-
-        //     var Amount = HSN_GST_Table + 6
-        //     doc.text('Amount', 104, Amount);
-
-        //     doc.line(125, FisrtLine_GST_Table, 125, LastLine);
-
-        //     // // State tax table
-        //     doc.text('State Tax', 140, HSN_GST_Table);
-        //     doc.line(125, FirstLine, 170, FirstLine);
-        //     doc.line(125, SecondLine, 170, SecondLine);
-
-        //     doc.text('Rate', 128, Rate);
-        //     // doc.text('6%', 132, 220);
-        //     // doc.text('T', 132, 229);
-
-        //     doc.line(146, middleLine_GST_Table, 146, LastLine);
-        //     doc.text('Amount', 149, Amount);
-        //     // doc.text('30.16', 151, 220);
-        //     // doc.text('30.16', 151, 229);
-
-        //     doc.line(170, FisrtLine_GST_Table, 170, LastLine);
-
-        //     doc.text('Total', 179, HSN_GST_Table);
-        //     doc.text('Tax Amount', 179, Value_GST_Table);
-
-        //     // GST Table Content
-        //     var TotalAmount_GST_Table = SecondLine + 3
-        //     doc.text(``, 8, TotalAmount_GST_Table); //HSN/SAC
-
-        //     var Total_GST_Table = SecondLine + 9
-        //     doc.text('Total', 8, Total_GST_Table);
-
-        //     //Taxable val
-        //     doc.text(``, 67, TotalAmount_GST_Table); //Taxable value 1
-        //     doc.text('', 67, Total_GST_Table); //Taxable value 2
-
-        //     //cebtral tax
-        //     doc.text('', 85, TotalAmount_GST_Table); // central tax rate 1
-        //     doc.text('', 85, Total_GST_Table); // central tax rate 2
-
-        //     //central amount
-        //     doc.text('', 104, TotalAmount_GST_Table); // central tax amount 1
-        //     doc.text('', 104, Total_GST_Table); // central tax amount 2
-
-        //     //state tax
-        //     doc.text('', 127, TotalAmount_GST_Table); // central tax rate 1
-        //     doc.text('', 127, Total_GST_Table); // central tax rate 2
-
-        //     //state amount
-        //     doc.text('', 150, TotalAmount_GST_Table); // central tax amount 1
-        //     doc.text('', 150, Total_GST_Table); // central tax amount 2
-
-        //     //Total amount
-        //     doc.text(`${this.state.OrderDetails[4].Total_amount}`, 182, TotalAmount_GST_Table); // Total Amount 1
-        //     doc.text(`${this.state.OrderDetails[4].Total_amount}`, 182, Total_GST_Table); // Total Amount 2
-
-        //     doc.line(5, SecondLine, 205, SecondLine);
-        //     var ThirdLine = SecondLine + 5
-        //     doc.line(5, ThirdLine, 205, ThirdLine);
-        //     doc.line(5, LastLine, 205, LastLine);
-
-        //     // Last Para
-        //     doc.text('Tax Amount (in words) : INR Sixty and Thirty Two 2 Only', 7, 239);
-
-        //     doc.setFontSize(7);
-        //     doc.text('Previous Balance: _______', 127, 240);
-        //     doc.text(`Invoice Amount: ${this.state.OrderDetails[4].Total_amount}`, 127, 243);
-        //     doc.text('Total Due: ', 127, 246);
-
-
-        //     doc.text("Company's Bank Details", 95, 251);
-        //     doc.text("Bank Name", 95, 254); doc.text(" : Axis Bank-919020097120475", 127, 254);
-        //     doc.text("Branch & IFS Code", 95, 257); doc.text(" : Bibewadi & UTIB0002952", 127, 257);
-
-        //     doc.setFontSize(10);
-        //     doc.text("Company's PAN", 7, 263); doc.text(": AJCR1260P", 55, 263);
-        //     doc.text("Declaration", 7, 266);
-        //     doc.line(7, 267, 29, 267);
-        //     doc.text("We declare that this invoice shows the actual price of the", 7, 270);
-        //     doc.text("goods described and that all particulars are true and", 7, 273);
-        //     doc.text("correct", 7, 276);
-
-        //     doc.line(95, 259, 205, 259);
-        //     doc.line(95, 259, 95, 285);
-        //     // doc.setFontStyle('bold');
-        //     doc.text('For RKB METAL INDUSTRIES PRIVATE LIMITED', 99, 263);
-        //     // doc.setFontStyle('normal');
-        //     doc.text('Authorised Signature', 147, 270);
-
-        //     doc.output('dataurlnewwindow');
-        //     // doc.save('Test.pdf')
-        // } else if (this.state.OrderDetails[4].product_details.length >= 10) {
-
-        //     var splitingArray = this.state.OrderDetails[4].product_details;
-        //     var firstarray = splitingArray.slice(0, 24);
-        //     var secondArray = splitingArray.slice(20, this.state.OrderDetails[4].product_details.length);
-        //     console.log('1111', firstarray, '222', secondArray);
-
-        //     firstarray.map((data, index) => {
-        //         var yIndex = 118 + index * 7;
-        //         doc.text(`${data.product_name}`, 10, yIndex);
-        //         doc.text(`${index}`, 103, yIndex);
-        //         doc.text(`${data.quantity}`, 121, yIndex);
-        //         doc.text(`${data.price}`, 140, yIndex);
-        //         doc.text(``, 150, yIndex);
-        //         doc.text(``, 160, yIndex);
-        //         doc.text(`${data.total_Price}`, 177, yIndex);
-        //     })
-
-        //     var Total_yIndex = 118 + firstarray.length * 7
-
-        //     var verticleLine_end = Total_yIndex - 1;
-        //     doc.text('SI', 6, 105);
-        //     doc.text('No.', 6, 109);
-        //     doc.line(11, 100, 11, verticleLine_end);
-
-        //     doc.text('Description of Goods', 38, 105);
-        //     // doc.text('No.', 6, 109);
-        //     doc.line(100, 100, 100, verticleLine_end);
-
-        //     doc.text('HSN/SAC', 103, 105);
-        //     doc.line(119, 100, 119, verticleLine_end);
-
-        //     doc.text('Quantity', 121, 105);
-        //     doc.line(137, 100, 137, verticleLine_end);
-
-        //     doc.text('Rate', 140, 105);
-        //     doc.line(148, 100, 148, verticleLine_end);
-
-        //     doc.text('Per', 150, 105);
-        //     doc.line(158, 100, 158, verticleLine_end);
-
-        //     doc.text('Disc%', 160, 105);
-        //     doc.line(170, 100, 170, verticleLine_end);
-
-        //     doc.text('Amount', 177, 105);
-
-        //     doc.line(5, 110, 205, 110); // Line below the table titles
-
-        //     // doc.text('Total :', 80, Total_yIndex); // below description table
-        //     // doc.text('', 93, Total_yIndex); //below HSN/SAC
-        //     // doc.text('1 Nos', 111, Total_yIndex); //below Quantity
-        //     // doc.text('', 130, Total_yIndex); //below Rate
-        //     // doc.text('', 148, Total_yIndex); //below per
-        //     // doc.text('', 158, Total_yIndex); //below Disc%
-        //     // doc.text('₹ 563.00', 177, Total_yIndex); //below Amount
-
-        //     // var First_End_line_of_table = Total_yIndex - 3;
-        //     // doc.line(5, First_End_line_of_table, 208, First_End_line_of_table); // First End line of table
-
-        //     // var Second_End_line_of_table = Total_yIndex + 3;
-        //     // doc.line(5, Second_End_line_of_table, 208, Second_End_line_of_table); // second End line of table
-
-        //     doc.addPage();
-        //     var iterations = 30;
-
-        //     doc.setFillColor(255, 255, 200);
-        //     doc.rect(5, 15, 200, 270, 'S');
-
-        //     doc.text('SI', 6, 18);
-        //     doc.text('No.', 6, 22);
-        //     doc.line(11, 15, 11, 285);
-
-        //     doc.text('Description of Goods', 38, 18);
-        //     // doc.text('No.', 6, 109);
-        //     doc.line(100, 15, 100, 285);
-
-        //     doc.text('HSN/SAC', 103, 18);
-        //     doc.line(119, 15, 119, 285);
-
-        //     doc.text('Quantity', 121, 18);
-        //     doc.line(137, 15, 137, 285);
-
-        //     doc.text('Rate', 140, 18);
-        //     doc.line(148, 15, 148, 285);
-
-        //     doc.text('Per', 150, 18);
-        //     doc.line(158, 15, 158, 285);
-
-        //     doc.text('Disc%', 160, 18);
-        //     doc.line(170, 15, 170, 285);
-
-        //     doc.text('Amount', 177, 18);
-
-        //     doc.line(5, 23, 205, 23); // Line below the table titles
-        //     secondArray.map((data, index) => {
-
-        //         if(index == iterations) {
-        //             iterations = iterations + 30;
-        //             doc.addPage();
-        //         }
-        //         var yIndex = 30 + index * 7;
-        //         doc.text(`${data.product_name}`, 11, yIndex);
-        //         doc.text(`${index}`, 103, yIndex);
-        //         doc.text(`${data.quantity}`, 121, yIndex);
-        //         doc.text(`${data.price}`, 140, yIndex);
-        //         doc.text(``, 150, yIndex);
-        //         doc.text(``, 160, yIndex);
-        //         doc.text(`${data.total_Price}`, 177, yIndex);
-        //     })
-
-        //     doc.addPage();
-
-        //     doc.setFillColor(255, 255, 200);
-        //     doc.rect(5, 15, 200, 270, 'S');
-
-        //     doc.text('Total :', 80, 18); // below description table
-        //     doc.text(``, 93, 18); //below HSN/SAC
-        //     doc.text(`${this.state.OrderDetails[4].Total_item}`, 111, 18); //below Quantity
-        //     doc.text(``, 130, 18); //below Rate
-        //     doc.text(``, 148, 18); //below per
-        //     doc.text(``, 158, 18); //below Disc%
-        //     doc.text(`${this.state.OrderDetails[4].Total_amount}`, 177, 18); //below Amount
-
-        //     doc.line(5, 21, 208, 21); // First End line of table
-
-        //     doc.line(5, 26, 208, 26); // second End line of table
-
-        //     doc.text('Amount Chargeable (in words)', 7, 30); //below Table
-        //     doc.text('INR Five Hundred Sixty Three Only', 7, 33); //below Table
-
-        //     //GST Table Structure
-        //     doc.line(5, 36, 205, 36);
-
-        //     doc.text('HSN/SAC', 25, 39);
-
-        //     doc.line(65, 36, 65, 75);
-
-        //     doc.text('Taxable', 68, 39); //
-        //     doc.text('Value', 68, 42);
-
-        //     doc.line(80, 36, 80, 75);
-
-        //     // // central tax table
-        //     doc.text('Central Tax', 93, 39);
-        //     // doc.line(80, 36, 125, 80);   
-        //     doc.line(80, 42, 125, 42);
-
-        //     doc.text('Rate', 85, 45);
-
-        //     doc.line(102, 42, 102, 75);
-
-        //     doc.text('Amount', 104, 45);
-
-        //     doc.line(125, 36, 125, 75);
-
-        //     // // State tax table
-        //     doc.text('State Tax', 140, 39);
-        //     // doc.line(125, FirstLine, 170, FirstLine);
-        //     doc.line(125, 42, 170, 42);
-
-        //     doc.text('Rate', 128, 45);
-        //     // doc.text('6%', 132, 220);
-        //     // doc.text('T', 132, 229);
-
-        //     doc.line(147, 42, 147, 75);
-
-        //     doc.text('Amount', 149, 45);
-        //     // doc.text('30.16', 151, 220);
-        //     // doc.text('30.16', 151, 229);
-
-        //     doc.line(170, 36, 170, 75);
-
-        //     doc.text('Total', 179, 39);
-        //     doc.text('Tax Amount', 179, 42);
-
-        //     doc.line(5, 48, 205, 48); // second line
-        //     doc.line(5, 59, 205, 59); // third line
-        //     doc.line(5, 75, 205, 75); // Last Line
-
-        //     // GST Table Content
-        //     doc.text('7418', 8, 53);
-
-        //     doc.text('Total', 8, 63);
-
-        //     //Taxable val
-        //     doc.text('502.68', 70, 53);
-        //     doc.text('502.68', 70, 63);
-
-        //     //cebtral tax
-        //     doc.text('6%', 88, 53);
-        //     doc.text('T', 88, 63);
-
-        //     //state tax
-        //     doc.text('30.16', 107, 53);
-        //     doc.text('30.16', 107, 63);
-
-        //     //Total amount
-        //     doc.text('60.32', 182, 53);
-        //     doc.text('60.32', 182, 63);
-
-        //     // Last Para
-        //     doc.text('Tax Amount (in words) : INR Sixty and Thirty Two 2 Only', 7, 239);
-
-        //     doc.setFontSize(7);
-        //     doc.text('Previous Balance: _______', 127, 240);
-        //     doc.text('Invoice Amount: 563.00', 127, 243);
-        //     doc.text('Total Due: 563.00', 127, 246);
-
-
-        //     doc.text("Company's Bank Details", 95, 251);
-        //     doc.text("Bank Name", 95, 254); doc.text(" : Axis Bank-919020097120475", 127, 254);
-        //     doc.text("Branch & IFS Code", 95, 257); doc.text(" : Bibewadi & UTIB0002952", 127, 257);
-
-        //     doc.setFontSize(10);
-        //     doc.text("Company's PAN", 7, 263); doc.text(": AJCR1260P", 55, 263);
-        //     doc.text("Declaration", 7, 266);
-        //     doc.line(7, 267, 29, 267);
-        //     doc.text("We declare that this invoice shows the actual price of the", 7, 270);
-        //     doc.text("goods described and that all particulars are true and", 7, 273);
-        //     doc.text("correct", 7, 276);
-
-        //     doc.line(95, 259, 205, 259);
-        //     doc.line(95, 259, 95, 285);
-        //     // doc.setFontStyle('bold');
-        //     doc.text('For RKB METAL INDUSTRIES PRIVATE LIMITED', 99, 263);
-        //     // doc.setFontStyle('normal');
-        //     doc.text('Authorised Signature', 147, 270);
-
-        //     doc.output('dataurlnewwindow');
-        // }
-        // var source = document.getElementById('LatestPDF');
-        // html2canvas(source).then(canvas => {
-        //     var img = canvas.toDataURL("image/png", 1.0);
-        //     var doc = new jsPDF();
-        //     doc.addImage(img, 'JPEG', 20, 20);
-        //     doc.save('test.pdf');
-        // })
-
-        // const orderData = firebase.firestore().collection('OrderList').doc('IPNGQ1JZHU7Y5ImJOvbB').get();
-        // return orderData.then(async (data) => {
-        //     console.log(data.data());
-        //     var Data = data.data()
-        //     var TableData = data.data().product_details;
-        //     var DownloadImages = new Promise((resolve, reject) => {
-        //         data.data().product_details.forEach((element, i) => {
-        //             console.log("Url ------ ", element.imgurl);
-
-        //             // other code https://stackoverflow.com/q/62055089/11510305
-        //             var xhr = new XMLHttpRequest();
-        //             xhr.responseType = 'blob';
-        //             xhr.onload = function (event) {
-        //                 var blob = xhr.response;
-        //                 console.log(blob);
-
-        //                 // https://stackoverflow.com/a/13968945/11510305
-        //                 var blobURL = URL.createObjectURL(blob);
-        //                 var img = new Image();
-
-        //                 img.src = blobURL;
-        //                 var IMAGE = document.body.appendChild(img);
-        //                 // TableData[i].imgurl = blob;
-        //                 console.log("after :", TableData[i].imgurl);
-
-        //                 // https://stackoverflow.com/a/18650249/11510305
-        //                 var reader = new FileReader();                        
-        //                 reader.readAsDataURL(blob); 
-        //                 reader.onloadend = function() {
-        //                     var base64data = reader.result;                
-        //                     console.log(base64data);
-        //                     TableData[i].imgurl = blob;
-        //                 }
-
-        //                 resolve();
-        //             };
-        //             xhr.open('GET', element.imgurl);
-        //             xhr.send();
-        //         });
-        //     })
-
-
-        // const saveLocation = await admin.storage().bucket().file(`PDF/${id}/generated.pdf`)
-        // await saveLocation.save(pdf, async (status) => {
-        //     if (!status) {
-        //         await saveLocation.makePublic().then(() => {
-        //             saveLocation.getMetadata().then(async (meta) => {
-        //                 metadata = meta[0];
-        //                 metadata.mediaLink
-        //                 // console.log("meta", meta);
-        //                 console.log("meta", metadata.mediaLink);
-        //                 await admin.firestore().collection("OrderList").doc(`${id}`)
-        //                     .update({
-        //                         pdfUrl: metadata.mediaLink
-        //                     }).then(
-        //                         () => {
-        //                             resolve()
-        //                         }).catch((err) => {
-        //                             console.log("Error message", err);
-        //                         })
-        //                 return metadata.mediaLink
-        //             })
-        //         })
-        //     }
-        // })
-
-
-        // firebase.firestore().collection('OrderList').doc('ORDER-9921965570-25-May-2021-11-41-22').set({
-        firebase.firestore().collection('OrderList').add({
-            Order_id: 'ORDER-9921965570-25-May-2021-11-41-22',
-            Total_amount: 1355,
-            Total_item: 3,
-            address: 'Ajit Shinde\nAt Post bairagi mala, palashi Parner Maharashtra 414304',
-            date: '12-May-2021',
-            delivery_status: false,
-            orderDateFormat: new Date(),
-            payment_Method: 'Cash on delivery',
-            product_details: [
-                {
-                    id: 'CPBLMPR1C001',
-                    imgurl: '',
-                    price: 572,
-                    product_name: 'Pratik Copper- Mr.Fit Water Bottle - Printed Black Marble',
-                    quantity: 2,
-                    total_Price: 1144
-                },
-                {
-                    id: 'CPBLMPR1C001',
-                    imgurl: '',
-                    price: 572,
-                    product_name: 'Pratik Copper- Mr.Fit Water Bottle - Printed Black Marble',
-                    quantity: 2,
-                    total_Price: 1144
-                },
-                {
-                    id: 'CPBLMPR1C001',
-                    imgurl: '',
-                    price: 572,
-                    product_name: 'Pratik Copper- Mr.Fit Water Bottle - Printed Black Marble',
-                    quantity: 2,
-                    total_Price: 1144
-                },
-                {
-                    id: 'CPBLMPR1C001',
-                    imgurl: '',
-                    price: 572,
-                    product_name: 'Pratik Copper- Mr.Fit Water Bottle - Printed Black Marble',
-                    quantity: 2,
-                    total_Price: 1144
-                },
-                {
-                    id: 'CPBLMPR1C001',
-                    imgurl: '',
-                    price: 572,
-                    product_name: 'Pratik Copper- Mr.Fit Water Bottle - Printed Black Marble',
-                    quantity: 2,
-                    total_Price: 1144
-                },
-                {
-                    id: 'CPBLMPR1C001',
-                    imgurl: '',
-                    price: 572,
-                    product_name: 'Pratik Copper- Mr.Fit Water Bottle - Printed Black Marble',
-                    quantity: 2,
-                    total_Price: 1144
-                },
-                {
-                    id: 'CPBLMPR1C001',
-                    imgurl: '',
-                    price: 572,
-                    product_name: 'Pratik Copper- Mr.Fit Water Bottle - Printed Black Marble',
-                    quantity: 2,
-                    total_Price: 1144
-                },
-                {
-                    id: 'CPBLMPR1C001',
-                    imgurl: '',
-                    price: 572,
-                    product_name: 'Pratik Copper- Mr.Fit Water Bottle - Printed Black Marble',
-                    quantity: 2,
-                    total_Price: 1144
-                },
-                {
-                    id: 'CPBLMPR1C001',
-                    imgurl: '',
-                    price: 572,
-                    product_name: 'Pratik Copper- Mr.Fit Water Bottle - Printed Black Marble',
-                    quantity: 2,
-                    total_Price: 1144
-                },
-                {
-                    id: 'CPBLMPR1C001',
-                    imgurl: '',
-                    price: 572,
-                    product_name: 'Pratik Copper- Mr.Fit Water Bottle - Printed Black Marble',
-                    quantity: 2,
-                    total_Price: 1144
-                },
-                {
-                    id: 'CPBLMPR1C001',
-                    imgurl: '',
-                    price: 572,
-                    product_name: 'Pratik Copper- Mr.Fit Water Bottle - Printed Black Marble',
-                    quantity: 2,
-                    total_Price: 1144
-                },
-                {
-                    id: 'CPBLMPR1C001',
-                    imgurl: '',
-                    price: 572,
-                    product_name: 'Pratik Copper- Mr.Fit Water Bottle - Printed Black Marble',
-                    quantity: 2,
-                    total_Price: 1144
-                },
-                {
-                    id: 'CPBLMPR1C001',
-                    imgurl: '',
-                    price: 572,
-                    product_name: 'Pratik Copper- Mr.Fit Water Bottle - Printed Black Marble',
-                    quantity: 2,
-                    total_Price: 1144
-                },
-                {
-                    id: 'CPBLMPR1C001',
-                    imgurl: '',
-                    price: 572,
-                    product_name: 'Pratik Copper- Mr.Fit Water Bottle - Printed Black Marble',
-                    quantity: 2,
-                    total_Price: 1144
-                },
-                {
-                    id: 'CPBLMPR1C001',
-                    imgurl: '',
-                    price: 572,
-                    product_name: 'Pratik Copper- Mr.Fit Water Bottle - Printed Black Marble',
-                    quantity: 2,
-                    total_Price: 1144
-                },
-                {
-                    id: 'CPBLMPR1C001',
-                    imgurl: '',
-                    price: 572,
-                    product_name: 'Pratik Copper- Mr.Fit Water Bottle - Printed Black Marble',
-                    quantity: 2,
-                    total_Price: 1144
-                },
-                {
-                    id: 'CPBLMPR1C001',
-                    imgurl: '',
-                    price: 572,
-                    product_name: 'Pratik Copper- Mr.Fit Water Bottle - Printed Black Marble',
-                    quantity: 2,
-                    total_Price: 1144
-                },
-                {
-                    id: 'CPBLMPR1C001',
-                    imgurl: '',
-                    price: 572,
-                    product_name: 'Pratik Copper- Mr.Fit Water Bottle - Printed Black Marble',
-                    quantity: 2,
-                    total_Price: 1144
-                },
-                {
-                    id: 'CPBLMPR1C001',
-                    imgurl: '',
-                    price: 572,
-                    product_name: 'Pratik Copper- Mr.Fit Water Bottle - Printed Black Marble',
-                    quantity: 2,
-                    total_Price: 1144
-                },
-                {
-                    id: 'CPBLMPR1C001',
-                    imgurl: '',
-                    price: 572,
-                    product_name: 'Pratik Copper- Mr.Fit Water Bottle - Printed Black Marble',
-                    quantity: 2,
-                    total_Price: 1144
-                },
-                {
-                    id: 'CPBLMPR1C001',
-                    imgurl: '',
-                    price: 572,
-                    product_name: 'Pratik Copper- Mr.Fit Water Bottle - Printed Black Marble',
-                    quantity: 2,
-                    total_Price: 1144
-                },
-                {
-                    id: 'CPBLMPR1C001',
-                    imgurl: '',
-                    price: 572,
-                    product_name: 'Pratik Copper- Mr.Fit Water Bottle - Printed Black Marble',
-                    quantity: 2,
-                    total_Price: 1144
-                },
-                {
-                    id: 'CPBLMPR1C001',
-                    imgurl: '',
-                    price: 572,
-                    product_name: 'Pratik Copper- Mr.Fit Water Bottle - Printed Black Marble',
-                    quantity: 2,
-                    total_Price: 1144
-                },
-                {
-                    id: 'CPBLMPR1C001',
-                    imgurl: '',
-                    price: 572,
-                    product_name: 'Pratik Copper- Mr.Fit Water Bottle - Printed Black Marble',
-                    quantity: 2,
-                    total_Price: 1144
-                },
-                {
-                    id: 'CPBLMPR1C001',
-                    imgurl: '',
-                    price: 572,
-                    product_name: 'Pratik Copper- Mr.Fit Water Bottle - Printed Black Marble',
-                    quantity: 2,
-                    total_Price: 1144
-                },
-                {
-                    id: 'CPBLMPR1C001',
-                    imgurl: '',
-                    price: 572,
-                    product_name: 'Pratik Copper- Mr.Fit Water Bottle - Printed Black Marble',
-                    quantity: 2,
-                    total_Price: 1144
-                },
-                {
-                    id: 'CPBLMPR1C001',
-                    imgurl: '',
-                    price: 572,
-                    product_name: 'Pratik Copper- Mr.Fit Water Bottle - Printed Black Marble',
-                    quantity: 2,
-                    total_Price: 1144
-                },
-                {
-                    id: 'CPBLMPR1C001',
-                    imgurl: '',
-                    price: 572,
-                    product_name: 'Pratik Copper- Mr.Fit Water Bottle - Printed Black Marble',
-                    quantity: 2,
-                    total_Price: 1144
-                },
-                {
-                    id: 'CPBLMPR1C001',
-                    imgurl: '',
-                    price: 572,
-                    product_name: 'Pratik Copper- Mr.Fit Water Bottle - Printed Black Marble',
-                    quantity: 2,
-                    total_Price: 1144
-                },
-                {
-                    id: 'CPBLMPR1C001',
-                    imgurl: '',
-                    price: 572,
-                    product_name: 'Pratik Copper- Mr.Fit Water Bottle - Printed Black Marble',
-                    quantity: 2,
-                    total_Price: 1144
-                },
-            ],
-            user_id: 8308547627,
-            // user_name: 'Ajit Shinde'
-        })
+        firebase.firestore().collection('OrderList').doc('ORDER-8830819392-26-June-2021-17-20-33').get()
+            .then(data => {
+                console.log("Order Data: ", data.data());
+                var order = data.data();
+                var finalyCoordinate;
+                let num = data.data().Total_amount;
+                var a = ['', 'one ', 'two ', 'three ', 'four ', 'five ', 'six ', 'seven ', 'eight ', 'nine ', 'ten ', 'eleven ', 'twelve ', 'thirteen ', 'fourteen ', 'fifteen ', 'sixteen ', 'seventeen ', 'eighteen ', 'nineteen '];
+                var b = ['', '', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
+
+                if ((num = num.toString()).length > 9) { console.log('overflow') }
+                let n = ('000000000' + num).substr(-9).match(/^(\d{2})(\d{2})(\d{2})(\d{1})(\d{2})$/);
+                if (!n) console.log('Total Amount is not available');
+                var str = '';
+                str += (n[1] != 0) ? (a[Number(n[1])] || b[n[1][0]] + ' ' + a[n[1][1]]) + 'crore ' : '';
+                str += (n[2] != 0) ? (a[Number(n[2])] || b[n[2][0]] + ' ' + a[n[2][1]]) + 'lakh ' : '';
+                str += (n[3] != 0) ? (a[Number(n[3])] || b[n[3][0]] + ' ' + a[n[3][1]]) + 'thousand ' : '';
+                str += (n[4] != 0) ? (a[Number(n[4])] || b[n[4][0]] + ' ' + a[n[4][1]]) + 'hundred ' : '';
+                str += (n[5] != 0) ? ((str != '') ? 'and ' : '') + (a[Number(n[5])] || b[n[5][0]] + ' ' + a[n[5][1]]) + 'only ' : '';
+                console.log("Converted Number: ", str);
+                // return str;
+
+                var doc = new jsPDF();
+
+                doc.setFontSize(15);
+                doc.text('Tax Invoice', 90, 10);
+                doc.setFontSize(10);
+                doc.text('(ORIGINAL FOR RECIPIENT)', 150, 10);
+
+                doc.setFillColor(255, 255, 200);
+                doc.rect(5, 15, 200, 270, 'S');
+                doc.text('Pratik Copper', 7, 20);
+                doc.setFontSize(9);
+                // doc.text('S NO 17/3, SUKHSAGAR NAGAR, NEAR HEMA MANGAL,', 7, 24);
+                // doc.text('KATRAJ, Pune, Maharashtra, 411046', 7, 28);
+                // doc.text('GSTIN/UIN: 27AAJCR1260P1ZX', 7, 32);
+                // doc.text('State Name : Maharashtra, Code : 27', 7, 36);
+                // doc.text('CIN: U28999PN2018PTC178676', 7, 40);
+                doc.text('E-Mail : ravi@pratikcopper.com', 7, 44);
+                doc.line(5, 50, 95, 50);
+
+                doc.line(95, 15, 95, 100)
+
+                doc.text('Consignee', 7, 55);
+                doc.setFontSize(10);
+                doc.text(`${data.data().user_name}`, 7, 59);
+                doc.setFontSize(9);
+                // doc.text('Pune', 7, 63);
+                doc.text(`${data.data().user_id}`, 7, 67);
+
+                doc.text('Invoice No.', 98, 20);
+                doc.text('', 98, 24);
+                doc.line(95, 25, 205, 25);
+
+                doc.text('Challan No', 98, 30);
+                doc.text('', 98, 34);
+                doc.line(95, 35, 205, 35);
+
+                doc.text("Supplier's Ref.", 98, 40);
+                doc.text('', 98, 44);
+                doc.line(95, 45, 205, 45);
+
+                doc.text("Order No.", 98, 50);
+                doc.text('', 98, 54);
+                doc.line(95, 55, 205, 55);
+
+                doc.text("Despatch Doc No", 98, 60);
+                doc.text('', 98, 64);
+                doc.line(95, 65, 205, 65);
+
+                doc.text("Despatch Through", 98, 70);
+                doc.text('Self Arrange', 98, 74);
+                doc.line(95, 75, 205, 75);
+
+                doc.line(150, 15, 150, 75);
+
+                //
+                doc.text('Dated', 152, 20);
+                doc.text(`${order.date}`, 152, 24);
+                // doc.line(95, 25, 205, 25);
+
+                doc.text('Mode/Terms of Payment', 152, 30);
+                doc.text('', 152, 34);
+                // doc.line(95, 35, 205, 35);
+
+                doc.text("Other Reference", 152, 40);
+                doc.text('', 152, 44);
+                // doc.line(95, 45, 205, 45);
+
+                doc.text("Dated", 152, 50);
+                doc.text(`${order.date}`, 152, 54);
+                // doc.line(95, 55, 205, 55);
+
+                doc.text("Dated", 152, 60);
+                doc.text(`${order.date}`, 152, 64);
+                // doc.line(95, 65, 205, 65);
+
+                doc.text("Destination", 152, 70);
+                doc.text(`Pune`, 152, 74);
+                // doc.line(95, 75, 205, 75);
+                //
+
+                doc.text('Terms of Delivery', 98, 80);
+
+                doc.line(5, 100, 205, 100);
+
+                // jspdf autotable
+                doc.autoTable({
+                    html: '#my-table',
+                    startY: 100,
+                    theme: 'plain',
+                    tableWidth: 200,
+                    headStyles: {
+                        lineWidth: 0.1,
+                        lineColor: [0, 0, 0]
+                    },
+                    columnStyles: {
+                        0: {
+                            halign: 'right',
+                            lineWidth: 0.1,
+                            lineColor: [0, 0, 0]
+                        },
+                        1: {
+                            halign: 'right',
+                            lineWidth: 0.1,
+                            lineColor: [0, 0, 0]
+                        },
+                        2: {
+                            halign: 'right',
+                            lineWidth: 0.1,
+                            lineColor: [0, 0, 0]
+                        },
+                        3: {
+                            halign: 'right',
+                            lineWidth: 0.1,
+                            lineColor: [0, 0, 0]
+                        },
+                        4: {
+                            halign: 'right',
+                            lineWidth: 0.1,
+                            lineColor: [0, 0, 0]
+                        },
+                        5: {
+                            halign: 'right',
+                            lineWidth: 0.1,
+                            lineColor: [0, 0, 0]
+                        },
+                        6: {
+                            halign: 'right',
+                            lineWidth: 0.1,
+                            lineColor: [0, 0, 0]
+                        },
+                        7: {
+                            halign: 'right',
+                            lineWidth: 0.1,
+                            lineColor: [0, 0, 0]
+                        },
+                    },
+                    showHead: 'everyPage',
+                    // tableLineWidth: 0.2,
+                    // tableLineColor: [0, 0, 0],
+                    margin: {
+                        left: 5,
+                        right: 0
+                    },
+                    willDrawCell: (data) => {
+                        //---------------------------------------
+                        // Write the line at the bottom of header
+                        //---------------------------------------
+                        // data.doc.line(data.cursor.x, data.cursor.y + data.row.height, data.cursor.x + data.cell.contentWidth, data.cursor.y + data.cell.contentHeight);
+                        console.log("data: ", data, " data.table.finalY: ", data.table);
+                        // if (data.section == "body" && data.column.index != 0) {
+                        //     doc.setDrawColor(255, 255, 255)
+                        //     doc.setLineWidth(.5);
+                        //     console.log("data.cell.x: ", data.cell.x, "\n data.cell.y: ", data.cell.y, "\n data.row.height: ", data.row.height, "\n data.cell.x: ", data.cell.x, "\n data.cell.y: ", data.cell.y);
+                        //     doc.line(data.cell.x, data.cell.y + data.row.height, data.cell.x, data.cell.y);
+                        // }
+                        finalyCoordinate = data.table.finalY //finalY
+                    }
+                })
+                let finalY = doc.autoTable.previous.finalY;
+                console.log("finalyCoordinate: ", finalyCoordinate, "  ---   ", finalY);
+                doc.text(`Tax Amount (in words) : ${str}`, 7, finalY + 5);
+
+                doc.output('dataurlnewwindow');
+            })
     }
     saveAsPDF() {
         console.log('saveAsPDF');
@@ -1753,6 +1064,22 @@ export default class Reports extends Component {
         xhr.setRequestHeader('Content-type', 'text/html');
         xhr.send();
     }
+    ConvertTONumber(num) {
+        console.log('Num: ', num.toFixed(2));
+        var a = ['', 'one ', 'two ', 'three ', 'four ', 'five ', 'six ', 'seven ', 'eight ', 'nine ', 'ten ', 'eleven ', 'twelve ', 'thirteen ', 'fourteen ', 'fifteen ', 'sixteen ', 'seventeen ', 'eighteen ', 'nineteen '];
+        var b = ['', '', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
+
+        if ((num = num.toString()).length > 9) return 'overflow';
+        let n = ('000000000' + num).substr(-9).match(/^(\d{2})(\d{2})(\d{2})(\d{1})(\d{2})$/);
+        if (!n) return; var str = '';
+        str += (n[1] != 0) ? (a[Number(n[1])] || b[n[1][0]] + ' ' + a[n[1][1]]) + 'crore ' : '';
+        str += (n[2] != 0) ? (a[Number(n[2])] || b[n[2][0]] + ' ' + a[n[2][1]]) + 'lakh ' : '';
+        str += (n[3] != 0) ? (a[Number(n[3])] || b[n[3][0]] + ' ' + a[n[3][1]]) + 'thousand ' : '';
+        str += (n[4] != 0) ? (a[Number(n[4])] || b[n[4][0]] + ' ' + a[n[4][1]]) + 'hundred ' : '';
+        str += (n[5] != 0) ? ((str != '') ? 'and ' : '') + (a[Number(n[5])] || b[n[5][0]] + ' ' + a[n[5][1]]) + 'only ' : '';
+        console.log("Converted Number: ", str);
+        return str;
+    }
     render() {
         const { date1, date2, filteredArray } = this.state;
         const pageButtonRenderer = ({ page, active, disable, title, onPageChange }) => {
@@ -1812,6 +1139,8 @@ export default class Reports extends Component {
                     <img src={require('../../assets/PARTHI_LOGO_/PNG/PARTHI_LOGO-01.png')} width={100} height={70} />
                 </div>
                 <div style={{ width: '100%' }}>
+                    <Button onClick={() => this.fireFunPDF()}>fireFunPDF</Button>
+                    <Button onClick={() => this.ConvertTONumber(6789)}>ConvertTONumber</Button>
                     {/* <Container>
                         <Row>
                             <Col>
@@ -1860,7 +1189,7 @@ export default class Reports extends Component {
                     pagination={paginationFactory(options)}
                 />
                 <div style={{ marginTop: 20 }}>
-                    {/* <Table striped>
+                    <Table striped id="my-table">
                         <thead>
                             <tr>
                                 <th>#</th>
@@ -1868,7 +1197,9 @@ export default class Reports extends Component {
                                 <th>Items</th>
                                 <th>Amount</th>
                                 <th>Delivery Status</th>
-                                <th>Actions</th>
+                                <th>Actions 1</th>
+                                <th>Actions 2</th>
+                                <th>Actions 3</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -1880,18 +1211,21 @@ export default class Reports extends Component {
                                         <td>{data.Total_item}</td>
                                         <td>{data.Total_amount}</td>
                                         <td>{data.delivery_status ? 'true' : 'false'}</td>
-                                        <td>
+                                        <td>{data.delivery_status ? 'true' : 'false'}</td>
+                                        <td>{data.delivery_status ? 'true' : 'false'}</td>
+                                        <td>{data.delivery_status ? 'true' : 'false'}</td>
+                                        {/* <td>
                                             <Button onClick={() => this.printDocument(data.id, 'view')} color="secondary">View Pdf</Button>&nbsp;&nbsp;
                                             <Button color="primary" onClick={() => this.printDocument(data.id, 'save')}>Download Pdf</Button>
-                                        </td>
+                                        </td> */}
                                     </tr>
                                 )
                             }) :
                                 <tr style={{ width: '100%' }}>
                                     No data available for selected values
-                            </tr>}
+                                </tr>}
                         </tbody>
-                    </Table> */}
+                    </Table>
                 </div>
             </div>
         )

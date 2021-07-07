@@ -32,11 +32,21 @@ export default {
     {
       name: 'Add Notification',
       url: '/AddNotification',
-      icon: 'icon-list',
+      icon: 'icon-pencil',
     },
     {
       name: 'Reports',
       url: '/Reports',
+      icon: 'icon-pencil',
+    },
+    {
+      name: 'Top 3 channel Partners',
+      url: '/Reports_amount',
+      icon: 'icon-pencil',
+    },
+    {
+      name: 'Top selling product',
+      url: '/Reports_product',
       icon: 'icon-pencil',
     },
     // {
