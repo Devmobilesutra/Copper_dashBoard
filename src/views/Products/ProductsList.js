@@ -755,7 +755,7 @@ export default class ProductsList extends Component {
                     "\n Image_Name3 ", rowObject.Image_Name3,
                     "\n Image_Name4 ", rowObject.Image_Name4,
                     "\n IsActive ", rowObject.IsActive,
-                    // "\n subcategories", rowObject.subcategories
+                    "\n subcategories", rowObject.subcategories
                 );
                 if (rowObject.Image_Name1 !== undefined) {
                     await storageRef.child(`Images/${rowObject.Image_Name1}`).getDownloadURL().then(onfulfilled => {
@@ -815,7 +815,7 @@ export default class ProductsList extends Component {
                             Image_Name3: rowObject.Image_Name3 === undefined ? "" : rowObject.Image_Name3,
                             Image_Name4: rowObject.Image_Name4 === undefined ? "" : rowObject.Image_Name4,
                             IsActive: rowObject.IsActive === undefined ? "" : rowObject.IsActive,
-                            // subactegory: rowObject.subactegory === undefined ? "" : rowObject.subactegory,
+                            subcategories: rowObject.subcategories === undefined ? "" : rowObject.subcategories,
                         }).then(() => {
                             i++;
                             console.log("Data Uploaded Succefully");
