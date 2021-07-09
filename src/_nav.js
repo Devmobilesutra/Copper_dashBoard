@@ -20,6 +20,11 @@ export default {
       icon: 'icon-pencil',
     },
     {
+      name: 'advertisement image',
+      url: '/DiscountImage',
+      icon: 'icon-pencil',
+    },
+    {
       name: 'Orders List',
       url: '/OrdersList',
       icon: 'icon-pencil',

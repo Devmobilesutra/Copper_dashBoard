@@ -74,6 +74,7 @@ export default class ProductsList extends Component {
             Add_productData: {
                 Sr_No: '',
                 Category_Name: '',
+                subCategory_Name:'',
                 Product_Name: '',
                 Product_ID: '',
                 Cost_Price: '',
@@ -91,6 +92,7 @@ export default class ProductsList extends Component {
             Edit_ProductData: {
                 Sr_No: '',
                 Category_Name: '',
+                subCategory_Name:'',
                 Product_Name: '',
                 Product_ID: '',
                 Cost_Price: '',
@@ -343,6 +345,7 @@ export default class ProductsList extends Component {
     EditProduct(
         Sr_No,
         Category_Name,
+        subCategory_Name,
         Product_Name,
         Product_ID,
         Cost_Price,
@@ -361,6 +364,7 @@ export default class ProductsList extends Component {
         const { Edit_ProductData } = this.state;
         Edit_ProductData.Product_Name = Product_Name;
         Edit_ProductData.Category_Name = Category_Name;
+        Edit_ProductData.subCategory_Name=subCategory_Name;
         Edit_ProductData.Cost_Price = Cost_Price;
         Edit_ProductData.Selling_Price = Selling_Price;
         Edit_ProductData.Product_ID = Product_ID;
@@ -401,11 +405,16 @@ export default class ProductsList extends Component {
             alert('please select category name');
             this.setState({ isLoading: false });
             return
+        }else if (Edit_ProductData.Category_Name=='Wellness' && !Edit_ProductData.subCategory_Name) {
+            alert('Please select Sub category Name');
+            this.setState({ isLoading: false });
+            return
         } else if (!Edit_ProductData.Product_Name) {
             alert('Please select Product Name');
             this.setState({ isLoading: false });
             return
-        } else if (!Edit_ProductData.Cost_Price) {
+        }
+         else if (!Edit_ProductData.Cost_Price) {
             alert('Please select Cost Price');
             this.setState({ isLoading: false });
             return
@@ -468,6 +477,7 @@ export default class ProductsList extends Component {
 
         firebase.firestore().collection('Products').doc(Edit_ProductData.Product_ID).update({
             Category_Name: Edit_ProductData.Category_Name,
+            subCategory_Name:Edit_ProductData.subCategory_Name,
             Product_Name: Edit_ProductData.Product_Name,
             Cost_Price: Edit_ProductData.Cost_Price,
             Selling_Price: Edit_ProductData.Selling_Price,
@@ -566,6 +576,10 @@ export default class ProductsList extends Component {
             alert('please select category name');
             this.setState({ isLoading: false });
             return
+        } else if (Add_productData.Category_Name=='Wellness' && !Add_productData.subCategory_Name) {
+            alert('Please select sub category Name');
+            this.setState({ isLoading: false });
+            return
         } else if (!Add_productData.Product_Name) {
             alert('Please select Product Name');
             this.setState({ isLoading: false });
@@ -635,6 +649,7 @@ export default class ProductsList extends Component {
 
             Sr_No: this.state.Add_productData.Sr_No,
             Category_Name: this.state.Add_productData.Category_Name,
+            subCategory_Name:this.state.Add_productData.subCategory_Name,
             Product_Name: this.state.Add_productData.Product_Name,
             Product_ID: this.state.Add_productData.Product_ID,
             Cost_Price: this.state.Add_productData.Cost_Price,
@@ -668,6 +683,7 @@ export default class ProductsList extends Component {
             });
         Add_productData.Sr_No = ''
         Add_productData.Category_Name = ''
+        Add_productData.subCategory_Name = ''
         Add_productData.Product_Name = ''
         Add_productData.Product_ID = ''
         Add_productData.Cost_Price = ''
@@ -830,9 +846,9 @@ export default class ProductsList extends Component {
                         }
                     }
                 });
-            }, 3000);
+            },);
             this.setState({ Excel_Modal: false, file: '' })
-        })
+               })
         // return true
     }
     // Image upload for add form
@@ -1248,11 +1264,35 @@ export default class ProductsList extends Component {
                                     this.setState({ Edit_ProductData });
                                 }}>
                                 <option value="">Selected Option: {this.state.Edit_ProductData.Category_Name}</option>
+                                <option value="Wellness"></option>
                                 <option value="Decore">Decore</option>
                                 <option value="Spiritual">Spiritual</option>
                                 <option value="Traditional">Traditional</option>
                             </select>
                         </FormGroup>
+                        {
+                            (this.state.Edit_ProductData.Category_Name=='Wellness')?
+                            (
+                                <FormGroup>
+                                <Label for="exampleSelect">Sub-Category Name</Label>
+                                <select type="select" name="select" id="exampleSelect"
+                                    onChange={(e) => {
+                                        const { Edit_ProductData } = this.state;
+                                        Edit_ProductData.subCategory_Name = e.target.value;
+                                        console.log("e.target.value :", e.target.value)
+                                        this.setState({ Edit_ProductData });
+                                    }}>
+                                    <option value="">Select Option</option>
+                                    <option value="Bottles">Bottles</option>
+                                    <option value="Glass">Glass</option>
+                                    <option value="Jar">Jar</option>
+                                    <option value="Matka">Matka</option>
+                                    <option value="Pawali">Pawali</option>
+                                </select>
+                            </FormGroup>
+                            ):
+                            <FormGroup></FormGroup>
+                            }
                         <FormGroup>
                             <Label for="Product_Name">Product Name</Label>
                             <Input type="text" name="Product_Name" id="Product_Name" placeholder="Enter Product Name"
@@ -1413,11 +1453,35 @@ export default class ProductsList extends Component {
                                         this.setState({ Add_productData });
                                     }}>
                                     <option value="">Select Option</option>
+                                    <option value="Wellness">Wellness</option>
                                     <option value="Decore">Decore</option>
                                     <option value="Spiritual">Spiritual</option>
                                     <option value="Traditional">Traditional</option>
                                 </select>
                             </FormGroup>
+                            {
+                            (this.state.Add_productData.Category_Name=='Wellness')?
+                            (
+                                <FormGroup>
+                                <Label for="exampleSelect">Sub-Category Name</Label>
+                                <select type="select" name="select" id="exampleSelect"
+                                    onChange={(e) => {
+                                        const { Add_productData } = this.state;
+                                        Add_productData.subCategory_Name = e.target.value;
+                                        console.log("e.target.value :", e.target.value)
+                                        this.setState({ Add_productData });
+                                    }}>
+                                    <option value="">Select Option</option>
+                                    <option value="Bottles">Bottles</option>
+                                    <option value="Glass">Glass</option>
+                                    <option value="Jar">Jar</option>
+                                    <option value="Matka">Matka</option>
+                                    <option value="Pawali">Pawali</option>
+                                </select>
+                            </FormGroup>
+                            ):
+                            <FormGroup></FormGroup>
+                            }
 
                             {/* <FormGroup>
                                 <Label for="Product_ID">Product ID</Label>

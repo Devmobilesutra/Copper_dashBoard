@@ -17,7 +17,25 @@ export default class AddNotification extends Component {
             screen_message: null,
 
             ImageUploadingStatus: '',
-            imageProgress: false
+            imageProgress: false,
+            file: '',
+            isLoading: false,
+
+            //Add Images
+            percentUploaded: null,
+
+            ProgressBar: false,
+           
+            storageRef: firebase.storage().ref(),
+      
+            uploadTask: null,
+          
+            //Add Product data
+            Add_productData: {
+               
+                Image_Name1: '',
+              
+            },
         };
     }
 
@@ -83,7 +101,38 @@ export default class AddNotification extends Component {
                 //     })
             });
     }
+    async Upload_Image(Img) {
+       
+        console.log("image for firebaseImg", Img);
+     
+        // const uploadTask = await firebase.storage().ref(`/Images/${Img.name}`).put(Img);
+        this.setState({
+            uploadTask: this.state.storageRef.child(`Notification/${Img.name}`).put(Img)
+        }, 
+            () => {
+                this.state.uploadTask.on(
+                    'state_changed',
+                    snap => {
+                      
+                    },
+                    err => {
+                        console.error(err);
+                    },
+                    () => {
+                        this.state.uploadTask.snapshot.ref.getDownloadURL().then(downloadUrl => {
+                            console.log('this is the image url', downloadUrl);
+                               this.setState({url1:downloadUrl})
+                           
 
+                        })
+                            .catch(err => {
+                                console.error(err);
+                            })
+                    }
+                )
+            }
+        )
+    }
     async sent_screen_message() {
         const { screen_message, screen_message_title, Image } = this.state;
         if (screen_message_title === null || screen_message_title == '') {
@@ -192,12 +241,13 @@ export default class AddNotification extends Component {
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
-                                    <Label for="exampleFile">Select Pictire to upload</Label>
+                                    <Label for="exampleFile">Select Picture to upload</Label>
                                     <Col sm={10}>
                                         <input type="file" name="file" id="exampleFile"
-                                            onChange={(e) => { console.log(e.target.files[0]); this.setState({ Image: e.target.files[0] }) }}
+                                            onChange={(e) => { console.log(e.target.files[0]); this.setState({ Image: e.target.files[0] }); this.Upload_Image(e.target.files[0]) }}
                                         />
                                     </Col>
+                                    {this.state.url1?<img src={this.state.url1} style={{ width: 200, height: 100 }}></img>:this.state.Image?<text>Wait till Image uploaded</text>:null}
                                     <FormText color="muted">
                                         {/* This is some placeholder block-level help text for the above input.
                                         It's a bit lighter and easily wraps to a new line. */}

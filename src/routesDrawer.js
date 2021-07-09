@@ -3,6 +3,7 @@ import React from 'react';
 const Dashboard = React.lazy(() => import('./views/Dashboard/Dashboard'));
 const UsersList = React.lazy(() => import('./views/Users/UsersList'));
 const ProductsList = React.lazy(() => import('./views/Products/ProductsList'));
+const DiscountImage=React.lazy(() => import('./views/images/DiscountImage'))
 const OrdersList = React.lazy(() => import('./views/Orders/OrdersList'));
 const CategoryList = React.lazy(() => import('./views/Category/CategoryList'));
 const Convert2Excel = React.lazy(() => import('./views/Convert2Excel'));
@@ -18,6 +19,7 @@ const routesDrawer = [
     { path: '/dashboard', name: 'Dashboard', component: Dashboard },
     { path: '/UsersList', name: 'UsersList', component: UsersList },
     { path: '/ProductsList', name: 'ProductsList', component: ProductsList },
+    { path: '/DiscountImage',name: 'DiscoutImage', component:DiscountImage},
     { path: '/OrdersList', name: 'OrdersList', component: OrdersList },
     { path: '/CategoryList', name: 'CategoryList', component: CategoryList },
     { path: '/Convert2Excel', name: 'Convert2Excel', component: Convert2Excel },

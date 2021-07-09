@@ -6,6 +6,7 @@ import Welcome from './views/Welcome/Welcome';
 
 import UsersList from './views/Users/UsersList';
 import ProductsList from './views/Products/ProductsList';
+import DiscountImage from './views/images/DiscountImage';
 import OrdersList from './views/Orders/OrdersList';
 import CategoryList from './views/Category/CategoryList';
 import Convert2Excel from "./views/Convert2Excel";
@@ -23,6 +24,7 @@ const Routes = () => (
             <Route path='/Welcome' component={Welcome} />
             <Route path='/UsersList' component={UsersList} />
             <Route path='/ProductsList' component={ProductsList} />
+            <Route path='/DiscountImage' component={DiscountImage}/>
             <Route path='/OrdersList' component={OrdersList} />
             <Route path='/CategoryList' component={CategoryList} />
             <Route path='/Convert2Excel' component={Convert2Excel} />
