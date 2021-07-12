@@ -41,7 +41,7 @@ export default class CategoryList extends Component {
                     dataField: 'category_name',
                     text: 'category Name',
                     align: 'center',
-                    headerStyle: (colum, colIndex) => {
+                    headerStyle: () => {
                         return { textAlign: 'center' };
                     },
                 },
@@ -82,7 +82,7 @@ export default class CategoryList extends Component {
                     text: "Actions",
                     formatter: this.actionEditDeleteProduct,
                     align: 'center',
-                    headerStyle: (colum, colIndex) => {
+                    headerStyle: () => {
                         return { textAlign: 'center' };
                     },
                 }
@@ -103,7 +103,7 @@ export default class CategoryList extends Component {
         })
     }
 
-    actionEditDeleteProduct = (cell, row, rowIndex, formatExtraData) => {
+    actionEditDeleteProduct = (cell, row) => {
         var ProductId = row.id;
         var ProductName = row.category_name;
 
@@ -170,7 +170,6 @@ export default class CategoryList extends Component {
     // 
     DeleteProduct(ProductId) {
         console.log("ProductId", ProductId);
-        let idtoDelete = ProductId;
 
         const swalWithBootstrapButtons = Swal.mixin({
             customClass: {
@@ -230,7 +229,6 @@ export default class CategoryList extends Component {
     UploadExcel() {
         console.log("UploadExcel");
         var f = this.state.file;
-        var name = f.name;
         const reader = new FileReader();
         reader.onload = (evt) => {
             // evt = on_file_select event
@@ -310,9 +308,6 @@ export default class CategoryList extends Component {
     render() {
         const pageButtonRenderer = ({
             page,
-            active,
-            disable,
-            title,
             onPageChange
         }) => {
             const handleClick = (e) => {

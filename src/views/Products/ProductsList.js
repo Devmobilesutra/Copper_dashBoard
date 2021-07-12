@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Alert, FormGroup, Label, Modal, ModalHeader, ModalBody, ModalFooter, Button, Input, Form, Progress } from 'reactstrap';
+import { FormGroup, Label, Modal, ModalHeader, ModalBody, ModalFooter, Button, Input, Form, Progress } from 'reactstrap';
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
@@ -22,11 +22,13 @@ export default class ProductsList extends Component {
         this.state = {
             productsList: [],
             PDF_productsList: [],
-
+            unAvailableImage:[],
             url: '',
             Excel_Modal: false,
             file: '',
             isLoading: false,
+            flag:true,
+            flag1:false,
 
             //Add Images
             percentUploaded: null,
@@ -118,7 +120,7 @@ export default class ProductsList extends Component {
                     text: 'id',
                     align: 'center',
                     hidden: true,
-                    headerStyle: (colum, colIndex) => {
+                    headerStyle: () => {
                         return { textAlign: 'center' };
                     },
                 },
@@ -127,7 +129,7 @@ export default class ProductsList extends Component {
                     text: 'Sr No',
                     align: 'center',
                     hidden: true,
-                    headerStyle: (colum, colIndex) => {
+                    headerStyle: () => {
                         return { textAlign: 'center' };
                     },
                 },
@@ -136,7 +138,7 @@ export default class ProductsList extends Component {
                     text: 'Product ID',
                     align: 'center',
                     hidden: true,
-                    headerStyle: (colum, colIndex) => {
+                    headerStyle: () => {
                         return { textAlign: 'center' };
                     },
                 },
@@ -147,7 +149,7 @@ export default class ProductsList extends Component {
                     filter: textFilter({
                         placeholder: 'Search Product Name'
                     }),
-                    headerStyle: (colum, colIndex) => {
+                    headerStyle: () => {
                         return { textAlign: 'center' };
                     },
                 },
@@ -158,7 +160,7 @@ export default class ProductsList extends Component {
                     filter: textFilter({
                         placeholder: 'Search Category Name'
                     }),
-                    headerStyle: (colum, colIndex) => {
+                    headerStyle: () => {
                         return { textAlign: 'center' };
                     },
                 },
@@ -167,7 +169,7 @@ export default class ProductsList extends Component {
                     text: 'Cost Price',
                     align: 'center',
                     hidden: true,
-                    headerStyle: (colum, colIndex) => {
+                    headerStyle: () => {
                         return { textAlign: 'center' };
                     },
                 },
@@ -176,7 +178,7 @@ export default class ProductsList extends Component {
                     text: 'Selling Price',
                     align: 'center',
                     hidden: true,
-                    headerStyle: (colum, colIndex) => {
+                    headerStyle: () => {
                         return { textAlign: 'center' };
                     },
                 },
@@ -185,7 +187,7 @@ export default class ProductsList extends Component {
                     text: 'Usage',
                     align: 'center',
                     hidden: true,
-                    headerStyle: (colum, colIndex) => {
+                    headerStyle: () => {
                         return { textAlign: 'center' };
                     },
                 },
@@ -194,7 +196,7 @@ export default class ProductsList extends Component {
                     text: 'How to clean',
                     align: 'center',
                     hidden: true,
-                    headerStyle: (colum, colIndex) => {
+                    headerStyle: () => {
                         return { textAlign: 'center' };
                     },
                 },
@@ -203,7 +205,7 @@ export default class ProductsList extends Component {
                     text: 'IsActive',
                     align: 'center',
                     hidden: true,
-                    headerStyle: (colum, colIndex) => {
+                    headerStyle: () => {
                         return { textAlign: 'center' };
                     },
                 },
@@ -214,7 +216,7 @@ export default class ProductsList extends Component {
                     filter: textFilter({
                         placeholder: 'Search by MRP'
                     }),
-                    headerStyle: (colum, colIndex) => {
+                    headerStyle: () => {
                         return { textAlign: 'center' };
                     },
                 },
@@ -223,7 +225,7 @@ export default class ProductsList extends Component {
                     text: 'Image Name1',
                     align: 'center',
                     formatter: this.Img_Nm1,
-                    headerStyle: (colum, colIndex) => {
+                    headerStyle: () => {
                         return { textAlign: 'center' };
                     },
                 },
@@ -234,7 +236,7 @@ export default class ProductsList extends Component {
                     filter: textFilter({
                         placeholder: 'Search by Weight'
                     }),
-                    headerStyle: (colum, colIndex) => {
+                    headerStyle: () => {
                         return { textAlign: 'center' };
                     },
                 },
@@ -243,7 +245,7 @@ export default class ProductsList extends Component {
                     text: 'Image Name2',
                     align: 'center',
                     hidden: true,
-                    headerStyle: (colum, colIndex) => {
+                    headerStyle: () => {
                         return { textAlign: 'center' };
                     },
                 },
@@ -252,7 +254,7 @@ export default class ProductsList extends Component {
                     text: 'Image Name2',
                     align: 'center',
                     hidden: true,
-                    headerStyle: (colum, colIndex) => {
+                    headerStyle: () => {
                         return { textAlign: 'center' };
                     },
                 },
@@ -262,7 +264,7 @@ export default class ProductsList extends Component {
                     align: 'center',
                     hidden: true,
                     // formatter: this.Img_Nm4,
-                    headerStyle: (colum, colIndex) => {
+                    headerStyle: () => {
                         return { textAlign: 'center' };
                     },
                 },
@@ -271,14 +273,46 @@ export default class ProductsList extends Component {
                     text: "Actions",
                     formatter: this.actionEditDeleteProduct,
                     align: 'center',
-                    headerStyle: (colum, colIndex) => {
+                    headerStyle: () => {
                         return { textAlign: 'center' };
                     },
                 }
-            ]
+            ],
+            columns1: [
+               
+                {
+                    dataField: 'Product_ID',
+                    text: 'Product ID',
+                    align: 'center',
+                    // hidden: true,
+                    headerStyle: () => {
+                        return { textAlign: 'center' };
+                    },
+                },
+                {
+                    dataField: 'Product_Name',
+                    text: 'Product Name',
+                    align: 'center',
+                    filter: textFilter({
+                        placeholder: 'Search Product Name'
+                    }),
+                    headerStyle: () => {
+                        return { textAlign: 'center' };
+                    },
+                },
+                {
+                    dataField: 'Category_Name',
+                    text: 'Category Name',
+                    align: 'center',
+                    headerStyle: () => {
+                        return { textAlign: 'center' };
+                    },
+                },
+              
+            ],
         };
     }
-    Img_Nm1 = (cell, row, rowIndex, formatExtraData) => {
+    Img_Nm1 = (cell, row) => {
         return (
             <span style={{ display: 'block', width: '150px', overflow: 'hidden' }}>
                 {/* {row.Image_Name1} */}
@@ -324,8 +358,7 @@ export default class ProductsList extends Component {
         })
     }
 
-    actionEditDeleteProduct = (cell, row, rowIndex, formatExtraData) => {
-        var ProductId = row.id;
+    actionEditDeleteProduct = (cell, row) => {
         return (
             <div>
                 <Button color="primary" size="md" className="mr-2"
@@ -520,7 +553,6 @@ export default class ProductsList extends Component {
     // Delete Product 
     DeleteProduct(Product_ID) {
         console.log("ProductId", Product_ID);
-        let idtoDelete = Product_ID;
 
         const swalWithBootstrapButtons = Swal.mixin({
             customClass: {
@@ -727,7 +759,6 @@ export default class ProductsList extends Component {
             alert("Please select Excel file first");
             return
         }
-        var name = f.name;
         let result = [];
         const reader = new FileReader();
         reader.readAsBinaryString(f);
@@ -752,7 +783,7 @@ export default class ProductsList extends Component {
         var unAvailableImages = [];
         var i = 1;
         console.log("this is row object", Array_of_Object[0].length);
-        var wait = new Promise((resolve, reject) => {
+        var wait = new Promise((resolve) => {
             Array_of_Object[0].forEach(async (rowObject, index) => {
                 console.log(
                     "///////////////////////",
@@ -778,7 +809,7 @@ export default class ProductsList extends Component {
                         Array_of_Object[0][index].Image_Name1 = onfulfilled
                     }, onrejected => {
                         console.log("onrejected", onrejected);
-                        unAvailableImages.push(Array_of_Object[0][index].Image_Name1);
+                        // unAvailableImages.push({Product_Name:Array_of_Object[0][index].Product_Name});
                     });
                 }
                 if (rowObject.Image_Name2 !== undefined) {
@@ -786,7 +817,7 @@ export default class ProductsList extends Component {
                         Array_of_Object[0][index].Image_Name2 = onfulfilled
                     }, onrejected => {
                         console.log("onrejected", onrejected);
-                        unAvailableImages.push(Array_of_Object[0][index].Image_Name2);
+                        // unAvailableImages.push({Product_Name:Array_of_Object[0][index].Product_Name});
                     });
                 }
                 if (rowObject.Image_Name3 !== undefined) {
@@ -794,7 +825,7 @@ export default class ProductsList extends Component {
                         Array_of_Object[0][index].Image_Name3 = onfulfilled
                     }, onrejected => {
                         console.log("onrejected", onrejected);
-                        unAvailableImages.push(Array_of_Object[0][index].Image_Name3);
+                        // unAvailableImages.push({Product_Name:Array_of_Object[0][index].Product_Name});
                     });
                 }
                 if (rowObject.Image_Name4 !== undefined) {
@@ -802,7 +833,7 @@ export default class ProductsList extends Component {
                         Array_of_Object[0][index].Image_Name4 = onfulfilled
                     }, onrejected => {
                         console.log("onrejected", onrejected);
-                        unAvailableImages.push(Array_of_Object[0][index].Image_Name4);
+                        // unAvailableImages.push({Product_Name:Array_of_Object[0][index].Product_Name});
                     });
                 }
                 if (index === Array_of_Object[0].length - 1) resolve();
@@ -812,7 +843,7 @@ export default class ProductsList extends Component {
             console.log("Done");
             console.log("New Array", Array_of_Object, "Undefined Image Array", unAvailableImages);
             setTimeout(() => {
-                Array_of_Object[0].forEach(async (rowObject, index) => {
+                Array_of_Object[0].forEach(async (rowObject) => {
                     if (rowObject.Image_Name1 !== undefined && rowObject.Image_Name1.startsWith("https:", 0)) {
                         firebase.firestore().collection('Products').doc(rowObject.Product_ID).set({
                             Sr_No: rowObject.Sr_No === undefined ? "" : rowObject.Sr_No,
@@ -838,15 +869,20 @@ export default class ProductsList extends Component {
                             if (Array_of_Object[0].length === i) {
                                 this.setState({ isLoading: !this.state.isLoading });
                             }
+                            this.setState({flag1:true})
                         })
                     } else {
+                        i++;
                         unAvailableImages.push(rowObject);
+                        // console.log(unAvailableImages,'sanika')
+                        this.setState({unAvailableImage:unAvailableImages})
+                        console.log(this.state.unAvailableImage,'sanika')
                         if (Array_of_Object[0].length === i) {
                             this.setState({ isLoading: false });
                         }
                     }
                 });
-            },);
+            },3000);
             this.setState({ Excel_Modal: false, file: '' })
                })
         // return true
@@ -1120,11 +1156,14 @@ export default class ProductsList extends Component {
             }
         )
     }
-
+  //function for fetching prouduct that gets failed while uploading
+  getData() {
+ 
+}
     render() {
         const { ProgressBar, ProgressBar2, ProgressBar3, ProgressBar4 } = this.state;
         const { EProgressBar, EProgressBar2, EProgressBar3, EProgressBar4 } = this.state;
-        const pageButtonRenderer = ({ page, active, disable, title, onPageChange }) => {
+        const pageButtonRenderer = ({ page, onPageChange }) => {
             const handleClick = (e) => {
                 e.preventDefault();
                 onPageChange(page);
@@ -1165,6 +1204,36 @@ export default class ProductsList extends Component {
 
         };
 
+        const options1 = {
+            pageButtonRenderer,
+            paginationSize: 4,
+            pageStartIndex: 1,
+            // alwaysShowAllBtns: true, // Always show next and previous button
+            // withFirstAndLast: false, // Hide the going to First and Last page button
+            // hideSizePerPage: true, // Hide the sizePerPage dropdown always
+            // hidePageListOnlyOnePage: true, // Hide the pagination list when only one page
+            firstPageText: 'First',
+            prePageText: 'Back',
+            nextPageText: 'Next',
+            lastPageText: 'Last',
+            nextPageTitle: 'First page',
+            prePageTitle: 'Pre page',
+            firstPageTitle: 'Next page',
+            lastPageTitle: 'Last page',
+            showTotal: true,
+            paginationTotalRenderer: customTotal,
+            disablePageTitle: true,
+            sizePerPageList: [{
+                text: '5', value: 5
+            }, {
+                text: '10', value: 10
+            }, {
+                text: '20', value: 20
+            }, {
+                text: 'All', value: this.state.unAvailableImage.length
+            }]  // A numeric array is also available. the purpose of above example is custom the text
+
+        };
         return (
             <div>
                 {this.state.isLoading ? <div style={{
@@ -1195,10 +1264,15 @@ export default class ProductsList extends Component {
                         <Button color="primary" size="md" className="mr-2" onClick={() => { this.AddModal(); }}>
                             Add New Product
                         </Button>
-                        <Button color="primary" size="md" className="mr-2" onClick={() => { this.Excel_Modal(); }}>
+                        <Button color="primary" size="md" className="mr-2" onClick={() => { this.Excel_Modal(); this.setState({flag:true})}}>
                             Upload Excel
                         </Button>
+                        {this.state.flag1?
+                        <Button color="danger" size="md" className="mr-2" onClick={() =>{ this.setState({flag:false})}}>
+                            Product Failure while uploading excel
+                        </Button>:null}
                     </div>
+                    {this.state.flag?
                     <BootstrapTable
                         // {...props.baseProps}
                         noDataIndication="Table is Empty"
@@ -1212,7 +1286,21 @@ export default class ProductsList extends Component {
                         // bordered={false}
                         loading={true}
                         pagination={paginationFactory(options)}
-                    />
+                    />:
+                    <BootstrapTable
+                    // {...props.baseProps}
+                    noDataIndication="Table is Empty"
+                    keyField="id"
+                    filter={filterFactory()}
+                    data={this.state.unAvailableImage}
+                    columns={this.state.columns1}
+                    striped
+                    hover
+                    condensed
+                    // bordered={false}
+                    loading={true}
+                    pagination={paginationFactory(options1)}
+                />}
                 </div>
 
                 {/* Excel Modal */}

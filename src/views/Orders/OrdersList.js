@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 // import Button from '@material-ui/core/Button';
 import fire from '../../fire';
 import firebase from 'firebase';
-import { FormGroup, Label, Input, Modal, ModalHeader, ModalBody, ModalFooter, Form, Text, Button } from 'reactstrap';
+import { Button } from 'reactstrap';
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';

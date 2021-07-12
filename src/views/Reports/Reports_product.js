@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
-import { Alert, FormGroup, Label, Modal, ModalHeader, ModalBody, ModalFooter, Button, Input, Form, Progress, Container, Row, Col, Table } from 'reactstrap';
+import { Label, Button, Container, Row, Col } from 'reactstrap';
 import firebase from 'firebase';
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
-import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
+import filterFactory from 'react-bootstrap-table2-filter';
 import "react-datepicker/dist/react-datepicker.css";
 import moment from 'moment';
 import jsPDF from 'jspdf'
@@ -58,7 +58,7 @@ export default class Reports_product extends Component {
                     dataField: 'id',
                     text: 'Product ID',
                     align: 'center',              
-                    headerStyle: (colum, colIndex) => {
+                    headerStyle: (_colum, _colIndex) => {
                         return { textAlign: 'center' };
                     },
                 },
@@ -67,7 +67,7 @@ export default class Reports_product extends Component {
                     text: 'Image',
                     align: 'center',
                     formatter: this.Img_Nm1,
-                    headerStyle: (colum, colIndex) => {
+                    headerStyle: (_colum, _colIndex) => {
                         return { textAlign: 'center' };
                     },
                 },
@@ -75,7 +75,7 @@ export default class Reports_product extends Component {
                     dataField: 'product_name',
                     text: 'Product Name',
                     align: 'center',
-                    headerStyle: (colum, colIndex) => {
+                    headerStyle: (_colum, _colIndex) => {
                         return { textAlign: 'center' };
                     },
                 },
@@ -91,7 +91,7 @@ export default class Reports_product extends Component {
                     dataField: 'price',
                     text: 'Price',
                     align: 'center',
-                    headerStyle: (colum, colIndex) => {
+                    headerStyle: (_colum, _colIndex) => {
                         return { textAlign: 'center' };
                     },
                 },
@@ -99,14 +99,14 @@ export default class Reports_product extends Component {
                     dataField: 'qnt',
                     text:'Total Sell',
                     align: 'center',
-                    headerStyle: (colum, colIndex) => {
+                    headerStyle: (_colum, _colIndex) => {
                         return { textAlign: 'center' };
                     },
                 },
             ],
         }
     }
-    Img_Nm1 = (cell, row, rowIndex, formatExtraData) => {
+    Img_Nm1 = (_cell, row, _rowIndex, _formatExtraData) => {
         return (
             <span style={{ display: 'block', width: '150px', overflow: 'hidden' }}>
                 {/* {row.Image_Name1} */}

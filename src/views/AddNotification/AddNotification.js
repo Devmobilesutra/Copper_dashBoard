@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-import { Button, CardTitle, CardText, Form, FormGroup, Label, Input, FormText, Container, Row, Col, Progress } from 'reactstrap';
+import { Button, Form, FormGroup, Label, Input, FormText, Container, Row, Col, Progress } from 'reactstrap';
 import firebase from 'firebase';
-import moment from 'moment';
 
-const array = [1, 2, 3, 4, 5];
 export default class AddNotification extends Component {
     constructor(props) {
         super(props);
@@ -112,7 +110,7 @@ export default class AddNotification extends Component {
             () => {
                 this.state.uploadTask.on(
                     'state_changed',
-                    snap => {
+                    () => {
                       
                     },
                     err => {
@@ -247,7 +245,7 @@ export default class AddNotification extends Component {
                                             onChange={(e) => { console.log(e.target.files[0]); this.setState({ Image: e.target.files[0] }); this.Upload_Image(e.target.files[0]) }}
                                         />
                                     </Col>
-                                    {this.state.url1?<img src={this.state.url1} style={{ width: 200, height: 100 }}></img>:this.state.Image?<text>Wait till Image uploaded</text>:null}
+                                    {this.state.url1?<img src={this.state.url1} style={{ width: 200, height: 100 }}></img>:this.state.Image?<text style={{color:'red'}}>Wait till Image get upload</text>:null}
                                     <FormText color="muted">
                                         {/* This is some placeholder block-level help text for the above input.
                                         It's a bit lighter and easily wraps to a new line. */}

@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
-import { Alert, FormGroup, Label, Modal, ModalHeader, ModalBody, ModalFooter, Button, Input, Form, Progress, Container, Row, Col, Table } from 'reactstrap';
+import { Label, Button, Container, Row, Col } from 'reactstrap';
 import firebase from 'firebase';
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
-import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
+import filterFactory from 'react-bootstrap-table2-filter';
 import "react-datepicker/dist/react-datepicker.css";
 import moment from 'moment'
 import jsPDF from 'jspdf'
@@ -143,11 +143,11 @@ export default class Reports_amount extends Component {
     }
     getData() {
         const { date1, date2 } = this.state;
-        if (date1 === undefined || date1 == '') {
+        if (date1 === undefined || date1 === '') {
             alert('Select Start date')
             return
         }
-        if (date2 === undefined || date2 == '') {
+        if (date2 === undefined || date2 === '') {
             alert('Select end date')
             return
         }

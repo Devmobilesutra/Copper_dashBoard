@@ -1,24 +1,17 @@
 import React, { Component } from 'react'
-import { Alert, FormGroup, Label, Modal, ModalHeader, ModalBody, ModalFooter, Button, Input, Form, Progress, Container, Row, Col, Table } from 'reactstrap';
+import { Button, Table } from 'reactstrap';
 import firebase from 'firebase';
 // import './pdf.css'
 // import { Page, PDFDownloadLink, PDFViewer, ReactPDF, Document, Text, StyleSheet, View, pdf } from '@react-pdf/renderer';
-import update from 'immutability-helper';
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
 
-import Order_details from './Order_Details';
-import PdfDocument from './CommonPdf';
 
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-import imageToBase64 from 'image-to-base64/browser';
 import moment from 'moment'
-import { Doughnut, Bar, Line } from 'react-chartjs-2';
 
-import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf'
 import 'jspdf-autotable'
 

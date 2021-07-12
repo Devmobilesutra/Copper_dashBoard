@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
-import { Alert, FormGroup, Label, Modal, ModalHeader, ModalBody, ModalFooter, Button, Input, Form, Progress } from 'reactstrap';
+import { FormGroup, Label, Modal, ModalHeader, ModalBody, ModalFooter, Button, Form, Progress } from 'reactstrap';
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
-import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
+import filterFactory from 'react-bootstrap-table2-filter';
 import Loader from "react-loader-spinner";
 import Swal from 'sweetalert2';
-import XLSX from 'xlsx';
 import firebase from 'firebase';
 const probe = require('probe-image-size');
-const storageRef = firebase.storage().ref();
+firebase.storage().ref();
 const customTotal = (from, to, size) => (
     <span className="react-bootstrap-table-pagination-total ml-2">
         Showing {from} to {to} of {size} Results
@@ -25,6 +24,7 @@ export default class ProductsList extends Component {
             url: '',
             url1:'',
             file: '',
+            img1:'',
             isLoading: false,
 
             //Add Images
@@ -53,7 +53,7 @@ export default class ProductsList extends Component {
                     text: 'Advertisement Images',
                     align: 'center',
                     formatter: this.Img_Nm1,
-                    headerStyle: (colum, colIndex) => {
+                    headerStyle: () => {
                         
                         // return {textAlign: 'center' };
                     },
@@ -64,14 +64,14 @@ export default class ProductsList extends Component {
                     text: "Actions",
                      formatter: this.actionEditDeleteProduct,
                     align: 'center',
-                    headerStyle: (colum, colIndex) => {
+                    headerStyle: () => {
                         return {'width':'200px',textAlign: 'center'};
                     },
                 }
             ]
         };
     }
-    Img_Nm1 = (cell, row, rowIndex, formatExtraData) => {
+    Img_Nm1 = (cell, row) => {
         return (
             <span style={{ display:'block', width:'400px',height:'200px',overflow: 'hidden' }}>
                 {/* {row.Image_Name1} */}
@@ -82,12 +82,12 @@ export default class ProductsList extends Component {
 
     componentDidMount() {
         console.log("ComponentDidMount");
-        firebase.firestore().collection('Discount_Images') .doc('Discount_Images')
+        firebase.firestore().collection('Discount_Images').doc('Discount_Images')
         .get()
         .then((onSnapshot) => {
           console.log('User exists: ', onSnapshot.exists);
           console.log('User: ', onSnapshot.data().images);
-          if (onSnapshot.data().images != undefined) {
+          if (onSnapshot.data().images !== undefined) {
             onSnapshot.data().images.forEach((documentSnapshot) => {
             //   console.log('User ID: ', documentSnapshot);
             this.state.productsList1.push(documentSnapshot);
@@ -99,8 +99,7 @@ export default class ProductsList extends Component {
         console.log(this.state.productsList,"ahfkjlh")
     }
 
-    actionEditDeleteProduct = (cell, row, rowIndex, formatExtraData) => {
-        var ProductId = row.index;
+    actionEditDeleteProduct = (cell, row) => {
         return (
             <div>
               
@@ -124,7 +123,6 @@ export default class ProductsList extends Component {
     // Delete Product 
     DeleteProduct(Product_ID) {
         console.log("ProductId", Product_ID);
-        let idtoDelete = Product_ID;
 
         const swalWithBootstrapButtons = Swal.mixin({
             customClass: {
@@ -179,7 +177,21 @@ export default class ProductsList extends Component {
     }
 
     async Add_productData() {
+        var len=this.state.productsList1.length
+        console.log(len,'length')
+        for(var i=0;i<len;i++)
+        {
+            console.log(this.state.productsList1[i])
+            console.log( this.state.productsList1[i].includes(this.state.img1.name))
+            if(this.state.productsList1[i].includes(this.state.img1.name)===true)
+            {
+                alert('Image allready available,please select another image');
+                this.setState({ isLoading: false });
+                return
+            }
+        }
         const { Add_productData } = this.state;
+        console.log()
         let result = await probe(this.state.url1);
         console.log(result);
          if (!Add_productData.Image_Name1) {
@@ -232,8 +244,11 @@ export default class ProductsList extends Component {
    
     // Image upload for add form
     async Upload_Image(Img) {
-       
+       this.setState({url1:''})
         console.log("image for firebaseImg", Img);
+
+      this.setState({img1:Img})
+
         this.setState({ ProgressBar: !this.state.ProgressBar })
         // const uploadTask = await firebase.storage().ref(`/Images/${Img.name}`).put(Img);
         this.setState({
@@ -254,6 +269,7 @@ export default class ProductsList extends Component {
                         this.state.uploadTask.snapshot.ref.getDownloadURL().then(downloadUrl => {
                             console.log('this is the image url', downloadUrl);
                                this.setState({url1:downloadUrl})
+                             
                             let { Add_productData } = this.state;
                             Add_productData.Image_Name1 = downloadUrl;
                             this.setState({ Add_productData, ProgressBar: !this.state.ProgressBar }, () => console.log("1", this.state.Add_productData.Image_Name1))
@@ -270,7 +286,7 @@ export default class ProductsList extends Component {
  
     render() {
         const { ProgressBar } = this.state;
-        const pageButtonRenderer = ({ page, active, disable, title, onPageChange }) => {
+        const pageButtonRenderer = ({ page, onPageChange }) => {
             const handleClick = (e) => {
                 e.preventDefault();
                 onPageChange(page);
@@ -382,7 +398,7 @@ export default class ProductsList extends Component {
                                     onChange={(e) => {
                                         console.log("File selected", e.target.files[0]);
                                         this.Upload_Image(e.target.files[0])
-                                    }} /><text>maximum size should be 300 kb</text>
+                                    }} /><text style={{color:'red'}}>maximum size should be 300 kb</text>
                             </FormGroup>
                             {this.state.ProgressBar ? <Progress value={this.state.percentUploaded} /> : null}
                             {this.state.url1?<img src={this.state.url1} style={{ width: 250, height: 100 }}></img>:null}
