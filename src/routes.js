@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 import Login from './views/Login/Login';
 import Welcome from './views/Welcome/Welcome';
-
+import Admin from './views/Users/Admin';
 import UsersList from './views/Users/UsersList';
 import ProductsList from './views/Products/ProductsList';
 import DiscountImage from './views/images/DiscountImage';
@@ -22,6 +22,7 @@ const Routes = () => (
         <Switch>
             <Route exact path='/' component={Login} />
             <Route path='/Welcome' component={Welcome} />
+            <Route path='/Admin' component={Admin} />
             <Route path='/UsersList' component={UsersList} />
             <Route path='/ProductsList' component={ProductsList} />
             <Route path='/DiscountImage' component={DiscountImage}/>

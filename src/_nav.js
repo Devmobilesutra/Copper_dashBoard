@@ -10,6 +10,11 @@ export default {
       },
     },
     {
+      name: 'Admin',
+      url: '/Admin',
+      icon: 'icon-pencil',
+    },
+    {
       name: 'User List',
       url: '/UsersList',
       icon: 'icon-pencil',

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import loader from "react-loader-spinner";
 
 export default class Loader extends Component {
     constructor(props) {

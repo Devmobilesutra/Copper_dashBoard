@@ -2,6 +2,7 @@ import React from 'react';
 
 const Dashboard = React.lazy(() => import('./views/Dashboard/Dashboard'));
 const UsersList = React.lazy(() => import('./views/Users/UsersList'));
+const Admin=React.lazy(()=>import('./views/Users/Admin'));
 const ProductsList = React.lazy(() => import('./views/Products/ProductsList'));
 const DiscountImage=React.lazy(() => import('./views/images/DiscountImage'))
 const OrdersList = React.lazy(() => import('./views/Orders/OrdersList'));
@@ -17,6 +18,7 @@ const Reports_product = React.lazy(() => import('./views/Reports/Reports_product
 const routesDrawer = [
     { path: '/', exact: true, name: 'Home' },
     { path: '/dashboard', name: 'Dashboard', component: Dashboard },
+    { path: '/Admin',name: 'Admin',component:Admin},
     { path: '/UsersList', name: 'UsersList', component: UsersList },
     { path: '/ProductsList', name: 'ProductsList', component: ProductsList },
     { path: '/DiscountImage',name: 'DiscoutImage', component:DiscountImage},

@@ -11,8 +11,8 @@ export default class AddNotification extends Component {
             title: null,
             content: null,
 
-            screen_message_title: null,
-            screen_message: null,
+            screen_message_title: '',
+            screen_message: '',
 
             ImageUploadingStatus: '',
             imageProgress: false,
@@ -182,6 +182,7 @@ export default class AddNotification extends Component {
                     })
             }
         )
+       
     }
 
     render() {
@@ -219,7 +220,7 @@ export default class AddNotification extends Component {
                         </Col>
                         <Col>
                             <h1>Mobile Screen Messages</h1>
-                            {this.state.imageProgress ? <h2>Image Uploading Status</h2> : null}
+                            {this.state.imageProgress ? <h2>Uploading Status</h2> : null}
                             {this.state.imageProgress ? <Progress value={this.state.ImageUploadingStatus} /> : null}
                             <Form>
                                 <FormGroup row>
@@ -278,6 +279,7 @@ export default class AddNotification extends Component {
                                             <Row>
                                                 <Col sm={3}><strong>Notification Content:</strong></Col>
                                                 <Col>{data.content}</Col>
+                                                <Col sm={4}> {data.type=='Screen Message'?<img src={data.image} style={{ width: 200, height: 150 }}></img>:null}</Col>
                                             </Row>
                                         </Col>
                                     </Container>

@@ -5,7 +5,9 @@ import {
   Form, Input, InputGroup, InputGroupAddon, InputGroupText, Row
 } from 'reactstrap';
 import { Redirect } from 'react-router-dom';
-
+import fire from '../../fire';
+import firebase from 'firebase';
+import {reactLocalStorage} from 'reactjs-localstorage';
 class Login extends Component {
   constructor(props) {
     super(props);
@@ -15,6 +17,7 @@ class Login extends Component {
       UsernameErr: '',
       PasswordErr: '',
       redirect: false,
+      user:[],
       //name:''
 
       newLoginData: {
@@ -31,7 +34,20 @@ class Login extends Component {
 
   componentDidMount() {
     console.log("Hey bro you did it");
-  }
+        fire.firestore().collection('Users_admin').onSnapshot(data => {
+            this.setState({ user: [] });
+            data.forEach(el => {
+                console.log("el", el.data())
+         
+                    this.state.user.push(el.data())
+
+
+            })
+            console.log("user name", this.state.user);
+        })
+
+    }
+
   validate = () => {
     let UsernameErr = '';
     let PasswordErr = '';
@@ -56,12 +72,17 @@ class Login extends Component {
     const isValid = this.validate();
 
     if (isValid) {
-      if (this.state.newLoginData.username == 'copper' && this.state.newLoginData.password == 'copper') {
-        this.setState({ redirect: true });
+      var len=this.state.user.length
+      for(var i=0;i<len;i++)
+      {
+      if (this.state.newLoginData.username ==this.state.user[i].Username && this.state.newLoginData.password ==this.state.user[i].Password) {
+        reactLocalStorage.set('username', this.state.user[i].Username);
+        this.setState({ redirect: true })
       }
-      else {
+      else  if (this.state.newLoginData.username !==this.state.user[i].Username && this.state.newLoginData.password !==this.state.user[i].Password){
         alert("Wrong Username Or Password");
       }
+    }
     }
 
   }
@@ -74,47 +95,7 @@ class Login extends Component {
     }
 
     return (
-      //         <div className="justify-content-center"> 
-      //         <Container>
-      //         <Card className="p-4">
-
-      //         <div className="row small-up-2 medium-up-3 large-up-4">
-      //         <div className ="column bodyPart">
-      //             <CardBody>
-      //             <Form>
-      //              <h2>Login Page</h2>
-      //              <label>Username</label>
-      //              <input type="text" name="username" placeholder="username" 
-      //                 value={this.state.newLoginData.username} onChange={(e) => {
-      //                 let { newLoginData } = this.state;
-      //                 newLoginData.username = e.target.value;
-      //                 this.setState({ newLoginData });
-      //             }} />
-      //              <div style={{ fontSize:12, color: "red" }}>{this.state.UsernameErr}</div> 
-      //              <label>Password</label>
-      //              <input type="password" name="password" placeholder="password"
-      //              value={this.state.newLoginData.password} onChange={(e) => {
-      //                 let { newLoginData } = this.state;
-      //                 newLoginData.password = e.target.value;
-      //                 this.setState({ newLoginData }); 
-      //               }} />
-      //              <div style={{ fontSize:12, color: "red" }}>{this.state.PasswordErr}</div> 
-      //              <input type="submit" value="Login" className="button" onClick={this.login}/>
-
-
-
-      //              {/* <a href="/signup">Register</a> */}
-      //              </Form>
-      //              </CardBody>
-      //         </div>
-      //     </div>
-
-      //     </Card>
-      //     </Container>
-      //    </div>
-
-
-
+    
       <div className="app flex-row align-items-center">
         <Container>
           <Row className="justify-content-center">
