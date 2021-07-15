@@ -18,6 +18,7 @@ class Login extends Component {
       PasswordErr: '',
       redirect: false,
       user:[],
+      flag:'',
       //name:''
 
       newLoginData: {
@@ -76,18 +77,20 @@ class Login extends Component {
       for(var i=0;i<len;i++)
       {
       if (this.state.newLoginData.username ==this.state.user[i].Username && this.state.newLoginData.password ==this.state.user[i].Password) {
-        reactLocalStorage.set('username', this.state.user[i].Username);
+        reactLocalStorage.set('username', this.state.user[i].Name);
+        // this.setState({flag:true})
         this.setState({ redirect: true })
+        break;
       }
-      else  if (this.state.newLoginData.username !==this.state.user[i].Username && this.state.newLoginData.password !==this.state.user[i].Password){
-        alert("Wrong Username Or Password");
       }
-    }
-    }
+      // if(this.state.flag!==true)
+      // {
+      //   alert(" Wrong username or password")
+      // }
 
   }
 
-
+  }
   render() {
 
     if (this.state.redirect) {

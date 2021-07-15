@@ -32,6 +32,7 @@ export default class Admin extends Component {
             addModal: false,
             hidden:true,
             Add_adminData: {
+                name:'',
                 Username: '',
                 Password: '',
                 C_Password:'',
@@ -58,6 +59,7 @@ export default class Admin extends Component {
 
 AddModal() {
     const { Add_adminData } = this.state;
+        Add_adminData.name =''
         Add_adminData.Username = ''
         Add_adminData.Password = ''
         this.setState({
@@ -70,9 +72,13 @@ AddModal() {
     Add_adminData() {
       
         const { Add_adminData } = this.state;
-      
-        if (!Add_adminData.Username) {
-            alert('please Enter User name');
+        if (!Add_adminData.name) {
+            alert('please Enter name');
+            this.setState({ isLoading: false });
+            return
+        } 
+        else if (!Add_adminData.Username) {
+            alert('please Enter Username');
             this.setState({ isLoading: false });
             return
         } 
@@ -89,18 +95,19 @@ AddModal() {
         var len = this.state.adminList.length
         for (var i = 0; i < len; i++) {
             if (Add_adminData.Username == this.state.adminList[i].Username) {
-                alert("User allready registerd");
+                alert("Admin allready registerd");
                 return
             }
         }
         firebase.firestore().collection('Users_admin').doc().set({
             // category_name: this.state.addCategoryData.category_name
+            Name:this.state.Add_adminData.name,
             Username: this.state.Add_adminData.Username,
             Password: this.state.Add_adminData.Password,
         }).then(() => {
             Swal.fire({
                 icon: 'success',
-                text: "User Added Succesfully",
+                text: "Admin Added Succesfully",
                 confirmButtonColor: '#d33',
                 confirmButtonText: 'OK'
             });
@@ -114,7 +121,7 @@ AddModal() {
                     confirmButtonText: 'OK'
                 })
             });
-
+        Add_adminData.name=''
         Add_adminData.Username = ''
         Add_adminData.Password = ''
         this.setState({
@@ -124,7 +131,7 @@ AddModal() {
         })
     }
     toggleShow() {
-        this.setState({ hidden: !this.state.hidden });
+        this.setState({hidden:!this.state.hidden});
       }
     render() {
         console.log(this.state.adminList.length)
@@ -144,9 +151,18 @@ AddModal() {
                     </ModalHeader>
                     <ModalBody >
                         <Form>
+                        <FormGroup>
+                        <Label for="name">Admin name</Label>
+                        <Input type="text" name="Username" id="Username" placeholder="Enter Admin name"
+                                    onChange={(e) => {
+                                        const { Add_adminData } = this.state;
+                                        Add_adminData.name = e.target.value;
+                                        this.setState({ Add_adminData });
+                                    }} />
+                         </FormGroup>
                             <FormGroup>
                         <Label for="Username">Username</Label>
-                        <Input type="text" name="Username" id="Username" placeholder="Enter username"
+                        <Input type="text" name="Username" id="Username" placeholder="Enter Username"
                                     onChange={(e) => {
                                         const { Add_adminData } = this.state;
                                         Add_adminData.Username = e.target.value;
@@ -170,8 +186,8 @@ AddModal() {
                                         this.setState({ Add_adminData });
                                     }} />
                                 }
-                                {this.state.Add_adminData.Password?
-                                  <button onClick={this.toggleShow}>Show/Hide</button>:null}
+                                {/* {this.state.Add_adminData.Password?
+                                  <button onClick={this.toggleShow}>Show/Hide</button>:null} */}
                        </FormGroup>
                      
                        {/* <FormGroup>

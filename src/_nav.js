@@ -25,11 +25,6 @@ export default {
       icon: 'icon-pencil',
     },
     {
-      name: 'advertisement image',
-      url: '/DiscountImage',
-      icon: 'icon-pencil',
-    },
-    {
       name: 'Orders List',
       url: '/OrdersList',
       icon: 'icon-pencil',
@@ -40,14 +35,18 @@ export default {
     //   icon: 'icon-pencil',
     // },
     {
+      name: 'Advertisement Image',
+      url: '/DiscountImage',
+      icon: 'icon-pencil',
+    },
+    {
       name: 'Add Notification',
       url: '/AddNotification',
       icon: 'icon-pencil',
     },
     {
-      name: 'Reports',
-      url: '/Reports',
-      icon: 'icon-pencil',
+      name: 'REPORTS',
+    
     },
     {
       name: 'Top 3 channel Partners',

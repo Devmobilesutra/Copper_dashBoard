@@ -221,7 +221,7 @@ export default class ProductsList extends Component {
                     },
                 },
                 {
-                    dataField: 'Image_Name1',
+                    dataField: 'Image_Name2',
                     text: 'Image Name1',
                     align: 'center',
                     formatter: this.Img_Nm1,
@@ -316,7 +316,7 @@ export default class ProductsList extends Component {
         return (
             <span style={{ display: 'block', width: '150px', overflow: 'hidden' }}>
                 {/* {row.Image_Name1} */}
-                <img src={row.Image_Name1} alt={row.Image_Name1} />
+                <img src={row.Image_Name2} alt={row.Image_Name2} />
             </span>
         )
     }
@@ -844,6 +844,7 @@ export default class ProductsList extends Component {
             console.log("New Array", Array_of_Object, "Undefined Image Array", unAvailableImages);
             setTimeout(() => {
                 Array_of_Object[0].forEach(async (rowObject) => {
+                    // if (rowObject.Image_Name1 !== undefined && rowObject.Image_Name1.startsWith("https:", 0)||rowObject.Image_Name2 !== undefined && rowObject.Image_Name2.startsWith("https:", 0)||rowObject.Image_Name3 !== undefined && rowObject.Image_Name3.startsWith("https:", 0)||rowObject.Image_Name4 !== undefined && rowObject.Image_Name4.startsWith("https:", 0)) {
                     if (rowObject.Image_Name1 !== undefined && rowObject.Image_Name1.startsWith("https:", 0)) {
                         firebase.firestore().collection('Products').doc(rowObject.Product_ID).set({
                             Sr_No: rowObject.Sr_No === undefined ? "" : rowObject.Sr_No,
@@ -1269,7 +1270,7 @@ export default class ProductsList extends Component {
                         </Button>
                         {this.state.flag1?
                         <Button color="danger" size="md" className="mr-2" onClick={() =>{ this.setState({flag:false})}}>
-                            Product Failure while uploading excel
+                            Upload failure
                         </Button>:null}
                     </div>
                     {this.state.flag?

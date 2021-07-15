@@ -193,20 +193,20 @@ export default class AddNotification extends Component {
                     {/* <Button>Function</Button> */}
                     <Row>
                         <Col>
-                            <h1>Push Notification</h1>
+                            <h2>Send Notice</h2>
                             <Form>
                                 <FormGroup row>
-                                    <Label for="Notification Title" sm={2}>Notification Title</Label>
+                                    <Label for="Notice Title" sm={2}>Notice Title</Label>
                                     <Col sm={10}>
-                                        <Input type="email" name="Notification_Title" id="Notification Title" placeholder="Title of notification"
+                                        <Input type="email" name="Notification_Title" id="Notification Title" placeholder="Title of notice"
                                             onChange={(e) => this.setState({ title: e.target.value })}
                                         />
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
-                                    <Label for="Notification-content" sm={2}>Notification content</Label>
+                                    <Label for="Notice-content" sm={2}>Notice content</Label>
                                     <Col sm={10}>
-                                        <Input type="textarea" name="Notification" id="Notification-content" placeholder="Title of notification"
+                                        <Input type="textarea" name="Notification" id="Notification-content" placeholder="Title of notice"
                                             onChange={(e) => this.setState({ content: e.target.value })}
                                         />
                                     </Col>
@@ -219,28 +219,28 @@ export default class AddNotification extends Component {
                             </Form>
                         </Col>
                         <Col>
-                            <h1>Mobile Screen Messages</h1>
+                            <h2>Channel Partner's Appreciation Screen</h2>
                             {this.state.imageProgress ? <h2>Uploading Status</h2> : null}
                             {this.state.imageProgress ? <Progress value={this.state.ImageUploadingStatus} /> : null}
                             <Form>
                                 <FormGroup row>
-                                    <Label for="Notification Title" sm={2}>Notification Title</Label>
+                                    <Label for="Title" sm={2}>Title</Label>
                                     <Col sm={10}>
-                                        <Input type="email" name="Notification_Title" id="Notification Title" placeholder="Title of notification"
+                                        <Input type="email" name="Notification_Title" id="Notification Title" placeholder="Title"
                                             onChange={(e) => this.setState({ screen_message_title: e.target.value })}
                                         />
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
-                                    <Label for="Notification-content" sm={2}>Notification content</Label>
+                                    <Label for="Appreciation message" sm={2}>Appreciation message</Label>
                                     <Col sm={10}>
-                                        <Input type="textarea" name="Notification" id="Notification-content" placeholder="Title of notification"
+                                        <Input type="textarea" name="Notification" id="Notification-content" placeholder="Appreciation message"
                                             onChange={(e) => this.setState({ screen_message: e.target.value })}
                                         />
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
-                                    <Label for="exampleFile">Select Picture to upload</Label>
+                                    <Label for="exampleFile">Channel Partner's Photo</Label>
                                     <Col sm={10}>
                                         <input type="file" name="file" id="exampleFile"
                                             onChange={(e) => { console.log(e.target.files[0]); this.setState({ Image: e.target.files[0] }); this.Upload_Image(e.target.files[0]) }}

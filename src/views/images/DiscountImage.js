@@ -6,7 +6,7 @@ import filterFactory from 'react-bootstrap-table2-filter';
 import Loader from "react-loader-spinner";
 import Swal from 'sweetalert2';
 import firebase from 'firebase';
-const probe = require('probe-image-size');
+// const probe = require('probe-image-size');
 firebase.storage().ref();
 const customTotal = (from, to, size) => (
     <span className="react-bootstrap-table-pagination-total ml-2">
@@ -192,19 +192,13 @@ export default class ProductsList extends Component {
         }
         const { Add_productData } = this.state;
         console.log()
-        let result = await probe(this.state.url1);
-        console.log(result);
+       
          if (!Add_productData.Image_Name1) {
             alert('Please select Image');
             this.setState({ isLoading: false });
             return
          }
-         else if(result.length>'300000')
-         {
-             alert('Image size exceed 300kb. Please upload again')
-             this.setState({isLoading:false});
-             return
-         }
+        
          this.state.productsList.push({index:this.state.Add_productData.Image_Name1});
          this.state.productsList1.push(this.state.Add_productData.Image_Name1);
          this.setState({});
@@ -242,11 +236,18 @@ export default class ProductsList extends Component {
     }
 
    
-    // Image upload for add form
+    // Image upload 
     async Upload_Image(Img) {
        this.setState({url1:''})
         console.log("image for firebaseImg", Img);
-
+        let result = Img.size;
+        console.log(typeof(result));
+        if(result >'300000')
+        {
+            alert('Image size exceed 300kb. Please upload again')
+            this.setState({isLoading:false});
+            return
+        }
       this.setState({img1:Img})
 
         this.setState({ ProgressBar: !this.state.ProgressBar })
@@ -269,7 +270,7 @@ export default class ProductsList extends Component {
                         this.state.uploadTask.snapshot.ref.getDownloadURL().then(downloadUrl => {
                             console.log('this is the image url', downloadUrl);
                                this.setState({url1:downloadUrl})
-                             
+                              
                             let { Add_productData } = this.state;
                             Add_productData.Image_Name1 = downloadUrl;
                             this.setState({ Add_productData, ProgressBar: !this.state.ProgressBar }, () => console.log("1", this.state.Add_productData.Image_Name1))

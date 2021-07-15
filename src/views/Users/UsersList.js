@@ -53,7 +53,7 @@ export default class UsersList extends Component {
             columnsConfirmUser: [
                 {
                     dataField: 'name',
-                    text: 'User Name',
+                    text: 'Channel Partner Name',
                     align: 'center',
                     headerStyle: (colum, colIndex) => {
                         return { textAlign: 'center' };
@@ -113,7 +113,7 @@ export default class UsersList extends Component {
             columnsUser: [
                 {
                     dataField: 'name',
-                    text: 'User Name',
+                    text: 'Channel Partner Name',
                     align: 'center',
                     filter: textFilter({
                         placeholder: 'Search'
@@ -445,7 +445,7 @@ export default class UsersList extends Component {
             console.log('first loop', Add_userData.mobile_no)
             console.log('first loop1', this.state.userList[i].mobileNumber)
             if (Add_userData.mobile_no == this.state.userList[i].mobileNumber) {
-                alert("User allready registerd");
+                alert("Channel Partner allready registerd");
                 this.setState({ isLoading: false });
                 return
             }
@@ -453,7 +453,7 @@ export default class UsersList extends Component {
         for (var i = 0; i < len1; i++) {
             console.log('second loop')
             if (Add_userData.mobile_no == this.state.userListFalse[i].mobileNumber) {
-                alert("User allready registerd");
+                alert("Channel Partner allready registerd");
                 this.setState({ isLoading: false });
                 return
             }
@@ -782,12 +782,12 @@ export default class UsersList extends Component {
                             'modal-title': 'w-100 text-center', 'border-bottom': '0px',
                             'padding': '2rem 1rem 0rem 1rem'
                         }}>
-                        <Label style={{ fontSize: 30, color: '#B87333' }} >Add New User</Label>
+                        <Label style={{ fontSize: 30, color: '#B87333' }} >Add New Channel Partner</Label>
                     </ModalHeader>
                     <ModalBody >
                         <Form>
                             <FormGroup>
-                                <Label for="User_Name">User name</Label>
+                                <Label for="User_Name">Channel Partner name</Label>
                                 <Input type="text" name="User_Name" id="User_Name" placeholder="Enter Name"
                                     onChange={(e) => {
                                         const { Add_userData } = this.state;
@@ -910,7 +910,7 @@ export default class UsersList extends Component {
                     </ModalFooter>
                 </Modal>
 
-                <h1>User List</h1>
+                <h1>Channel Partner List</h1>
 
                 {/* table of new users entry without confirmation */}
                 <br />
@@ -918,7 +918,7 @@ export default class UsersList extends Component {
                 {/* table of existed users */}
                 <div style={{ marginRight: 10, marginBottom: 10, marginTop: 10 }}>
                     <button style={{ borderRadius: 4, backgroundColor: '#20A8D8', color: 'white', padding: 7, textAlign: 'center', display: 'inline-block' }} color="primary" size="medium" onClick={() => { this.AddModal(); }}>
-                        Add new user
+                        Add new Channel Partner
                     </button>
                 </div>
                 {'\n\n'}
@@ -971,7 +971,7 @@ export default class UsersList extends Component {
                     />
                 </div>
 
-                <h2>Please Confirm User's Entry</h2>
+                <h2>Please Confirm Channel Partner's Entry</h2>
                 <div>
                     <BootstrapTable
                         // {...props.baseProps}
