@@ -15,7 +15,7 @@ export default {
       icon: 'icon-pencil',
     },
     {
-      name: 'User List',
+      name: 'Channel Partners',
       url: '/UsersList',
       icon: 'icon-pencil',
     },

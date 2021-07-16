@@ -147,7 +147,7 @@ AddModal() {
                             'modal-title': 'w-100 text-center', 'border-bottom': '0px',
                             'padding': '2rem 1rem 0rem 1rem'
                         }}>
-                        <Label style={{ fontSize: 30, color: '#B87333' }} >Add New User</Label>
+                        <Label style={{ fontSize: 30, color: '#B87333' }} >Add New Admin</Label>
                     </ModalHeader>
                     <ModalBody >
                         <Form>
@@ -213,7 +213,7 @@ AddModal() {
 {/* table of existed users */}
 <div style={{ marginRight: 10, marginBottom: 10, marginTop: 10 }}>
     <button style={{ borderRadius: 4, backgroundColor: '#20A8D8', color: 'white', padding: 7, textAlign: 'center', display: 'inline-block' }} color="primary" size="medium" onClick={() => { this.AddModal(); }}>
-        Add new user
+        Add new Admin
     </button>
 </div>
             </div>
