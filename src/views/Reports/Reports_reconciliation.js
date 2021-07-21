@@ -5,20 +5,22 @@ import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 import filterFactory from 'react-bootstrap-table2-filter';
 import "react-datepicker/dist/react-datepicker.css";
-import moment from 'moment';
+import moment from 'moment'
 import jsPDF from 'jspdf'
-        
+import ToolkitProvider, { CSVExport } from 'react-bootstrap-table2-toolkit';
+const { ExportCSVButton } = CSVExport;
+
 const customTotal = (from, to, size) => (
     <span className="react-bootstrap-table-pagination-total ml-2">
         Showing { from} to { to} of { size} Results
     </span>
 );
 
-export default class Reports_product extends Component {
+export default class Reports_reconciliation extends Component {
     // labels = Utils.months({ count: 7 });
     constructor() {
         super();
-        this.state = {
+        this.state = { 
             show: false,
             date1: '',
             date2: '',
@@ -55,79 +57,88 @@ export default class Reports_product extends Component {
 
             columns: [
                 {
+                    dataField: 'name',
+                    text: 'Product name',
+                    align: 'center',
+                    headerStyle: (colum, colIndex) => {
+                        return { textAlign: 'center' };
+                    },
+                },
+                {
                     dataField: 'id',
-                    text: 'Product ID',
-                    align: 'center',              
-                    headerStyle: (_colum, _colIndex) => {
-                        return { textAlign: 'center' };
-                    },
-                },
-                {
-                    dataField: 'imgurl',
-                    text: 'Image',
+                    text: 'Product Id',
                     align: 'center',
-                    formatter: this.Img_Nm1,
-                    headerStyle: (_colum, _colIndex) => {
+                    headerStyle: (colum, colIndex) => {
                         return { textAlign: 'center' };
                     },
                 },
-                {
-                    dataField: 'product_name',
-                    text: 'Product Name',
-                    align: 'center',
-                    headerStyle: (_colum, _colIndex) => {
-                        return { textAlign: 'center' };
-                    },
-                },
-                // {
-                //     dataField: 'Category_Name',
-                //     text: 'Category Name',
-                //     align: 'center',
-                //     headerStyle: (colum, colIndex) => {
-                //         return { textAlign: 'center' };
-                //     },
-                // },
                 {
                     dataField: 'price',
                     text: 'Price',
                     align: 'center',
-                    headerStyle: (_colum, _colIndex) => {
+                    headerStyle: (colum, colIndex) => {
                         return { textAlign: 'center' };
                     },
                 },
                 {
-                    dataField: 'qnt',
-                    text:'Total Sell',
+                    dataField: 'quantity',
+                    text: 'Total quantity',
                     align: 'center',
-                    headerStyle: (_colum, _colIndex) => {
+                    headerStyle: (colum, colIndex) => {
+                        return { textAlign: 'center' };
+                    },
+                },
+        
+                {
+                    dataField: 'amount',
+                    text: 'Total Bill',
+                    align: 'center',
+                    headerStyle: (colum, colIndex) => {
                         return { textAlign: 'center' };
                     },
                 },
             ],
         }
     }
-    Img_Nm1 = (_cell, row, _rowIndex, _formatExtraData) => {
-        return (
-            <span style={{ display: 'block', width: '150px', overflow: 'hidden' }}>
-                {/* {row.Image_Name1} */}
-                <img src={row.imgurl} alt={row.Image_Name1} />
-            </span>
-        )
+    
+    async componentDidMount() {
+        console.log("ComponentDidMount");
+        //for order details
+        firebase.firestore().collection('OrderList').onSnapshot(data => {
+            this.setState({ OrderDetails: [] });
+            var OList = [];
+            var falseOrderlist = [];
+            var TA = 0;
+            data.forEach(async (el) => {
+                console.log("el", el.data().Total_amount);
+                OList.push({ id: el.id, ...el.data() });
+                if (el.data().delivery_status === false) {
+                    falseOrderlist.push({ id: el.id, ...el.data() });
+                }
+                TA = TA + parseInt(el.data().Total_amount);
+            })
+            console.log("TA", TA);
+            console.log("orderDetails", this.state.OrderDetails);
+            this.setState({ OrderDetails: OList, TA: TA, filteredArray: falseOrderlist });
+        })
     }
     printDocument() {
+
         // console.log(this.state.filteredArray1,'aaaaaaaaaaaaaaaaaaaaaaaaaaaa')
         // Or use javascript directly:
         var doc = new jsPDF();
-        doc.text('Top Selling Product from '+this.state.date1+' to '+this.state.date2,10,10);
+        doc.text('Top 3 channel partners from  '+this.state.date1+' to '+this.state.date2,10,10);
         doc.autoTable({
-          head: [['Product Id','Product Name','price','Totle Sell']],
+          head: [['user_name','User_MobileNo','total_bill']],
           body: [
-            [this.state.filteredArray1[0].id,this.state.filteredArray1[0].product_name,this.state.filteredArray1[0].price,this.state.filteredArray1[0].qnt],
+            [this.state.filteredArray1[0].user_name,this.state.filteredArray1[0].user_id,this.state.filteredArray1[0].amt],
+            [this.state.filteredArray1[1].user_name,this.state.filteredArray1[1].user_id,this.state.filteredArray1[1].amt],
+            [this.state.filteredArray1[2].user_name,this.state.filteredArray1[2].user_id,this.state.filteredArray1[2].amt]
             // ...
           ],
         })
         
-        doc.save('Top_Selling_product.pdf')
+        doc.save('Top_channer_partners.pdf')
     }
 
     dateChange1(date) {
@@ -172,6 +183,8 @@ export default class Reports_product extends Component {
             alert('Choose greater end date');
             return
         }
+         console.log(startDate,'data')
+         console.log(endDate,'data')
         const orders = firebase.firestore().collection('OrderList')
             .where('orderDateFormat', '>=', startDate)
             .where('orderDateFormat', '<=', endDate)
@@ -180,15 +193,15 @@ export default class Reports_product extends Component {
             console.log("fff", element.docs);
             let localArray = [];
             let localArray1=[];
+            let localArray1_unique=[];
             let localArray2=[];
-            let localArray3=[];
             element.docs.forEach(data => {
                 // console.log("itereted data", data.data(), " date format ", data.data().timestamp, new Date(data.data().timestamp.seconds * 1000), moment(data.data().timestamp.seconds * 1000).format('DD/MM/YYYY'))
                 localArray.push({ id: data.id, ...data.data()})
             })
             for(var i=0;i<localArray.length;i++)
             {
-                var total_amount=0;
+               
             // console.log(localArray[i],'ahfasgdjlak')
                 for(var j=0;j<localArray[i].product_details.length;j++)
                 {     
@@ -197,45 +210,33 @@ export default class Reports_product extends Component {
                 } 
            
             }
-            // console.log('test',localArray1)
-            for(i=0;i<localArray1.length;i++)
+            localArray1_unique=localArray1.filter(function (a) {
+                var key = a.id;
+                  if (!this[key]) 
+                  {
+                       this[key] = true;
+                      return true;
+                  }
+              }, Object.create(null));
+  
+               console.log('test',localArray1)
+              console.log('test',localArray1_unique)
+            for(i=0;i<localArray1_unique.length;i++)
             {  var total_quantity=0;
+                var total_amount=0;
                 for(j=0;j<localArray1.length;j++)
                 {
-                    if(localArray1[i].id==localArray1[j].id)
+                    if(localArray1_unique[i].id==localArray1[j].id)
                     {
                         total_quantity=parseInt(localArray1[j].quantity)+parseInt(total_quantity)
+                        total_amount=parseInt(localArray1[j].total_Price)+parseInt(total_amount)
                     }
                 }
-                localArray2.push({name:localArray1[i].product_name,quantity:total_quantity})
+                localArray2.push({name:localArray1_unique[i].product_name,id:localArray1_unique[i].id,price:localArray1_unique[i].price,quantity:total_quantity,amount:total_amount})
             }
-            localArray2.sort(function(a, b) {
-                return b.quantity - a.quantity;
-            });
-             localArray2=localArray2.filter(function (a) {
-              var key = a.name;
-                if (!this[key]) 
-                {
-                     this[key] = true;
-                    return true;
-                }
-            }, Object.create(null));
-
-            //  console.log(localArray1,'array')
-            for(i=0;i<1;i++)
-            {
-                // console.log(localArray1,'console')
-                for(j=0;j<localArray1.length;j++)
-                {
-                    if(localArray2[i].name===localArray1[j].product_name)
-                    {
-                        localArray3.push({qnt:localArray2[i].quantity,...localArray1[j]})
-                        break;
-                    }
-                }
-            }
-            console.log(localArray2,'fianl array')
-            this.setState({ filteredArray1: localArray3})
+          
+            // console.log(localArray2,'fianl array')
+            this.setState({ filteredArray1: localArray2})
         })
     }
     render() {
@@ -271,10 +272,20 @@ export default class Reports_product extends Component {
             }, {
                 text: '20', value: 20
             }, {
-                text: 'All', value: this.state.productsList.length
+                text: 'All', value: this.state.filteredArray1.length
             }]  // A numeric array is also available. the purpose of above example is custom the text
 
         };
+        const MyExportCSV = (props) => {
+            const handleClick = () => {
+              props.onExport();
+            };
+            return (
+              <div>
+                <Button color="primary" onClick={ handleClick }>Download Excel</Button>
+              </div>
+            );
+          };
         return (
             <div>
                 <div id="LogoImg" style={{ alignContent: 'center' }}>
@@ -298,25 +309,29 @@ export default class Reports_product extends Component {
                     </Container>
 
                 </div>
-             
-                <BootstrapTable
-                    noDataIndication="Table is Empty"
-                    keyField="id"
-                    data={this.state.filteredArray1}
-                    columns={this.state.columns}
-                    filter={filterFactory()}
-                    pagination={paginationFactory(options)}
-                />
-                 {
+                
+                  <ToolkitProvider
+  keyField="id"
+  data={ this.state.filteredArray1 }
+  columns={ this.state.columns }
+  exportCSV
+>
+  {
+    props => (
+      <div>
+             {
                     this.state.filteredArray1!=''?
                  <div style={{ marginRight:10, marginTop: 10}}>
-                 <Button color="primary" onClick={() => { this.printDocument('save') }}>Download</Button>
+                  <MyExportCSV { ...props.csvProps } />
                  </div>:null
                  }
-                <div style={{ marginTop: 20 }}>
-                    
-                </div>
-            </div>
+                  <hr/>
+        <BootstrapTable  noDataIndication="Table is Empty" { ...props.baseProps }  pagination={paginationFactory(options)}/>
+      </div>
+    )
+  }
+</ToolkitProvider>
+            </div> 
         )
     }
 }

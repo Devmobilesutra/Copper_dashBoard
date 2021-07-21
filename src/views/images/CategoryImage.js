@@ -14,13 +14,12 @@ const customTotal = (from, to, size) => (
     </span>
 );
 
-export default class ProductsList extends Component {
+export default class CategoryImage extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
             productsList: [],
-            productsList1:[],
             url: '',
             url1:'',
             file: '',
@@ -38,7 +37,7 @@ export default class ProductsList extends Component {
           
             //Add Product data
             Add_productData: {
-               
+               Category_Name:'',
                 Image_Name1: '',
               
             },
@@ -49,8 +48,8 @@ export default class ProductsList extends Component {
                 
               
                 {
-                    dataField: 'index',
-                    text: 'Advertisement Images',
+                    dataField: 'img_url',
+                    text: 'Images',
                     align: 'center',
                     formatter: this.Img_Nm1,
                     headerStyle: () => {
@@ -60,14 +59,22 @@ export default class ProductsList extends Component {
                 },
               
                 {
-                    dataField: "Actions",
-                    text: "Actions",
-                     formatter: this.actionEditDeleteProduct,
+                    dataField: 'Category_Name',
+                    text: 'Category Name',
                     align: 'center',
                     headerStyle: () => {
-                        return {'width':'200px',textAlign: 'center'};
+                        return { 'width':'200px',textAlign: 'center' };
                     },
-                }
+                },
+                // {
+                //     dataField: "Actions",
+                //     text: "Actions",
+                //      formatter: this.actionEditDeleteProduct,
+                //     align: 'center',
+                //     headerStyle: () => {
+                //         return {'width':'200px',textAlign: 'center'};
+                //     },
+                // }
             ]
         };
     }
@@ -75,42 +82,60 @@ export default class ProductsList extends Component {
         return (
             <span style={{ display:'block', width:'400px',height:'200px',overflow: 'hidden' }}>
                 {/* {row.Image_Name1} */}
-                <img src={row.index} alt={row.index} />
+                <img src={row.img_url} alt={row.img_url} />
             </span>
         )
     }
 
     componentDidMount() {
         console.log("ComponentDidMount");
-        firebase.firestore().collection('Discount_Images').doc('Discount_Images')
-        .get()
-        .then((onSnapshot) => {
-          console.log('User exists: ', onSnapshot.exists);
-          console.log('User: ', onSnapshot.data().images);
-          if (onSnapshot.data().images !== undefined) {
-            onSnapshot.data().images.forEach((documentSnapshot) => {
-            //   console.log('User ID: ', documentSnapshot);
-            this.state.productsList1.push(documentSnapshot);
-              this.state.productsList.push({'index':documentSnapshot});
-            });
-            this.setState({});
-          }
-        })   
-        console.log(this.state.productsList,"ahfkjlh")
+        firebase.firestore().collection('Category').onSnapshot(data => {
+            // console.log("cmpnentdid",data.size)
+
+            let Changes = data.docChanges();
+            Changes.forEach((change) => {
+                if (change.type === 'added') {
+                    console.log("doc changes ", change.type, change.doc.id, change.doc.data());
+                    // const product = this.state.productsList
+                    // product.concat({ id: change.doc.id, ...change.doc.data() })
+                    this.state.productsList.push({ id: change.doc.id, ...change.doc.data() })
+                    console.log("added product", this.state.productsList);
+                    // var str = "firebasestorage.googleapis.com/v0/b/copper…=media&token=632d2861-ed21-4fa5-9c69-bdda54b0aac8";
+                    // console.log("String in htttps: form ", );
+                }
+                if (change.type === 'modified') {
+                    console.log("doc changes modified", change.type, change.doc.data(), "ID", change.doc.id);
+                    const newArray = this.state.productsList.map(e => {
+                        if (e.id == change.doc.id) { console.log("value", e); return { id: change.doc.id, ...change.doc.data() } }
+                        else return e
+                    });
+                    this.setState({ productsList: newArray }, () => console.log("state array", this.state.productsList))
+                }
+                if (change.type === 'removed') {
+                    console.log("doc changes removed", change.type);
+
+                    const eleRemovedArray = this.state.productsList.filter((e) =>
+                        e.id !== change.doc.id
+                    )
+                    this.setState({ productsList: eleRemovedArray })
+                }
+            })
+            this.setState({})
+        })
     }
 
-    actionEditDeleteProduct = (cell, row) => {
-        return (
-            <div>
+    // actionEditDeleteProduct = (cell, row) => {
+    //     return (
+    //         <div>
               
-                &nbsp;&nbsp;
-                <Button color="danger" size="md" className="mr-2"
-                    onClick={() => { this.DeleteProduct(row.index) }}>
-                    Delete
-                </Button>
-            </div>
-        );
-    }
+    //             &nbsp;&nbsp;
+    //             <Button color="danger" size="md" className="mr-2"
+    //                 onClick={() => { this.DeleteProduct(row.Category_Name) }}>
+    //                 Delete
+    //             </Button>
+    //         </div>
+    //     );
+    // }
 
    
     AddModal() {
@@ -120,91 +145,29 @@ export default class ProductsList extends Component {
     }
    
 
-    // Delete Product 
-    DeleteProduct(Product_ID) {
-        console.log("ProductId", Product_ID);
-
-        const swalWithBootstrapButtons = Swal.mixin({
-            customClass: {
-                confirmButton: 'btn btn-success ',
-                cancelButton: 'btn btn-danger'
-            },
-            buttonsStyling: false
-        })
-        swalWithBootstrapButtons.fire({
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonText: 'Yes, delete it!',
-            cancelButtonText: 'No, cancel!',
-            reverseButtons: true
-        }).then((result) => {
-            if (result.value) {
-                this.setState({ isLoading: !this.state.isLoading });
-
-                this.setState({});
-                var index = this.state.productsList1.indexOf(Product_ID);
-                this.state.productsList1.splice(index, 1);
-                this.state.productsList.splice(index, 1);
-                console.log(this.state.productsList1,'hafjahg')
-                firebase.firestore().collection('Discount_Images').doc('Discount_Images')
-                  .update({
-                    images: this.state.productsList1,
-                  })
-
-                    .then(() => {
-                        Swal.fire({
-                            icon: 'success',
-                            text: "deleted",
-                            confirmButtonColor: '#d33',
-                            confirmButtonText: 'OK'
-                        });
-                        this.setState({ isLoading: !this.state.isLoading });
-                    }).catch(error => {
-                        console.log(error);
-                        Swal.fire({
-                            icon: 'error',
-                            text: "Something went wrong",
-                            confirmButtonColor: '#d33',
-                            confirmButtonText: 'OK'
-                        })
-                        this.setState({ isLoading: !this.state.isLoading });
-                    });
-            } else if (result.dismiss === Swal.DismissReason.cancel) { }
-        })
-        // this.setState({ isLoading: !this.state.isLoading });
-    }
-
+   
     async Add_productData() {
-        var len=this.state.productsList1.length
+        var len=this.state.productsList.length
         console.log(len,'length')
-        for(var i=0;i<len;i++)
-        {
-            console.log(this.state.productsList1[i])
-            console.log( this.state.productsList1[i].includes(this.state.img1.name))
-            if(this.state.productsList1[i].includes(this.state.img1.name)===true)
-            {
-                alert('Image allready available,please select another image');
-                this.setState({ isLoading: false });
-                return
-            }
-        }
+     
         const { Add_productData } = this.state;
         console.log()
-       
-         if (!Add_productData.Image_Name1) {
+        if (!Add_productData.Category_Name) {
+            alert('please select category name');
+            this.setState({ isLoading: false });
+            return
+        }
+        else if (!Add_productData.Image_Name1) {
             alert('Please select Image');
             this.setState({ isLoading: false });
             return
-         }
+        }
         
-         this.state.productsList.push({index:this.state.Add_productData.Image_Name1});
-         this.state.productsList1.push(this.state.Add_productData.Image_Name1);
          this.setState({});
-         firebase.firestore().collection('Discount_Images').doc('Discount_Images')
+         firebase.firestore().collection('Category').doc(this.state.Add_productData.Category_Name)
            .update({
-            images: this.state.productsList1,
+            img_url:this.state.Add_productData.Image_Name1,
+           
            })
           .then(() => {
             Swal.fire({
@@ -253,7 +216,7 @@ export default class ProductsList extends Component {
         this.setState({ ProgressBar: !this.state.ProgressBar })
         // const uploadTask = await firebase.storage().ref(`/Images/${Img.name}`).put(Img);
         this.setState({
-            uploadTask: this.state.storageRef.child(`Discount_Images/${Img.name}`).put(Img)
+            uploadTask: this.state.storageRef.child(`category_images/${Img.name}`).put(Img)
         },
             () => {
                 this.state.uploadTask.on(
@@ -352,11 +315,11 @@ export default class ProductsList extends Component {
                     />
                 </div> : null}
 
-                <h1>Advertisement Images</h1>
+                <h1>Category Images</h1>
                 <div style={{ marginTop: '5%' }}>
                     <div style={{ marginRight: 10, marginBottom: 10, marginTop: 10 }}>
                         <Button color="primary" size="md" className="mr-2" onClick={() => { this.AddModal(); }}>
-                            Add New Image
+                            Add Category Image
                         </Button>
                     </div>
                     <BootstrapTable
@@ -392,7 +355,45 @@ export default class ProductsList extends Component {
                     </ModalHeader>
                     <ModalBody >
                         <Form>
-                          
+                        <FormGroup>
+                            <Label for="Category_Name">Category Name</Label>
+                            <select type="select" value={this.state.Add_productData.Category_Name}
+                                onChange={(e) => {
+                                    const { Add_productData } = this.state;
+                                    Add_productData.Category_Name = e.target.value;
+                                    console.log("e.target.value :", e.target.value)
+                                    this.setState({ Add_productData });
+                                }}>
+                                <option value="">{this.state.Add_productData.Category_Name}</option>
+                                <option value="Wellness">Wellness</option>
+                                <option value="DECOR">DECOR</option>
+                                <option value="SPIRITUAL">SPIRITUAL</option>
+                                <option value="TRADITIONAL">TRADITIONAL</option>
+                            </select>
+                        </FormGroup>
+                        {/* {
+                            (this.state.Add_productData.Category_Name=='Wellness')?
+                            (
+                                <FormGroup>
+                                <Label for="exampleSelect">Sub-Category Name</Label>
+                                <select type="select" name="select" id="exampleSelect"
+                                    onChange={(e) => {
+                                        const { Edit_ProductData } = this.state;
+                                        Edit_ProductData.subCategory_Name = e.target.value;
+                                        console.log("e.target.value :", e.target.value)
+                                        this.setState({ Edit_ProductData });
+                                    }}>
+                                    <option value="">Select Option</option>
+                                    <option value="Bottles">Bottles</option>
+                                    <option value="Glass">Glass</option>
+                                    <option value="Jar">Jar</option>
+                                    <option value="Matka">Matka</option>
+                                    <option value="Pawali">Pawali</option>
+                                </select>
+                            </FormGroup>
+                            ):
+                            <FormGroup></FormGroup>
+                            } */}
                             <FormGroup>
                                 {/* <Label for="Image_Name1">Image Name 1</Label> */}
                                 <input type="file" name="Image_Name1" id="Image_Name1" placeholder="Enter Image Name 1" ref="upload" accept="image/*"
@@ -400,10 +401,12 @@ export default class ProductsList extends Component {
                                         console.log("File selected", e.target.files[0]);
                                         this.Upload_Image(e.target.files[0])
                                     }} />
-                                    {
-                                    this.state.url1=='' ? <text style={{color:'red'}}>maximum size should be 300 kb<br></br>
+            
+                                   {
+                                   this.state.url1=='' ? <text style={{color:'red'}}>maximum size should be 300 kb<br></br>
                                     <text style={{color:'blue'}}>For better result, make Image dimension 1024*450</text></text>:null
                                     }
+                                    
                             </FormGroup>
                             {this.state.ProgressBar ? <Progress value={this.state.percentUploaded} /> : null}
                             {this.state.url1?<img src={this.state.url1} style={{ width: 250, height: 100 }}></img>:null}

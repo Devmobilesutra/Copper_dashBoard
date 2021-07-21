@@ -35,6 +35,11 @@ export default {
     //   icon: 'icon-pencil',
     // },
     {
+      name: 'Category Image',
+      url: '/categoryImage',
+      icon: 'icon-pencil',
+    },
+    {
       name: 'Advertisement Image',
       url: '/DiscountImage',
       icon: 'icon-pencil',
@@ -47,6 +52,11 @@ export default {
     {
       name: 'REPORTS',
     
+    },
+    {
+      name: 'Reconciliation Report',
+      url: '/Reports_reconciliation',
+      icon: 'icon-pencil',
     },
     {
       name: 'Top 3 channel Partners',

@@ -333,11 +333,11 @@ export default class UsersList extends Component {
             </p>
         );
     };
-    Favourites(Id1) {
+    async Favourites(Id1) {
         this.state.mobileNumber = Id1
         this.setState({ FavoriteList: [] });
         this.setState({ UserFavList: [] });
-        firebase.firestore()
+      await firebase.firestore()
             .collection('Users')
             .doc(this.state.mobileNumber)
             .get()
@@ -364,7 +364,7 @@ export default class UsersList extends Component {
                         .then(documentSnapshot => {
                             console.log('Product exists: ', documentSnapshot.exists);
                             if (documentSnapshot.exists) {
-                                this.state.UserFavList.push(documentSnapshot.data())
+                              this.state.UserFavList.push(documentSnapshot.data())
                                 this.setState({})
                             }
                         }).catch(e => { console.log(e) })
@@ -756,6 +756,8 @@ export default class UsersList extends Component {
                             </thead>
                         </Table> */}
                         {
+                             this.state.UserFavList!='' ?
+                    
                             this.state.UserFavList.map((el) => (
                                 <Table >
                                     <tbody>
@@ -765,7 +767,8 @@ export default class UsersList extends Component {
                                         </tr>
                                     </tbody>
                                 </Table>
-                            ))
+                            )):
+                            <td><text style={{fontWeight: '500' ,color:'#F64846'}}>Channal Partner not added any product to Favourite List</text></td>
                         }
                     </ModalBody>
                     <ModalFooter>

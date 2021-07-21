@@ -142,6 +142,8 @@ export default class Reports_amount extends Component {
         this.setState({ date2: date })
     }
     getData() {
+        // this.setState({ filteredArray1:[]})
+
         const { date1, date2 } = this.state;
         if (date1 === undefined || date1 === '') {
             alert('Select Start date')
@@ -290,9 +292,12 @@ export default class Reports_amount extends Component {
                     filter={filterFactory()}
                     pagination={paginationFactory(options)}
                 />
+                {
+                    this.state.filteredArray1!=''?
                  <div style={{ marginRight:10, marginTop: 10}}>
                  <Button color="primary" onClick={() => { this.printDocument('save') }}>Download</Button>
-                 </div>
+                 </div>:null
+                 }
                 <div style={{ marginTop: 20 }}>
                 </div>
             </div>
