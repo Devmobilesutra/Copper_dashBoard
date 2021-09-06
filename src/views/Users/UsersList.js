@@ -499,6 +499,9 @@ export default class UsersList extends Component {
             Add_userData
         })
     }
+    Excel_Modal() {
+        this.setState({ Excel_Modal: !this.state.Excel_Modal });
+    }
     //Excel Upload
     filePathset(e) {
         // console.log("jjjj");
@@ -512,7 +515,12 @@ export default class UsersList extends Component {
     async UploadExcel() {
         console.log("UploadExcel");
         var f = this.state.file;
-        var name = f.name;
+        console.log(f);
+        if (f ===undefined) {
+            alert("Please select Excel file first");
+            return
+        }
+        else{
         let result = [];
         const reader = new FileReader();
         reader.readAsBinaryString(f);
@@ -531,12 +539,73 @@ export default class UsersList extends Component {
             this.upload_data(result);
         };
     }
+    }
     async upload_data(Array_of_Object) {
+        var phone = /^[7-9][0-9]{9}$/;
+        var pin = /^[0-9]{6}$/;
         console.log("this is row object", Array_of_Object);
         Array_of_Object[0].forEach(rowObject => {
+            //validation
+        if (!rowObject.User_name) {
+            alert('please Enter User name,Refer Sr_No: '+rowObject.Sr_No);
+            this.setState({ isLoading: false });
+            return
+        } else if (!rowObject.mobile_no) {
+            alert('Please Enter Mobile number,Refer Sr_No: '+rowObject.Sr_No);
+            this.setState({ isLoading: false });
+            return
+            // } else if (Add_userData.mobile_no.length!=10 ) {
+            //     alert("Please Enter valid 10 digit Mobile number")
+            //     this.setState({ isLoading: false });
+            //     return
+        } else if (!phone.test(rowObject.mobile_no)) {
+            alert("Please select valid mobile number,Refer Sr_No: "+rowObject.Sr_No);
+            this.setState({ isLoading: false });
+            return
+        } else if (!rowObject.address) {
+            alert('Please enter Address,Refer Sr_No: '+rowObject.Sr_No);
+            this.setState({ isLoading: false });
+            return
+        } else if (!rowObject.state) {
+            alert('Please select state,Refer Sr_No: '+rowObject.Sr_No);
+            this.setState({ isLoading: false });
+            return
+        } else if (!rowObject.city) {
+            alert('Please Enter city,Refer Sr_No: '+rowObject.Sr_No);
+            this.setState({ isLoading: false });
+            return
+        } else if (!rowObject.pincode) {
+            alert('Please Enter Pin-code,Refer Sr_No: '+rowObject.Sr_No);
+            this.setState({ isLoading: false });
+            return
+        } else if (!pin.test(rowObject.pincode)) {
+            alert("Please select valid Pin-Code,Refer Sr_No: "+rowObject.Sr_No);
+            this.setState({ isLoading: false });
+            return
+        }
+        var len = this.state.userList.length
+        var len1 = this.state.userListFalse.length
+        for (var i = 0; i < len; i++) {
+            console.log('first loop', rowObject.mobile_no)
+            console.log('first loop1', this.state.userList[i].mobileNumber)
+            if (rowObject.mobile_no == this.state.userList[i].mobileNumber) {
+                alert("Channel Partner allready registerd,Refer Sr_No: "+rowObject.Sr_No);
+                this.setState({ isLoading: false });
+                return
+            }
+        }
+        for (var i = 0; i < len1; i++) {
+            console.log('second loop')
+            if (rowObject.mobile_no == this.state.userListFalse[i].mobileNumber) {
+                alert("Channel Partner allready registerd,Refer Sr_No: "+rowObject.Sr_No);
+                this.setState({ isLoading: false });
+                return
+            }
+        }
+        //upload data when valid
             console.log(
                 "///////////////////////",
-                "\n Sr_No ", rowObject.Sr_No,
+                //  "\n Sr_No ", rowObject.Sr_No,
                 "\nname", rowObject.User_name,
                 "\nmobileNumber", rowObject.mobile_no,
                 "\n address", rowObject.address,
@@ -547,6 +616,7 @@ export default class UsersList extends Component {
             var mobileNumber = rowObject.mobile_no.toString()
 
             firebase.firestore().collection('Users').doc(mobileNumber).set({
+                // srno: rowObject.Sr_No,
                 name: rowObject.User_name,
                 mobileNumber: rowObject.mobile_no,
                 address: rowObject.address,
@@ -555,24 +625,42 @@ export default class UsersList extends Component {
                 pincode: rowObject.pincode,
                 flag: this.state.Add_userData.flag
             }).then(() => {
-                console.log("Data Uploaded Succefully");
+                Swal.fire({
+                    icon: 'success',
+                    text: "Data Added Succesfully",
+                    confirmButtonColor: '#d33',
+                    confirmButtonText: 'OK'
+                });
             })
+                .catch(error => {
+                    console.log(error);
+                    Swal.fire({
+                        icon: 'error',
+                        text: "Something went wrong",
+                        confirmButtonColor: '#d33',
+                        confirmButtonText: 'OK'
+                    })
+                });
 
-        });
-        this.setState({ addModal: !this.state.addModal })
+        // rowObject.Sr_No = ''
+        rowObject.User_name = ''
+        rowObject.mobile_no = ''
+        rowObject.address = ''
+        rowObject.state = ''
+        rowObject.city = ''
+        rowObject.pincode = ''
+        rowObject.flag = ''
+        this.setState({
+            file: '',
+            // addModal: !this.state.addModal,
+            rowObject:''
+        })
+        // this.setState({ addModal: !this.state.addModal })
+    });
+    this.Excel_Modal()
     }
 
-    // search(e) {
-    //     const { userList, search_val } = this.state;
-    //     // this.setState({ serch_val: e.target.value });
-    //     console.log("Triggered", search_val);
-    //     // var found = [];
-    //     // const userName_filter = userList.find(function (data, index) { if (data.name == search_val) return true })
-    //     // const pinCode_filter = userList.find(function (data, index) { if (data.pincode == search_val) return true })
-    //     // console.log("search result", userName_filter, pinCode_filter);
-    //     var tbl = document.getElementsByClassName('userTable');
-    //     console.log('tbl', tbl[0].getElementsByTagName('table'));
-    // }
+   
     render() {
         console.log(this.state.userList.length)
         /* Drop down list usin dropdonw npm*/
@@ -895,8 +983,8 @@ export default class UsersList extends Component {
                                         this.setState({ Add_userData });
                                     }} />
                             </FormGroup>
-                            <hr></hr>
-                            <Label>Or You can upload a Excel also</Label>
+                          
+                            {/* <Label>Or You can upload a Excel also</Label>
                             <Input
                                 type="file"
                                 id="file"
@@ -904,7 +992,7 @@ export default class UsersList extends Component {
                                 onChange={(e) => this.filePathset(e)}
                                 name="Excel_File"
                                 accept=".xlsx, .xls, .csv">Choose file</Input>
-                            <Button color="secondary" variant="contained" onClick={() => { this.UploadExcel() }}>Upload File</Button>
+                            <Button color="secondary" variant="contained" onClick={() => { this.UploadExcel() }}>Upload File</Button> */}
                         </Form>
                     </ModalBody>
                     <ModalFooter>
@@ -912,6 +1000,34 @@ export default class UsersList extends Component {
                         <Button color="secondary" onClick={() => this.AddModal()}>Cancel</Button>
                     </ModalFooter>
                 </Modal>
+
+                  {/* Excel Modal */}
+                  <Modal isOpen={this.state.Excel_Modal} toggle={() => this.Excel_Modal()}
+                    style={{ padding: '15px' }} centered>
+                    <ModalHeader toggle={() => this.Excel_Modal()}
+                        style={{ border: 'none' }}
+                        cssModule={{
+                            'modal-title': 'w-100 text-center', 'border-bottom': '0px',
+                            'padding': '2rem 1rem 0rem 1rem'
+                        }}>
+                        <h2>Upload Excel</h2>
+                    </ModalHeader>
+                    <ModalBody >
+                        <FormGroup>
+                            <Label for="Product_ID">Choose Excel File to Upload </Label>
+                            <input
+                                type="file"
+                                accept=".xls,.xlsx"
+                                onChange={(e) => this.filePathset(e)}
+                                name="Excel_File" />
+                        </FormGroup>
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button color="primary" onClick={() => { this.UploadExcel()  }}>Confirm</Button>
+                        <Button color="secondary" onClick={() => this.Excel_Modal()}>Cancel</Button>
+                    </ModalFooter>
+                </Modal>
+
 
                 <h1>Channel Partner List</h1>
 
@@ -922,6 +1038,9 @@ export default class UsersList extends Component {
                 <div style={{ marginRight: 10, marginBottom: 10, marginTop: 10 }}>
                     <button style={{ borderRadius: 4, backgroundColor: '#20A8D8', color: 'white', padding: 7, textAlign: 'center', display: 'inline-block' }} color="primary" size="medium" onClick={() => { this.AddModal(); }}>
                         Add new Channel Partner
+                    </button>
+                    <button  style={{ borderRadius: 4, backgroundColor: '#20A8D8', color: 'white', padding: 7, textAlign: 'center', display: 'inline-block' ,marginLeft:7}} color="primary" size="medium" onClick={() => { this.Excel_Modal(); this.setState({flag:true})}}>
+                            Upload Excel
                     </button>
                 </div>
                 {'\n\n'}

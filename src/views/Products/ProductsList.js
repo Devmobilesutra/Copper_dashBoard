@@ -92,7 +92,7 @@ export default class ProductsList extends Component {
                 IsActive: ''
             },
             Edit_ProductData: {
-                Sr_No: '',
+                // Sr_No: '',
                 Category_Name: '',
                 subCategory_Name:'',
                 Product_Name: '',
@@ -166,7 +166,7 @@ export default class ProductsList extends Component {
                 },
                 {
                     dataField: 'Cost_Price',
-                    text: 'Cost Price',
+                    text: ' Channel Partner Price',
                     align: 'center',
                     hidden: true,
                     headerStyle: () => {
@@ -221,7 +221,7 @@ export default class ProductsList extends Component {
                     },
                 },
                 {
-                    dataField: 'Image_Name2',
+                    dataField: 'Image_Name1',
                     text: 'Image Name1',
                     align: 'center',
                     formatter: this.Img_Nm1,
@@ -316,7 +316,7 @@ export default class ProductsList extends Component {
         return (
             <span style={{ display: 'block', width: '150px', overflow: 'hidden' }}>
                 {/* {row.Image_Name1} */}
-                <img src={row.Image_Name2} alt={row.Image_Name2} />
+                <img src={row.Image_Name1} alt={row.Image_Name1} />
             </span>
         )
     }
@@ -325,7 +325,6 @@ export default class ProductsList extends Component {
         console.log("ComponentDidMount");
         firebase.firestore().collection('Products').onSnapshot(data => {
             // console.log("cmpnentdid",data.size)
-
             let Changes = data.docChanges();
             Changes.forEach((change) => {
                 if (change.type === 'added') {
@@ -359,11 +358,13 @@ export default class ProductsList extends Component {
     }
 
     actionEditDeleteProduct = (cell, row) => {
+        //  console.log(row.id,row.MRP,row.Product_Name,'sanika')
         return (
             <div>
                 <Button color="primary" size="md" className="mr-2"
-                    onClick={() => { this.EditProduct(row.Sr_No, row.Category_Name, row.Product_Name, row.id, row.Cost_Price, row.Selling_Price, row.MRP, row.Weight, row.Usage, row.How_to_clean, row.Image_Name1, row.Image_Name2, row.Image_Name3, row.Image_Name4, row.IsActive) }}>
+                    onClick={() => { this.EditProduct(row.Category_Name, row.Product_Name, row.Product_ID, row.Cost_Price, row.Selling_Price, row.MRP, row.Weight, row.Usage, row.How_to_clean, row.Image_Name1, row.Image_Name2, row.Image_Name3, row.Image_Name4, row.IsActive) }}>
                     Edit
+                   
                 </Button>
                 &nbsp;&nbsp;
                 <Button color="danger" size="md" className="mr-2"
@@ -376,9 +377,9 @@ export default class ProductsList extends Component {
 
     // edit product functions start here
     EditProduct(
-        Sr_No,
+
         Category_Name,
-        subCategory_Name,
+        //  subCategory_Name,
         Product_Name,
         Product_ID,
         Cost_Price,
@@ -393,14 +394,14 @@ export default class ProductsList extends Component {
         Image_Name4,
         IsActive) {
 
-        console.log("\nSr_No", Sr_No, "\n Category_Name", Category_Name, "\n Product_Name", Product_Name, "\n Product_ID", Product_ID, "\n Cost_Price", Cost_Price, "\n Selling_Price", Selling_Price, "\n MRP", MRP, "\n Weight", Weight, "\n Usage", Usage, "\n How_to_clean", How_to_clean, "\n Image_Name1", Image_Name1, "\n ", Image_Name2, "\n ", Image_Name3, "\n Image_Name4", Image_Name4, "\n IsActive", IsActive);
+        console.log("\n Category_Name", Category_Name, "\n Product_Name", Product_Name, "\n Product_ID", Product_ID, "\n Cost_Price", Cost_Price, "\n Selling_Price", Selling_Price, "\n MRP", MRP, "\n Weight", Weight, "\n Usage", Usage, "\n How_to_clean", How_to_clean, "\n Image_Name1", Image_Name1, "\n ", Image_Name2, "\n ", Image_Name3, "\n Image_Name4", Image_Name4, "\n IsActive", IsActive);
         const { Edit_ProductData } = this.state;
-        Edit_ProductData.Product_Name = Product_Name;
         Edit_ProductData.Category_Name = Category_Name;
-        Edit_ProductData.subCategory_Name=subCategory_Name;
+        //  Edit_ProductData.subCategory_Name=subCategory_Name;
+        Edit_ProductData.Product_Name = Product_Name;
+        Edit_ProductData.Product_ID = Product_ID;
         Edit_ProductData.Cost_Price = Cost_Price;
         Edit_ProductData.Selling_Price = Selling_Price;
-        Edit_ProductData.Product_ID = Product_ID;
         Edit_ProductData.MRP = MRP;
         Edit_ProductData.Weight = Weight;
         Edit_ProductData.Usage = Usage;
@@ -438,22 +439,22 @@ export default class ProductsList extends Component {
             alert('please select category name');
             this.setState({ isLoading: false });
             return
-        }else if (Edit_ProductData.Category_Name=='Wellness' && !Edit_ProductData.subCategory_Name) {
-            alert('Please select Sub category Name');
-            this.setState({ isLoading: false });
-            return
+        // }else if (Edit_ProductData.Category_Name=='Wellness' && !Edit_ProductData.subCategory_Name) {
+        //     alert('Please select Sub category Name');
+        //     this.setState({ isLoading: false });
+        //     return
         } else if (!Edit_ProductData.Product_Name) {
             alert('Please select Product Name');
             this.setState({ isLoading: false });
             return
         }
          else if (!Edit_ProductData.Cost_Price) {
-            alert('Please select Cost Price');
+            alert('Please select  Channel Partner Price');
             this.setState({ isLoading: false });
             return
         } else if (format.test(Edit_ProductData.Cost_Price)) {
             console.log("checking format", format.test(Edit_ProductData.Cost_Price))
-            alert("Please select valid Cost Price")
+            alert("Please select valid  Channel Partner Price")
             this.setState({ isLoading: false });
             return
         } else if (!Edit_ProductData.Selling_Price) {
@@ -510,8 +511,9 @@ export default class ProductsList extends Component {
 
         firebase.firestore().collection('Products').doc(Edit_ProductData.Product_ID).update({
             Category_Name: Edit_ProductData.Category_Name,
-            subCategory_Name:Edit_ProductData.subCategory_Name,
+            // subCategory_Name:Edit_ProductData.subCategory_Name,
             Product_Name: Edit_ProductData.Product_Name,
+            // Product_ID: Edit_ProductData.Product_ID,
             Cost_Price: Edit_ProductData.Cost_Price,
             Selling_Price: Edit_ProductData.Selling_Price,
             MRP: Edit_ProductData.MRP,
@@ -597,6 +599,7 @@ export default class ProductsList extends Component {
     }
 
     async Add_productData() {
+       
         console.log("is Loading", this.state.isLoading)
         console.log("Add_productData", this.state.Add_productData);
         const { Add_productData } = this.state;
@@ -617,12 +620,12 @@ export default class ProductsList extends Component {
             this.setState({ isLoading: false });
             return
         } else if (!Add_productData.Cost_Price) {
-            alert('Please select Cost Price');
+            alert('Please select  Channel Partner Price');
             this.setState({ isLoading: false });
             return
         } else if (format.test(Add_productData.Cost_Price)) {
             console.log("checking format", format.test(Add_productData.Cost_Price))
-            alert("Please select valid Cost Price")
+            alert("Please select valid  Channel Partner Price")
             this.setState({ isLoading: false });
             return
         } else if (!Add_productData.Selling_Price) {
@@ -677,7 +680,7 @@ export default class ProductsList extends Component {
             return
         }
 
-        firebase.firestore().collection('Products').add({
+        firebase.firestore().collection('Products').doc(this.state.Add_productData.Product_ID).set({
 
             Sr_No: this.state.Add_productData.Sr_No,
             Category_Name: this.state.Add_productData.Category_Name,
@@ -755,8 +758,9 @@ export default class ProductsList extends Component {
         console.log("UploadExcel");
         var f = this.state.file;
         console.log(f);
-        if (f === undefined) {
+        if (f === '') {
             alert("Please select Excel file first");
+             this.setState({ isLoading: false });
             return
         }
         let result = [];
@@ -781,6 +785,7 @@ export default class ProductsList extends Component {
     }
     async upload_data(Array_of_Object) {
         var unAvailableImages = [];
+        var productsList=[];
         var i = 1;
         console.log("this is row object", Array_of_Object[0].length);
         var wait = new Promise((resolve) => {
@@ -844,8 +849,8 @@ export default class ProductsList extends Component {
             console.log("New Array", Array_of_Object, "Undefined Image Array", unAvailableImages);
             setTimeout(() => {
                 Array_of_Object[0].forEach(async (rowObject) => {
-                    // if (rowObject.Image_Name1 !== undefined && rowObject.Image_Name1.startsWith("https:", 0)||rowObject.Image_Name2 !== undefined && rowObject.Image_Name2.startsWith("https:", 0)||rowObject.Image_Name3 !== undefined && rowObject.Image_Name3.startsWith("https:", 0)||rowObject.Image_Name4 !== undefined && rowObject.Image_Name4.startsWith("https:", 0)) {
-                    if (rowObject.Image_Name1 !== undefined && rowObject.Image_Name1.startsWith("https:", 0)) {
+                    //  if (rowObject.Image_Name1 !== undefined && rowObject.Image_Name1.startsWith("https:", 0)||rowObject.Image_Name2 !== undefined && rowObject.Image_Name2.startsWith("https:", 0)||rowObject.Image_Name3 !== undefined && rowObject.Image_Name3.startsWith("https:", 0)||rowObject.Image_Name4 !== undefined && rowObject.Image_Name4.startsWith("https:", 0)) {
+                     if (rowObject.Image_Name1 !== undefined && rowObject.Image_Name1.startsWith("https:", 0)) {
                         firebase.firestore().collection('Products').doc(rowObject.Product_ID).set({
                             Sr_No: rowObject.Sr_No === undefined ? "" : rowObject.Sr_No,
                             Product_ID: rowObject.Product_ID === undefined ? "" : rowObject.Product_ID,
@@ -867,6 +872,10 @@ export default class ProductsList extends Component {
                         }).then(() => {
                             i++;
                             console.log("Data Uploaded Succefully");
+                            // productsList.push(rowObject);
+                            // // console.log(unAvailableImages,'sanika')
+                            // this.setState({productsList:productsList})
+                            // console.log(this.state.productsList,'sanika')
                             if (Array_of_Object[0].length === i) {
                                 this.setState({ isLoading: !this.state.isLoading });
                             }
@@ -1345,7 +1354,8 @@ export default class ProductsList extends Component {
                     <ModalBody>
                         <FormGroup>
                             <Label for="Category_Name">Category Name</Label>
-                            <select type="select" value={this.state.Edit_ProductData.Category_Name}
+                            <select type="select"
+                               value={this.state.Edit_ProductData.Category_Name}
                                 onChange={(e) => {
                                     const { Edit_ProductData } = this.state;
                                     Edit_ProductData.Category_Name = e.target.value;
@@ -1353,18 +1363,19 @@ export default class ProductsList extends Component {
                                     this.setState({ Edit_ProductData });
                                 }}>
                                 <option value="">Selected Option: {this.state.Edit_ProductData.Category_Name}</option>
-                                <option value="Wellness"></option>
-                                <option value="Decore">Decore</option>
+                                <option value="Wellness">Wellness</option>
+                                <option value="Decor">Decor</option>
                                 <option value="Spiritual">Spiritual</option>
                                 <option value="Traditional">Traditional</option>
                             </select>
                         </FormGroup>
-                        {
+                        {/* {
                             (this.state.Edit_ProductData.Category_Name=='Wellness')?
                             (
                                 <FormGroup>
                                 <Label for="exampleSelect">Sub-Category Name</Label>
                                 <select type="select" name="select" id="exampleSelect"
+                              
                                     onChange={(e) => {
                                         const { Edit_ProductData } = this.state;
                                         Edit_ProductData.subCategory_Name = e.target.value;
@@ -1380,21 +1391,31 @@ export default class ProductsList extends Component {
                                 </select>
                             </FormGroup>
                             ):
-                            <FormGroup></FormGroup>
-                            }
+                           null
+                            } */}
                         <FormGroup>
-                            <Label for="Product_Name">Product Name</Label>
-                            <Input type="text" name="Product_Name" id="Product_Name" placeholder="Enter Product Name"
-                                value={this.state.Edit_ProductData.Product_Name}
-                                onChange={(e) => {
-                                    const { Edit_ProductData } = this.state;
-                                    Edit_ProductData.Product_Name = e.target.value;
-                                    this.setState({ Edit_ProductData });
-                                }} />
-                        </FormGroup>
+                                <Label for="Product_Name">Product Name</Label>
+                                <Input type="text" name="Product_Name" id="Product_Name" placeholder="Enter Product Name" readonly
+                                      value={this.state.Edit_ProductData.Product_Name}
+                                    onChange={(e) => {
+                                        const { Edit_ProductData } = this.state;
+                                        Edit_ProductData.Product_Name = e.target.value;
+                                        this.setState({ Edit_ProductData });
+                                    }} />
+                            </FormGroup>
+                        {/* <FormGroup>
+                                <Label for="Product_ID">Product ID</Label>
+                                <Input type="text" name="Product_ID" id="Product_ID" placeholder="Enter Product ID" readonly
+                                      value={this.state.Edit_ProductData.Product_ID}
+                                    onChange={(e) => {
+                                        const { Edit_ProductData } = this.state;
+                                        Edit_ProductData.Product_ID = e.target.value;
+                                        this.setState({ Edit_ProductData });
+                                    }} />
+                            </FormGroup> */}
                         <FormGroup>
-                            <Label for="Cost_Price">Cost Price</Label>
-                            <Input type="number" min="1" step="1" name="Cost_Price" id="Cost_Price" placeholder="Enter Cost Price"
+                            <Label for=" Channel Partner Price"> Channel Partner Price</Label>
+                            <Input type="number" min="1" step="1" name=" Channel Partner Price" id=" Channel Partner Price" placeholder="Enter  Channel Partner Price"
                                 value={this.state.Edit_ProductData.Cost_Price}
                                 onChange={(e) => {
                                     const { Edit_ProductData } = this.state;
@@ -1543,7 +1564,7 @@ export default class ProductsList extends Component {
                                     }}>
                                     <option value="">Select Option</option>
                                     <option value="Wellness">Wellness</option>
-                                    <option value="Decore">Decore</option>
+                                    <option value="Decor">Decor</option>
                                     <option value="Spiritual">Spiritual</option>
                                     <option value="Traditional">Traditional</option>
                                 </select>
@@ -1572,7 +1593,7 @@ export default class ProductsList extends Component {
                             <FormGroup></FormGroup>
                             }
 
-                            {/* <FormGroup>
+                            <FormGroup>
                                 <Label for="Product_ID">Product ID</Label>
                                 <Input type="text" name="Product_ID" id="Product_ID" placeholder="Enter Product ID" readonly
                                     onChange={(e) => {
@@ -1580,7 +1601,7 @@ export default class ProductsList extends Component {
                                         Add_productData.Product_ID = e.target.value;
                                         this.setState({ Add_productData });
                                     }} />
-                            </FormGroup> */}
+                            </FormGroup>
                             <FormGroup>
                                 <Label for="Product_Name">Product Name</Label>
                                 <Input type="text" name="Product_Name" id="Product_Name" placeholder="Enter Product Name"
@@ -1592,8 +1613,8 @@ export default class ProductsList extends Component {
                             </FormGroup>
 
                             <FormGroup>
-                                <Label for="Cost_Price">Cost Price</Label>
-                                <Input type="number" min="1" step="1" name="Cost_Price" id="Cost_Price" placeholder="Enter Cost Price"
+                                <Label for=" Channel Partner Price"> Channel Partner Price</Label>
+                                <Input type="number" min="1" step="1" name=" Channel Partner Price" id=" Channel Partner Price" placeholder=" Channel Partner Price"
                                     onChange={(e) => {
                                         const { Add_productData } = this.state;
                                         // Add_productData.Cost_Price = parseInt(e.target.value);

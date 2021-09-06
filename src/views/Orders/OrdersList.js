@@ -77,6 +77,41 @@ export default class OrderList extends Component {
                     },
                 },
                 {
+                    dataField: 'payment_Method',
+                    text: 'Payment Method',
+                    align: 'center',
+                    filter: textFilter({
+                        placeholder: 'Payment Method'
+                    }),
+                    headerStyle: (colum, colIndex) => {
+                        return { textAlign: 'center' };
+                    },
+                },
+                // {
+                //     dataField: 'payment_Method',
+                //     text: 'Payment Method',
+                //     filter: textFilter({
+                //         placeholder: 'Search Payment method'
+                //     }),
+                //     formatter: this.paymentMethodDropdown,
+                //     align: 'center',
+                //     headerStyle: (colum, colIndex) => {
+                //         return { textAlign: 'center' };
+                //     },
+                // },
+                {
+                    dataField: 'payment_status',
+                    text: 'Payment Status',
+                    filter: textFilter({
+                        placeholder: 'Search Payment status'
+                    }),
+                    formatter: this.paymentStatusDropdown,
+                    align: 'center',
+                    headerStyle: (colum, colIndex) => {
+                        return { textAlign: 'center' };
+                    },
+                },
+                {
                     dataField: "Actions",
                     text: "Actions",
                     formatter: this.ActionButtonView,
@@ -112,6 +147,36 @@ export default class OrderList extends Component {
             </div>
         )
     }
+    // paymentMethodDropdown = (cell, row, rowIndex, formatExtraData) => {
+    //     return (
+    //         <div>
+    //             <select type="select" name="select" id="exampleSelect" style={{ borderRadius: 23 }}
+    //                 value={row.payment_Method}
+    //                 onChange={(e) => { this.payment_Method(e.target.value, row.id) }}>
+    //                 <option value="">Select Option</option>
+    //                 <option value="Online">Online</option>
+    //                 <option value="Cash on delivery">Cash on delivery</option>
+    //                 <option value="Pay later">Pay later</option>
+    //             </select>
+    //         </div>
+    //     )
+    // }
+    paymentStatusDropdown = (cell, row, rowIndex, formatExtraData) => {
+        console.log("delivery statusaaa", row.payment_status)
+        return (
+            <div>
+                <select type="select" name="select" id="exampleSelect" style={{ borderRadius: 23 }}
+                    value={row.payment_status}
+                    onChange={(e) => { this.payment_Status(e.target.value, row.id) }}>
+                    <option value="">Select</option>
+                    <option value="Paid">Paid</option>
+                    <option value="UnPaid">UnPaid</option>
+                  
+                  
+                </select>
+            </div>
+        )
+    }
     
     Download_ActionButtonView = (cell, row, rowIndex, formatExtraData) => {
         console.log("Actions", row.Actions);
@@ -133,7 +198,7 @@ export default class OrderList extends Component {
                 <select type="select" name="select" id="exampleSelect" style={{ borderRadius: 23 }}
                     value={row.Actions}
                     onChange={(e) => { this.Action(e.target.value, row.id) }}>
-                    <option value="">Select Option</option>
+                    <option value="">Select</option>
                     <option value="Manufacturing">Manufacturing</option>
                     <option value="Packing">Packing</option>
                     <option value="Delivery">Delivery</option>
@@ -154,8 +219,16 @@ export default class OrderList extends Component {
         })
     }
 
+    payment_Status = (val, id) => {
+        console.log('action function', val, typeof (val), id);
+        firebase.firestore().collection('OrderList').doc(id).update({
+            payment_status: val
+        })
+    }
+
     componentDidMount() {
-        fire.firestore().collection('OrderList').onSnapshot(data => {
+        fire.firestore().collection('OrderList').orderBy('orderDateFormat','desc')
+        .onSnapshot(data => {
             this.setState({ orderList: [] });
             data.forEach(el => {
                 console.log("el", el.data(), el.id)

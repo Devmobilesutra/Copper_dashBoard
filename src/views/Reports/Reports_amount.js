@@ -22,6 +22,7 @@ export default class Reports_amount extends Component {
             show: false,
             date1: '',
             date2: '',
+            a:[],
             filteredArray: [],
             filteredArray1:[],
             data: [],
@@ -126,6 +127,9 @@ export default class Reports_amount extends Component {
         this.setState({ date1: date })
     }
     dateChange2(date) {
+        this.setState({ date2: '' })
+        this.setState({a:[]})
+        date=moment(date).format('D-MMMM-YYYY')
         let { date1 } = this.state;
         console.log('this.dateChange', date, moment(date).format('dd/mm/yyyy'));
         let a = moment(date1), b = moment(date);
@@ -164,7 +168,18 @@ export default class Reports_amount extends Component {
             alert('Choose greater end date');
             return
         }
-        const orders = firebase.firestore().collection('OrderList')
+        let orders = firebase.firestore().collection('OrderList')
+        .where('date', '==', this.state.date2)
+        .get();
+    orders.then(element => {
+        element.docs.forEach(data => {
+            // console.log("itereted data", data.data(), " date format ", data.data().timestamp, new Date(data.data().timestamp.seconds * 1000), moment(data.data().timestamp.seconds * 1000).format('DD/MM/YYYY'))
+            this.state.a.push({ id: data.id, ...data.data()})
+            this.setState({})
+        })
+       
+       })
+         orders = firebase.firestore().collection('OrderList')
             .where('orderDateFormat', '>=', startDate)
             .where('orderDateFormat', '<=', endDate)
             .get();
@@ -177,6 +192,11 @@ export default class Reports_amount extends Component {
                 // console.log("itereted data", data.data(), " date format ", data.data().timestamp, new Date(data.data().timestamp.seconds * 1000), moment(data.data().timestamp.seconds * 1000).format('DD/MM/YYYY'))
                 localArray.push({ id: data.id, ...data.data() })
             })
+            for(var i=0;i<this.state.a.length;i++)
+            {
+                localArray.push(this.state.a[i])
+            }
+           console.log(localArray,'final')
             for(var i=0;i<localArray.length;i++)
             {
                 var total_amount=0;

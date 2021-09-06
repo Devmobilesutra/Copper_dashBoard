@@ -15,7 +15,7 @@ const customTotal = (from, to, size) => (
         Showing { from} to { to} of { size} Results
     </span>
 );
-
+var amount=0;
 export default class Reports_reconciliation extends Component {
     // labels = Utils.months({ count: 7 });
     constructor() {
@@ -26,6 +26,8 @@ export default class Reports_reconciliation extends Component {
             date2: '',
             filteredArray: [],
             filteredArray1:[],
+            filteredArray11:[],
+            a:[],
             data: [],
             selectedId: '',
             LineData: {
@@ -97,55 +99,19 @@ export default class Reports_reconciliation extends Component {
                         return { textAlign: 'center' };
                     },
                 },
+             
             ],
         }
     }
-    
-    async componentDidMount() {
-        console.log("ComponentDidMount");
-        //for order details
-        firebase.firestore().collection('OrderList').onSnapshot(data => {
-            this.setState({ OrderDetails: [] });
-            var OList = [];
-            var falseOrderlist = [];
-            var TA = 0;
-            data.forEach(async (el) => {
-                console.log("el", el.data().Total_amount);
-                OList.push({ id: el.id, ...el.data() });
-                if (el.data().delivery_status === false) {
-                    falseOrderlist.push({ id: el.id, ...el.data() });
-                }
-                TA = TA + parseInt(el.data().Total_amount);
-            })
-            console.log("TA", TA);
-            console.log("orderDetails", this.state.OrderDetails);
-            this.setState({ OrderDetails: OList, TA: TA, filteredArray: falseOrderlist });
-        })
-    }
-    printDocument() {
-
-        // console.log(this.state.filteredArray1,'aaaaaaaaaaaaaaaaaaaaaaaaaaaa')
-        // Or use javascript directly:
-        var doc = new jsPDF();
-        doc.text('Top 3 channel partners from  '+this.state.date1+' to '+this.state.date2,10,10);
-        doc.autoTable({
-          head: [['user_name','User_MobileNo','total_bill']],
-          body: [
-            [this.state.filteredArray1[0].user_name,this.state.filteredArray1[0].user_id,this.state.filteredArray1[0].amt],
-            [this.state.filteredArray1[1].user_name,this.state.filteredArray1[1].user_id,this.state.filteredArray1[1].amt],
-            [this.state.filteredArray1[2].user_name,this.state.filteredArray1[2].user_id,this.state.filteredArray1[2].amt]
-            // ...
-          ],
-        })
-        
-        doc.save('Top_channer_partners.pdf')
-    }
-
+  
     dateChange1(date) {
         console.log('this.dateChange', date, moment(date).format('YYYY MM DD'));
         this.setState({ date1: date })
     }
     dateChange2(date) {
+        this.setState({ date2: '' })
+        this.setState({a:[]})
+        date=moment(date).format('D-MMMM-YYYY')
         let { date1 } = this.state;
         console.log('this.dateChange', date, moment(date).format('dd/mm/yyyy'));
         let a = moment(date1), b = moment(date);
@@ -178,6 +144,7 @@ export default class Reports_reconciliation extends Component {
         // const endDate = moment(document.getElementById('endDate').value).format('DD/MM/YYYY')
         const startDate = new Date(document.getElementById('startDate').value);
         const endDate = new Date(document.getElementById('endDate').value);
+        
         if (startDate > endDate) {
             console.log("start date is less than end date");
             alert('Choose greater end date');
@@ -185,24 +152,48 @@ export default class Reports_reconciliation extends Component {
         }
          console.log(startDate,'data')
          console.log(endDate,'data')
-        const orders = firebase.firestore().collection('OrderList')
+         console.log(this.state.date2,'aa')
+         let orders = firebase.firestore().collection('OrderList')
+         .where('date', '==', this.state.date2)
+         .get();
+     orders.then(element => {
+         element.docs.forEach(data => {
+             // console.log("itereted data", data.data(), " date format ", data.data().timestamp, new Date(data.data().timestamp.seconds * 1000), moment(data.data().timestamp.seconds * 1000).format('DD/MM/YYYY'))
+             this.state.a.push({ id: data.id, ...data.data()})
+             this.setState({})
+         })
+        
+        })
+
+        //  var now_utc1 = new Date(startDate.toUTCString());
+        //  var now_utc2 = new Date(endDate.toUTCString());
+         orders = firebase.firestore().collection('OrderList')
             .where('orderDateFormat', '>=', startDate)
             .where('orderDateFormat', '<=', endDate)
             .get();
         orders.then(element => {
+           
             console.log("fff", element.docs);
             let localArray = [];
             let localArray1=[];
             let localArray1_unique=[];
             let localArray2=[];
+            let localArray3=[];
             element.docs.forEach(data => {
                 // console.log("itereted data", data.data(), " date format ", data.data().timestamp, new Date(data.data().timestamp.seconds * 1000), moment(data.data().timestamp.seconds * 1000).format('DD/MM/YYYY'))
                 localArray.push({ id: data.id, ...data.data()})
             })
+            //for adding the order of end date.
+            for(var i=0;i<this.state.a.length;i++)
+            {
+                localArray.push(this.state.a[i])
+            }
+            
+           console.log(localArray,'final')
             for(var i=0;i<localArray.length;i++)
             {
                
-            // console.log(localArray[i],'ahfasgdjlak')
+             console.log(localArray[i],'ahfasgdjlak')
                 for(var j=0;j<localArray[i].product_details.length;j++)
                 {     
                   
@@ -224,6 +215,7 @@ export default class Reports_reconciliation extends Component {
             for(i=0;i<localArray1_unique.length;i++)
             {  var total_quantity=0;
                 var total_amount=0;
+             
                 for(j=0;j<localArray1.length;j++)
                 {
                     if(localArray1_unique[i].id==localArray1[j].id)
@@ -232,13 +224,19 @@ export default class Reports_reconciliation extends Component {
                         total_amount=parseInt(localArray1[j].total_Price)+parseInt(total_amount)
                     }
                 }
+                amount=parseInt(total_amount)+parseInt(amount)
+                // console.log(amount,'total')
                 localArray2.push({name:localArray1_unique[i].product_name,id:localArray1_unique[i].id,price:localArray1_unique[i].price,quantity:total_quantity,amount:total_amount})
             }
-          
-            // console.log(localArray2,'fianl array')
+            // localArray2.push({total_amt:amount})
+          localArray3.push({total_amt:amount})
+            //  console.log(localArray2,'fianl array')
+            this.setState({filteredArray11:localArray3})
+            console.log(this.state.filteredArray11)
             this.setState({ filteredArray1: localArray2})
         })
     }
+
     render() {
         const { date1, date2, filteredArray } = this.state;
         const pageButtonRenderer = ({ page, active, disable, title, onPageChange }) => {
@@ -312,7 +310,7 @@ export default class Reports_reconciliation extends Component {
                 
                   <ToolkitProvider
   keyField="id"
-  data={ this.state.filteredArray1 }
+  data={ this.state.filteredArray1}
   columns={ this.state.columns }
   exportCSV
 >
@@ -322,7 +320,8 @@ export default class Reports_reconciliation extends Component {
              {
                     this.state.filteredArray1!=''?
                  <div style={{ marginRight:10, marginTop: 10}}>
-                  <MyExportCSV { ...props.csvProps } />
+                  <MyExportCSV { ...props.csvProps } /><br></br>
+                  <text>Total Bill : Rs. {this.state.filteredArray11[0].total_amt} /-</text>
                  </div>:null
                  }
                   <hr/>
