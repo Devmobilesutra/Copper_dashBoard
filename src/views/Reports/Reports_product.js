@@ -7,7 +7,7 @@ import filterFactory from 'react-bootstrap-table2-filter';
 import "react-datepicker/dist/react-datepicker.css";
 import moment from 'moment';
 import jsPDF from 'jspdf'
-        
+require('jspdf-autotable');   
 const customTotal = (from, to, size) => (
     <span className="react-bootstrap-table-pagination-total ml-2">
         Showing { from} to { to} of { size} Results

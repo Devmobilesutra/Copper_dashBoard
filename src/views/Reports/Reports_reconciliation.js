@@ -225,7 +225,7 @@ export default class Reports_reconciliation extends Component {
                     }
                 }
                 amount=parseInt(total_amount)+parseInt(amount)
-                // console.log(amount,'total')
+                 console.log(amount,'total')
                 localArray2.push({name:localArray1_unique[i].product_name,id:localArray1_unique[i].id,price:localArray1_unique[i].price,quantity:total_quantity,amount:total_amount})
             }
             // localArray2.push({total_amt:amount})

@@ -164,6 +164,8 @@ export default class OrderList extends Component {
     paymentStatusDropdown = (cell, row, rowIndex, formatExtraData) => {
         console.log("delivery statusaaa", row.payment_status)
         return (
+            (row.payment_status=='UnPaid')?
+            (
             <div>
                 <select type="select" name="select" id="exampleSelect" style={{ borderRadius: 23 }}
                     value={row.payment_status}
@@ -175,6 +177,11 @@ export default class OrderList extends Component {
                   
                 </select>
             </div>
+            ):(
+                <div>
+                    <text>{row.payment_status}</text>
+                </div>
+            )
         )
     }
     
